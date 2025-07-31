@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 感謝のメッセージアプリ
 
-## Getting Started
+大切な人に心からの感謝を伝える、特別なメッセージアプリケーション
 
-First, run the development server:
+## ✨ 特徴
+
+### 🎯 コア機能
+
+- **心からの感謝**: あなたの大切な人への感謝の気持ちを込めて
+- **特別なメッセージ**: 技術とデザインで想いを美しく表現
+- **プロフェッショナル**: Next.js + Chakra UI の最新技術を使用
+
+### 🔧 技術仕様
+
+- **Next.js 15** - 最新の React フレームワーク
+- **TypeScript** - 型安全な開発環境
+- **Chakra UI** - 洗練された UI コンポーネント
+- **Framer Motion** - 滑らかなアニメーション
+- **React Icons** - 豊富なアイコンライブラリ
+
+### 🎨 UI/UX デザイン
+
+- **プロフェッショナルテーマ** - ダークテーマとライトテーマ対応
+- **レスポンシブ対応** - モバイル/タブレット/デスクトップ
+- **アクセシビリティ準拠** - ユーザビリティを重視した設計
+- **高コントラスト** - 優れた視認性
+
+## 🚀 セットアップ
+
+### 依存関係のインストール
+
+```bash
+npm install
+```
+
+### 開発サーバー起動
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 本番ビルド
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+アプリケーションは [http://localhost:3000](http://localhost:3000) で起動します。
 
-## Learn More
+## 🏗️ プロジェクト構造
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/              # Next.js App Router
+│   ├── globals.css   # グローバルスタイル
+│   ├── layout.tsx    # ルートレイアウト
+│   └── page.tsx      # メインページ
+├── components/       # Reactコンポーネント
+│   └── ui/           # Chakra UI拡張コンポーネント
+├── hooks/            # カスタムフック
+├── utils/            # ユーティリティ関数
+├── types/            # TypeScript型定義
+└── constants/        # アプリケーション定数
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 品質保証
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### パフォーマンス
 
-## Deploy on Vercel
+- React.memo によるコンポーネント最適化
+- useMemo/useCallback による再計算防止
+- 最適化されたバンドルサイズ
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 型安全性
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- TypeScript strict mode 有効
+- 厳密な型定義による開発時エラー防止
+- プロフェッショナルな型システム
+
+### エラーハンドリング
+
+- 適切なエラーバウンダリ
+- ユーザーフレンドリーなエラー表示
+- グレースフルデグラデーション
+
+## 📊 ベストプラクティス
+
+本プロジェクトは 2025 年の最新ベストプラクティスに準拠しています：
+
+- **コンポーネント設計**: 責務分離と再利用性
+- **状態管理**: カスタムフックによる分離
+- **スタイリング**: Chakra UI 活用
+- **パフォーマンス**: メモ化とレンダリング最適化
+- **型安全性**: TypeScript 活用
+- **アクセシビリティ**: 包括的なデザイン
+
+## 🌟 インスピレーション
+
+このプロジェクトは [VimApp](https://github.com/riffluv/VimApp) のプロフェッショナルなデザインとアーキテクチャからインスピレーションを得ています。
+
+## 🤝 貢献
+
+プルリクエストやイシューの報告を歓迎します。
+
+## 📄 ライセンス
+
+MIT License
+
+---
+
+**感謝のメッセージアプリ** - あなたの感謝の気持ちを特別な形で伝えるツールです 💖
