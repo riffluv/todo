@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaEnvelope, FaHeart, FaUserFriends } from "react-icons/fa";
+import { FaEnvelope, FaHeart } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
@@ -35,8 +35,8 @@ export default function Home() {
       bg="#fafafa"
       position="relative"
     >
-      <Container maxW="4xl" py={{ base: 16, md: 20 }} position="relative">
-        <VStack gap={{ base: 12, md: 16 }} align="center">
+      <Container maxW="4xl" py={{ base: 20, md: 24 }} position="relative">
+        <VStack gap={{ base: 16, md: 20 }} align="center">
           {/* 熊さんキャラクターヘッダー */}
           <MotionBox
             initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function Home() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             textAlign="center"
           >
-            <VStack gap={{ base: 8, md: 10 }}>
+            <VStack gap={{ base: 10, md: 12 }}>
               {/* 熊さんキャラクター */}
               <Box
                 w={{ base: "80px", md: "100px" }}
@@ -126,136 +126,236 @@ export default function Home() {
             </VStack>
           </MotionBox>
 
-          {/* メインカード */}
+          {/* モダンなテキストコンテナ */}
           <MotionBox
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             w="100%"
-            maxW="500px"
-            bg="white"
-            borderRadius="xl"
-            shadow="sm"
-            border="1px solid"
-            borderColor="gray.100"
-            overflow="hidden"
+            maxW="600px"
           >
-            {/* カードヘッダー */}
-            <Box
-              bg="orange.50"
-              px={{ base: 6, md: 8 }}
-              py={4}
-              borderBottom="1px solid"
-              borderColor="orange.100"
-            >
-              <HStack gap={3} justify="center">
-                <Icon as={FaUserFriends} color="orange.500" boxSize={5} />
-                <Text
-                  fontSize="sm"
-                  color="orange.600"
-                  fontWeight="600"
-                  textTransform="uppercase"
-                  letterSpacing="0.05em"
-                >
-                  お二人へのメッセージ
-                </Text>
-              </HStack>
-            </Box>
-
-            {/* カードコンテンツ */}
-            <Box p={{ base: 6, md: 8 }}>
-              <VStack gap={6} textAlign="center">
-                <Text
-                  fontSize={{ base: "sm", md: "md" }}
-                  lineHeight="1.7"
-                  color="gray.700"
-                >
-                  manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
-                  お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
-                  いつも支えてくれて、本当にありがとうございました。
-                  これからもお二人の活躍を心から応援しています。
-                </Text>
-
-                {/* アクションエリア */}
-                <Box
-                  w="100%"
-                  bg="gray.50"
-                  borderRadius="lg"
-                  p={4}
-                  mt={4}
-                >
-                  <Text fontSize="xs" color="gray.500" mb={3} textAlign="center">
-                    メッセージを選択してください
+            {/* モダンなテキストエリア */}
+            <VStack gap={10} textAlign="center" w="100%">
+              {/* メインメッセージ */}
+              <Box
+                bg="rgba(255, 255, 255, 0.8)"
+                backdropFilter="blur(10px)"
+                borderRadius="16px"
+                p={{ base: 8, md: 10 }}
+                border="1px solid"
+                borderColor="rgba(229, 231, 235, 0.6)"
+                position="relative"
+                _before={{
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  w: "40px",
+                  h: "3px",
+                  bg: "#f97316",
+                  borderRadius: "full",
+                  opacity: 0.7
+                }}
+              >
+                <VStack gap={6}>
+                  <Text
+                    fontSize="13px"
+                    color="#6b7280"
+                    fontWeight="500"
+                    textTransform="uppercase"
+                    letterSpacing="0.05em"
+                    mt={2}
+                  >
+                    お二人へ
                   </Text>
-                  <HStack gap={8} justify="center">
-                    <MotionBox
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <VStack
-                        gap={3}
-                        cursor="pointer"
-                        onClick={() => handleNavigate("/message/saito")}
-                        _hover={{ opacity: 0.8 }}
-                        transition="all 0.2s"
-                      >
-                        <Box
-                          w={16}
-                          h={16}
-                          bg="orange.50"
-                          borderRadius="full"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          border="2px solid"
-                          borderColor="orange.200"
-                        >
-                          <Icon as={FaEnvelope} boxSize={6} color="orange.500" />
-                        </Box>
-                        <Text fontSize="sm" fontWeight="500" color="gray.700">
-                          斎藤さんへ
-                        </Text>
-                      </VStack>
-                    </MotionBox>
 
-                    <MotionBox
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
+                  <Text
+                    fontSize={{ base: "16px", md: "17px" }}
+                    lineHeight={{ base: "1.7", md: "1.75" }}
+                    color="#374151"
+                    fontWeight="400"
+                    letterSpacing="0.01em"
+                    textAlign="center"
+                    maxW="480px"
+                  >
+                    manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
+                    お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
+                    いつも支えてくれて、本当にありがとうございました。
+                    これからもお二人の活躍を心から応援しています。
+                  </Text>
+                </VStack>
+              </Box>
+
+              {/* モダンなアクションエリア */}
+              <Box w="100%">
+                <Text
+                  fontSize="14px"
+                  color="#6b7280"
+                  textAlign="center"
+                  fontWeight="500"
+                  mb={8}
+                >
+                  メッセージを選択してください
+                </Text>
+                <HStack gap={12} justify="center">
+                  <MotionBox
+                    whileHover={{
+                      scale: 1.02,
+                      y: -2
+                    }}
+                    whileTap={{
+                      scale: 0.98,
+                      y: 0
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 25
+                    }}
+                  >
+                    <VStack
+                      gap={4}
+                      cursor="pointer"
+                      onClick={() => handleNavigate("/message/saito")}
+                      transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                      _hover={{
+                        "& > div": {
+                          bg: "rgba(255, 247, 237, 0.9)",
+                          borderColor: "#f97316",
+                          boxShadow: "0 8px 25px rgba(234, 88, 12, 0.15)"
+                        },
+                        "& svg": {
+                          color: "#ea580c",
+                          transform: "scale(1.1)"
+                        }
+                      }}
                     >
-                      <VStack
-                        gap={3}
-                        cursor="pointer"
-                        onClick={() => handleNavigate("/message/sakuta")}
-                        _hover={{ opacity: 0.8 }}
-                        transition="all 0.2s"
+                      <Box
+                        w={{ base: 14, md: 16 }}
+                        h={{ base: 14, md: 16 }}
+                        bg="orange.50"
+                        borderRadius="full"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        border="2px solid"
+                        borderColor="orange.200"
+                        transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                        position="relative"
+                        _before={{
+                          content: '""',
+                          position: "absolute",
+                          inset: "-4px",
+                          borderRadius: "full",
+                          background: "linear-gradient(45deg, transparent, rgba(255, 165, 0, 0.1), transparent)",
+                          opacity: 0,
+                          transition: "opacity 0.3s ease"
+                        }}
+                        _hover={{
+                          _before: {
+                            opacity: 1
+                          }
+                        }}
                       >
-                        <Box
-                          w={16}
-                          h={16}
-                          bg="orange.50"
-                          borderRadius="full"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          border="2px solid"
-                          borderColor="orange.200"
-                        >
-                          <Icon as={FaHeart} boxSize={6} color="orange.500" />
-                        </Box>
-                        <Text fontSize="sm" fontWeight="500" color="gray.700">
-                          作田さんへ
-                        </Text>
-                      </VStack>
-                    </MotionBox>
-                  </HStack>
-                </Box>
-              </VStack>
-            </Box>
+                        <Icon
+                          as={FaEnvelope}
+                          boxSize={{ base: 5, md: 6 }}
+                          color="#f97316"
+                          transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                        />
+                      </Box>
+                      <Text
+                        fontSize="13px"
+                        fontWeight="600"
+                        color="#1f2937"
+                        letterSpacing="0.02em"
+                      >
+                        斎藤さんへ
+                      </Text>
+                    </VStack>
+                  </MotionBox>
+
+                  <MotionBox
+                    whileHover={{
+                      scale: 1.02,
+                      y: -2
+                    }}
+                    whileTap={{
+                      scale: 0.98,
+                      y: 0
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 25
+                    }}
+                  >
+                    <VStack
+                      gap={4}
+                      cursor="pointer"
+                      onClick={() => handleNavigate("/message/sakuta")}
+                      transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                      _hover={{
+                        "& > div": {
+                          bg: "rgba(255, 247, 237, 0.9)",
+                          borderColor: "#f97316",
+                          boxShadow: "0 8px 25px rgba(234, 88, 12, 0.15)"
+                        },
+                        "& svg": {
+                          color: "#ea580c",
+                          transform: "scale(1.1)"
+                        }
+                      }}
+                    >
+                      <Box
+                        w={{ base: 14, md: 16 }}
+                        h={{ base: 14, md: 16 }}
+                        bg="orange.50"
+                        borderRadius="full"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        border="2px solid"
+                        borderColor="orange.200"
+                        transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                        position="relative"
+                        _before={{
+                          content: '""',
+                          position: "absolute",
+                          inset: "-4px",
+                          borderRadius: "full",
+                          background: "linear-gradient(45deg, transparent, rgba(255, 165, 0, 0.1), transparent)",
+                          opacity: 0,
+                          transition: "opacity 0.3s ease"
+                        }}
+                        _hover={{
+                          _before: {
+                            opacity: 1
+                          }
+                        }}
+                      >
+                        <Icon
+                          as={FaHeart}
+                          boxSize={{ base: 5, md: 6 }}
+                          color="#f97316"
+                          transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                        />
+                      </Box>
+                      <Text
+                        fontSize="13px"
+                        fontWeight="600"
+                        color="#1f2937"
+                        letterSpacing="0.02em"
+                      >
+                        作田さんへ
+                      </Text>
+                    </VStack>
+                  </MotionBox>
+                </HStack>
+              </Box>
+            </VStack>
           </MotionBox>
-
-
 
           {/* フッター */}
           <MotionBox
@@ -263,8 +363,9 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
             textAlign="center"
+            mt={8}
           >
-            <Text fontSize="xs" color="gray.400">
+            <Text fontSize="xs" color="gray.400" lineHeight="1.5">
               Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>
