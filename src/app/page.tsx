@@ -145,19 +145,142 @@ export default function Home() {
                 border="1px solid"
                 borderColor="rgba(229, 231, 235, 0.6)"
                 position="relative"
-                _before={{
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  w: "40px",
-                  h: "3px",
-                  bg: "#f97316",
-                  borderRadius: "full",
-                  opacity: 0.7
-                }}
+
               >
+                {/* 中央上部の熊さんアイコン */}
+                <Box
+                  position="absolute"
+                  top="-12px"
+                  left="50%"
+                  transform="translateX(-50%)"
+                  w="24px"
+                  h="24px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Image
+                    src="/manabyicon.png"
+                    alt="manaby"
+                    width={16}
+                    height={16}
+                    style={{
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))",
+                    }}
+                  />
+                </Box>
+
+                {/* 左上コーナーの熊さん */}
+                <Box
+                  position="absolute"
+                  top="-8px"
+                  left="-8px"
+                  w="18px"
+                  h="18px"
+                  display={{ base: "flex", md: "flex" }}
+                  alignItems="center"
+                  justifyContent="center"
+                  transform="rotate(-15deg)"
+                >
+                  <Image
+                    src="/manabyicon.png"
+                    alt="manaby corner"
+                    width={12}
+                    height={12}
+                    style={{
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
+                      opacity: 0.7,
+                    }}
+                  />
+                </Box>
+
+                {/* 右上コーナーの熊さん */}
+                <Box
+                  position="absolute"
+                  top="-8px"
+                  right="-8px"
+                  w="18px"
+                  h="18px"
+                  display={{ base: "flex", md: "flex" }}
+                  alignItems="center"
+                  justifyContent="center"
+                  transform="rotate(15deg)"
+                >
+                  <Image
+                    src="/manabyicon.png"
+                    alt="manaby corner"
+                    width={12}
+                    height={12}
+                    style={{
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
+                      opacity: 0.7,
+                    }}
+                  />
+                </Box>
+
+                {/* 左下コーナーの熊さん（デスクトップのみ） */}
+                <Box
+                  position="absolute"
+                  bottom="-8px"
+                  left="-8px"
+                  w="18px"
+                  h="18px"
+                  display={{ base: "none", md: "flex" }}
+                  alignItems="center"
+                  justifyContent="center"
+                  transform="rotate(-25deg)"
+                >
+                  <Image
+                    src="/manabyicon.png"
+                    alt="manaby corner"
+                    width={12}
+                    height={12}
+                    style={{
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
+                      opacity: 0.7,
+                    }}
+                  />
+                </Box>
+
+                {/* 右下コーナーの熊さん（デスクトップのみ） */}
+                <Box
+                  position="absolute"
+                  bottom="-8px"
+                  right="-8px"
+                  w="18px"
+                  h="18px"
+                  display={{ base: "none", md: "flex" }}
+                  alignItems="center"
+                  justifyContent="center"
+                  transform="rotate(25deg)"
+                >
+                  <Image
+                    src="/manabyicon.png"
+                    alt="manaby corner"
+                    width={12}
+                    height={12}
+                    style={{
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
+                      opacity: 0.7,
+                    }}
+                  />
+                </Box>
+
                 <VStack gap={6}>
                   <Text
                     fontSize="13px"
