@@ -81,23 +81,44 @@ export default function Home() {
                   <MotionBox
                     key={`${letter}-${index}`}
                     display="inline-block"
+                    initial={{
+                      opacity: 0,
+                      scale: 0.8,
+                      y: 8,
+                      filter: "blur(4px)"
+                    }}
                     animate={{
-                      y: [0, -3, 0],
+                      opacity: [0, 0, 1, 1, 0.8, 1],
+                      scale: [0.8, 0.8, 1.05, 1, 1.02, 1],
+                      y: [8, 8, -2, 0, 1, 0],
+                      filter: [
+                        "blur(4px)",
+                        "blur(4px)",
+                        "blur(0px)",
+                        "blur(0px)",
+                        "blur(0px)",
+                        "blur(0px)"
+                      ]
                     }}
                     transition={{
-                      duration: 1.2,
+                      duration: 3.2,
                       repeat: Infinity,
                       repeatType: "loop",
-                      delay: index * 0.12,
-                      ease: [0.4, 0.0, 0.2, 1],
+                      delay: index * 0.18,
+                      ease: [0.16, 1, 0.3, 1],
+                      times: [0, 0.1, 0.25, 0.4, 0.7, 1],
                     }}
                   >
                     <Text
-                      fontSize={{ base: "lg", md: "xl" }}
+                      fontSize={{ base: "xl", md: "2xl" }}
                       fontWeight="600"
                       color="orange.500"
                       display="inline-block"
-                      letterSpacing="normal"
+                      letterSpacing={{ base: "0.05em", md: "0.03em" }}
+                      lineHeight="1.2"
+                      style={{
+                        textShadow: "0 0 1px rgba(255, 165, 0, 0.3)"
+                      }}
                     >
                       {letter}
                     </Text>
