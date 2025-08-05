@@ -46,7 +46,7 @@ export default function Home() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             textAlign="center"
           >
-            <VStack gap={6}>
+            <VStack gap={{ base: 8, md: 10 }}>
               {/* 熊さんキャラクター */}
               <Box
                 w={{ base: "80px", md: "100px" }}
