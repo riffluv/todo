@@ -103,7 +103,9 @@ export function LoadingScreen({
             width="100vw"
             direction="column"
             align="center"
-            justify="center"
+            // モバイル: 視覚的中心（40%位置）、デスクトップ: 完全中央
+            justify={{ base: "flex-start", md: "center" }}
+            pt={{ base: "35vh", md: "0" }}
             px={4}
           >
             <Flex
