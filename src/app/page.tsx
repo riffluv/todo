@@ -5,7 +5,6 @@ import { MessageCard } from "@/components/ui/MessageCard";
 import {
   Box,
   Container,
-  Heading,
   HStack,
   Icon,
   Stack,
@@ -13,6 +12,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEnvelope, FaHeart, FaUserFriends } from "react-icons/fa";
@@ -34,12 +34,12 @@ export default function Home() {
   return (
     <Box
       minHeight="100vh"
-      bg="gray.50"
+      bg="#fafafa"
       position="relative"
     >
-      <Container maxW="4xl" py={{ base: 12, md: 20 }} position="relative">
-        <VStack gap={{ base: 12, md: 16 }} align="center">
-          {/* ヘッダー */}
+      <Container maxW="4xl" py={{ base: 16, md: 24 }} position="relative">
+        <VStack gap={{ base: 16, md: 20 }} align="center">
+          {/* 熊さんキャラクターヘッダー */}
           <MotionBox
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,28 +47,63 @@ export default function Home() {
             textAlign="center"
           >
             <VStack gap={6}>
-              <Icon
-                as={FaHeart}
-                boxSize={{ base: 10, md: 12 }}
-                color="orange.500"
-              />
-              <Heading
-                as="h1"
-                size={{ base: "xl", md: "2xl" }}
-                color="gray.900"
-                fontWeight="600"
+              {/* 熊さんキャラクター */}
+              <Box
+                w={{ base: "80px", md: "100px" }}
+                h={{ base: "80px", md: "100px" }}
+                position="relative"
               >
-                ありがとうメッセージ
-              </Heading>
-              <Text
-                fontSize={{ base: "md", md: "lg" }}
-                color="gray.600"
-                maxW="500px"
-                lineHeight="1.7"
+                <Image
+                  src="/manaby-jump2.png"
+                  alt="manaby character"
+                  width={100}
+                  height={100}
+                  style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  priority
+                />
+              </Box>
+
+              {/* 弾むテキストアニメーション */}
+              <MotionBox
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+                display="flex"
+                gap={{ base: "1px", md: "2px" }}
+                justifyContent="center"
+                alignItems="baseline"
               >
-                manaby大宮事業所で出会った大切な2人のクルーさんへ、
-                心からの感謝の気持ちを込めて
-              </Text>
+                {["T", "h", "a", "n", "k", "s", "!"].map((letter, index) => (
+                  <MotionBox
+                    key={`${letter}-${index}`}
+                    display="inline-block"
+                    animate={{
+                      y: [0, -3, 0],
+                    }}
+                    transition={{
+                      duration: 1.2,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      delay: index * 0.12,
+                      ease: [0.4, 0.0, 0.2, 1],
+                    }}
+                  >
+                    <Text
+                      fontSize={{ base: "lg", md: "xl" }}
+                      fontWeight="600"
+                      color="orange.500"
+                      display="inline-block"
+                      letterSpacing="normal"
+                    >
+                      {letter}
+                    </Text>
+                  </MotionBox>
+                ))}
+              </MotionBox>
             </VStack>
           </MotionBox>
 
@@ -87,10 +122,10 @@ export default function Home() {
           >
             <VStack gap={6} textAlign="center">
               <HStack gap={3}>
-                <Icon as={FaUserFriends} color="gray.600" boxSize={5} />
+                <Icon as={FaUserFriends} color="orange.500" boxSize={5} />
                 <Text
                   fontSize="sm"
-                  color="gray.600"
+                  color="orange.500"
                   fontWeight="500"
                   textTransform="uppercase"
                   letterSpacing="0.05em"
@@ -111,40 +146,46 @@ export default function Home() {
             </VStack>
           </MotionBox>
 
-          {/* 個別メッセージカード */}
-          <Stack
-            direction={{ base: "column", md: "row" }}
-            gap={6}
+          {/* メッセージカード */}
+          <MotionBox
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             w="100%"
-            justify="center"
+            maxW="800px"
           >
-            <MessageCard
-              icon={<Icon as={FaEnvelope} boxSize={8} color="#F28C00" />}
-              title="斎藤さんへ"
-              message="いつも優しく教えてくれた斎藤さんへの特別なメッセージです..."
-              buttonText="手紙を読む"
-              onClick={() => handleNavigate("/message/saito")}
-              color="#F28C00"
-            />
+            <Stack
+              direction={{ base: "column", md: "row" }}
+              gap={8}
+              w="100%"
+              justify="center"
+            >
+              <MessageCard
+                icon={<Icon as={FaEnvelope} boxSize={6} color="orange.500" />}
+                title="斎藤さんへ"
+                message="いつも優しく教えてくれた斎藤さんへの特別なメッセージです"
+                buttonText="読む"
+                onClick={() => handleNavigate("/message/saito")}
+              />
 
-            <MessageCard
-              icon={<Icon as={FaHeart} boxSize={8} color="#F28C00" />}
-              title="作田さんへ"
-              message="いつも一緒に頑張ってくれた作田さんへの感謝のメッセージです..."
-              buttonText="手紙を読む"
-              onClick={() => handleNavigate("/message/sakuta")}
-              color="#F28C00"
-            />
-          </Stack>
+              <MessageCard
+                icon={<Icon as={FaHeart} boxSize={6} color="orange.500" />}
+                title="作田さんへ"
+                message="いつも一緒に頑張ってくれた作田さんへの感謝のメッセージです"
+                buttonText="読む"
+                onClick={() => handleNavigate("/message/sakuta")}
+              />
+            </Stack>
+          </MotionBox>
 
           {/* フッター */}
           <MotionBox
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
             textAlign="center"
           >
-            <Text fontSize="sm" color="gray.500">
+            <Text fontSize="xs" color="gray.400">
               Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>
