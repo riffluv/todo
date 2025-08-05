@@ -3,7 +3,6 @@
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { MessageCard } from "@/components/ui/MessageCard";
 import {
-  Badge,
   Box,
   Container,
   Heading,
@@ -11,7 +10,7 @@ import {
   Icon,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -35,52 +34,37 @@ export default function Home() {
   return (
     <Box
       minHeight="100vh"
-      bg="linear-gradient(135deg, #FFF5E6 0%, #FFE4B5 50%, #FFF8DC 100%)"
+      bg="gray.50"
       position="relative"
     >
-      {/* 背景パターン */}
-      <Box
-        position="absolute"
-        top="0"
-        left="0"
-        right="0"
-        bottom="0"
-        opacity="0.05"
-        backgroundImage="radial-gradient(circle, #F28C00 1px, transparent 1px)"
-        backgroundSize="30px 30px"
-        pointerEvents="none"
-      />
-
-      <Container maxW="4xl" py={{ base: 8, md: 16 }} position="relative">
-        <VStack gap={{ base: 8, md: 12 }} align="center">
+      <Container maxW="4xl" py={{ base: 12, md: 20 }} position="relative">
+        <VStack gap={{ base: 12, md: 16 }} align="center">
           {/* ヘッダー */}
           <MotionBox
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             textAlign="center"
           >
-            <VStack gap={4}>
+            <VStack gap={6}>
               <Icon
                 as={FaHeart}
-                boxSize={{ base: 12, md: 16 }}
-                color="#F28C00"
-                filter="drop-shadow(0 0 20px rgba(242, 140, 0, 0.3))"
+                boxSize={{ base: 10, md: 12 }}
+                color="orange.500"
               />
               <Heading
                 as="h1"
                 size={{ base: "xl", md: "2xl" }}
-                color="#F28C00"
-                fontWeight="bold"
-                letterSpacing="0.05em"
+                color="gray.900"
+                fontWeight="600"
               >
                 ありがとうメッセージ
               </Heading>
               <Text
                 fontSize={{ base: "md", md: "lg" }}
-                color="gray.700"
-                maxW="600px"
-                lineHeight="1.8"
+                color="gray.600"
+                maxW="500px"
+                lineHeight="1.7"
               >
                 manaby大宮事業所で出会った大切な2人のクルーさんへ、
                 心からの感謝の気持ちを込めて
@@ -90,40 +74,39 @@ export default function Home() {
 
           {/* 共通メッセージ */}
           <MotionBox
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             w="100%"
             maxW="600px"
             bg="white"
-            shadow="lg"
-            borderWidth={2}
-            borderColor="#F28C00"
-            borderRadius="xl"
-            p={{ base: 6, md: 8 }}
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="lg"
+            p={{ base: 8, md: 10 }}
           >
-            <VStack gap={4} textAlign="center">
-              <HStack gap={2}>
-                <Icon as={FaUserFriends} color="#F28C00" />
-                <Badge
-                  colorScheme="orange"
+            <VStack gap={6} textAlign="center">
+              <HStack gap={3}>
+                <Icon as={FaUserFriends} color="gray.600" boxSize={5} />
+                <Text
                   fontSize="sm"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
+                  color="gray.600"
+                  fontWeight="500"
+                  textTransform="uppercase"
+                  letterSpacing="0.05em"
                 >
                   お二人へ
-                </Badge>
+                </Text>
               </HStack>
               <Text
                 fontSize={{ base: "md", md: "lg" }}
-                lineHeight="1.8"
+                lineHeight="1.7"
                 color="gray.700"
               >
                 manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
                 お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
                 いつも支えてくれて、本当にありがとうございました。
-                これからもお二人の活躍を心から応援しています！
+                これからもお二人の活躍を心から応援しています。
               </Text>
             </VStack>
           </MotionBox>
@@ -158,11 +141,11 @@ export default function Home() {
           <MotionBox
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
+            transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
             textAlign="center"
           >
             <Text fontSize="sm" color="gray.500">
-              Web制作で学んだ技術を込めて作成しました 💖
+              Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>
         </VStack>

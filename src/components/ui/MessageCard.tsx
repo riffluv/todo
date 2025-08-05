@@ -19,40 +19,40 @@ export const MessageCard = ({
   buttonText = "手紙を読む",
   buttonIcon,
   onClick,
-  color = "#F28C00",
+  color = "gray.900",
   subText,
   ...boxProps
 }: MessageCardProps) => (
   <Box
-    w={{ base: "100%", md: "300px" }}
+    w={{ base: "100%", md: "320px" }}
     bg="white"
-    shadow="md"
-    borderRadius="xl"
+    border="1px solid"
+    borderColor="gray.200"
+    borderRadius="lg"
     cursor={onClick ? "pointer" : undefined}
     _hover={
       onClick
         ? {
-            transform: "translateY(-5px)",
-            shadow: "xl",
-            borderColor: color,
-          }
+          transform: "translateY(-2px)",
+          borderColor: "gray.300",
+          shadow: "sm",
+        }
         : undefined
     }
-    borderWidth={1}
-    borderColor="gray.200"
-    transitionDuration="0.3s"
-    p={6}
+    transition="all 0.2s ease"
+    p={8}
     onClick={onClick}
     {...boxProps}
   >
-    <VStack gap={4} textAlign="center">
-      <Box>{icon}</Box>
-      <Heading size="md" color="gray.700">
+    <VStack gap={6} textAlign="center">
+      <Box color="gray.600">{icon}</Box>
+      <Heading size="md" color="gray.900" fontWeight="600">
         {title}
       </Heading>
       <Text
         fontSize="sm"
         color="gray.600"
+        lineHeight="1.6"
         css={{
           WebkitLineClamp: 3,
           WebkitBoxOrient: "vertical",
@@ -66,7 +66,7 @@ export const MessageCard = ({
       {subText && (
         <Text
           fontSize="xs"
-          color="gray.400"
+          color="gray.500"
           css={{
             WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
@@ -78,14 +78,14 @@ export const MessageCard = ({
           {subText}
         </Text>
       )}
-      <Button size="sm" colorScheme="orange" variant="outline">
-        {buttonIcon ? (
-          <Box mr={2} display="inline">
-            {buttonIcon}
-          </Box>
-        ) : (
-          icon
-        )}
+      <Button
+        size="sm"
+        bg="gray.900"
+        color="white"
+        _hover={{ bg: "gray.800" }}
+        transition="all 0.2s"
+        borderRadius="md"
+      >
         {buttonText}
       </Button>
     </VStack>

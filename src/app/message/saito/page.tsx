@@ -1,19 +1,17 @@
 "use client";
 
 import {
-  Badge,
   Box,
   Button,
   Container,
   Heading,
-  HStack,
   Icon,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { FaArrowLeft, FaHeart, FaUser } from "react-icons/fa";
+import { FaArrowLeft, FaUser } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
@@ -21,36 +19,24 @@ export default function SaitoMessage() {
   return (
     <Box
       minHeight="100vh"
-      bg="linear-gradient(135deg, #FFF5E6 0%, #FFE4B5 50%, #FFF8DC 100%)"
+      bg="gray.50"
       position="relative"
     >
-      {/* 背景パターン */}
-      <Box
-        position="absolute"
-        top="0"
-        left="0"
-        right="0"
-        bottom="0"
-        opacity="0.05"
-        backgroundImage="radial-gradient(circle, #F28C00 1px, transparent 1px)"
-        backgroundSize="30px 30px"
-        pointerEvents="none"
-      />
-
-      <Container maxW="3xl" py={{ base: 8, md: 16 }} position="relative">
-        <VStack gap={{ base: 8, md: 12 }} align="center">
+      <Container maxW="3xl" py={{ base: 12, md: 20 }} position="relative">
+        <VStack gap={{ base: 12, md: 16 }} align="center">
           {/* 戻るボタン */}
           <MotionBox
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             alignSelf="flex-start"
           >
             <Link href="/">
               <Button
                 variant="ghost"
-                color="#F28C00"
-                _hover={{ bg: "orange.50" }}
+                color="gray.600"
+                _hover={{ bg: "gray.100" }}
+                transition="all 0.2s"
               >
                 <Icon as={FaArrowLeft} mr={2} />
                 戻る
@@ -60,72 +46,69 @@ export default function SaitoMessage() {
 
           {/* ヘッダー */}
           <MotionBox
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             textAlign="center"
           >
-            <VStack gap={4}>
+            <VStack gap={6}>
               <Icon
                 as={FaUser}
-                boxSize={{ base: 12, md: 16 }}
-                color="#F28C00"
-                filter="drop-shadow(0 0 20px rgba(242, 140, 0, 0.3))"
+                boxSize={{ base: 10, md: 12 }}
+                color="gray.600"
               />
-              <HStack gap={3}>
+              <VStack gap={2}>
                 <Heading
                   as="h1"
                   size={{ base: "xl", md: "2xl" }}
-                  color="#F28C00"
-                  fontWeight="bold"
+                  color="gray.900"
+                  fontWeight="600"
                 >
                   斎藤さんへ
                 </Heading>
-                <Badge
-                  colorScheme="orange"
-                  fontSize="md"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
+                <Text
+                  fontSize="sm"
+                  color="gray.600"
+                  fontWeight="500"
+                  textTransform="uppercase"
+                  letterSpacing="0.05em"
                 >
                   感謝の手紙
-                </Badge>
-              </HStack>
+                </Text>
+              </VStack>
             </VStack>
           </MotionBox>
 
           {/* メッセージカード */}
           <MotionBox
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           >
             <Box
               w="100%"
               bg="white"
-              shadow="xl"
-              borderWidth={2}
-              borderColor="#F28C00"
-              borderRadius="xl"
-              overflow="hidden"
-              p={{ base: 6, md: 10 }}
+              border="1px solid"
+              borderColor="gray.200"
+              borderRadius="lg"
+              p={{ base: 8, md: 12 }}
             >
-              <VStack gap={6} textAlign="left" align="stretch">
+              <VStack gap={8} textAlign="left" align="stretch">
                 <Text
                   fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="600"
-                  color="#F28C00"
+                  color="gray.900"
                   textAlign="center"
                 >
                   斎藤さん、本当にありがとうございました
                 </Text>
 
-                <Box height="1px" bg="orange.200" />
+                <Box height="1px" bg="gray.200" />
 
-                <VStack gap={4} align="stretch">
+                <VStack gap={6} align="stretch">
                   <Text
                     fontSize={{ base: "md", md: "lg" }}
-                    lineHeight="1.8"
+                    lineHeight="1.7"
                     color="gray.700"
                   >
                     斎藤さんがmanaby大宮事業所にいてくれて、本当に心強かったです。
@@ -134,7 +117,7 @@ export default function SaitoMessage() {
 
                   <Text
                     fontSize={{ base: "md", md: "lg" }}
-                    lineHeight="1.8"
+                    lineHeight="1.7"
                     color="gray.700"
                   >
                     特に、Web制作で行き詰まったときに、一緒に考えてくれたり、
@@ -144,7 +127,7 @@ export default function SaitoMessage() {
 
                   <Text
                     fontSize={{ base: "md", md: "lg" }}
-                    lineHeight="1.8"
+                    lineHeight="1.7"
                     color="gray.700"
                   >
                     斎藤さんの優しさと温かい人柄に、いつも癒されていました。
@@ -153,32 +136,28 @@ export default function SaitoMessage() {
 
                   <Text
                     fontSize={{ base: "md", md: "lg" }}
-                    lineHeight="1.8"
+                    lineHeight="1.7"
                     color="gray.700"
                   >
                     就職されてからも、お体に気をつけて、新しい環境でも
-                    斎藤さんらしく頑張ってください。 いつまでも応援しています！
+                    斎藤さんらしく頑張ってください。いつまでも応援しています。
                   </Text>
                 </VStack>
 
-                <Box height="1px" bg="orange.200" />
+                <Box height="1px" bg="gray.200" />
 
-                <VStack gap={2}>
+                <VStack gap={3}>
                   <Text
                     fontSize="md"
-                    color="#F28C00"
+                    color="gray.900"
                     fontWeight="600"
                     textAlign="center"
                   >
                     改めて、本当にありがとうございました
                   </Text>
-                  <HStack gap={2} justify="center">
-                    <Icon as={FaHeart} color="#F28C00" />
-                    <Text fontSize="sm" color="gray.600" fontStyle="italic">
-                      感謝を込めて
-                    </Text>
-                    <Icon as={FaHeart} color="#F28C00" />
-                  </HStack>
+                  <Text fontSize="sm" color="gray.600">
+                    感謝を込めて
+                  </Text>
                 </VStack>
               </VStack>
             </Box>
@@ -186,12 +165,18 @@ export default function SaitoMessage() {
 
           {/* 戻るボタン（下部） */}
           <MotionBox
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
           >
             <Link href="/">
-              <Button size="lg" colorScheme="orange">
+              <Button
+                size="lg"
+                bg="gray.900"
+                color="white"
+                _hover={{ bg: "gray.800" }}
+                transition="all 0.2s"
+              >
                 <Icon as={FaArrowLeft} mr={2} />
                 メッセージ一覧に戻る
               </Button>
