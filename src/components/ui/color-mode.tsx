@@ -1,32 +1,25 @@
 "use client";
 
-import {
-  useColorMode as useChakraColorMode,
-  useColorModeValue as useChakraColorModeValue,
-} from "@chakra-ui/next-js";
+import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { IconButton, IconButtonProps } from "@chakra-ui/react";
 import * as React from "react";
 import { LuMoon, LuSun } from "react-icons/lu";
 
-export function useColorMode() {
-  const { colorMode, setColorMode, toggleColorMode } = useChakraColorMode();
+  const { colorMode, setColorMode, toggleColorMode } = useColorMode();
   return { colorMode, setColorMode, toggleColorMode };
 }
 
-export function useColorModeValue<T>(light: T, dark: T) {
-  return useChakraColorModeValue(light, dark);
+  return useColorModeValue(light, dark);
 }
 
-export function ColorModeIcon() {
-  const { colorMode } = useChakraColorMode();
+  const { colorMode } = useColorMode();
   return colorMode === "dark" ? <LuMoon /> : <LuSun />;
 }
 
-export const ColorModeButton = React.forwardRef<
   HTMLButtonElement,
   Omit<IconButtonProps, "aria-label">
 >(function ColorModeButton(props, ref) {
-  const { toggleColorMode } = useChakraColorMode();
+  const { toggleColorMode } = useColorMode();
   return (
     <IconButton
       onClick={toggleColorMode}

@@ -20,7 +20,7 @@ export function delay(ms: number): Promise<void> {
 /**
  * デバウンス関数
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -35,7 +35,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * スロットル関数
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -323,7 +323,7 @@ export function deepClone<T>(obj: T): T {
 /**
  * オブジェクトが空かどうかを判定
  */
-export function isEmpty(obj: any): boolean {
+export function isEmpty(obj: unknown): boolean {
   if (obj == null) return true;
   if (Array.isArray(obj) || typeof obj === "string") return obj.length === 0;
   if (typeof obj === "object") return Object.keys(obj).length === 0;
@@ -343,7 +343,7 @@ export const storage = {
     }
   },
 
-  set(key: string, value: any): void {
+  set<T>(key: string, value: T): void {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch {

@@ -3,50 +3,100 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+// Motion components
 const MotionBox = motion.create(Box);
 const MotionFlex = motion.create(Flex);
 
+// Constants - 黄金比ベースの設計値
+const GOLDEN_RATIO = 1.618;
+const FADE_OUT_DURATION = 500;
+const BEAR_COUNT = 3;
+
+const SIZES = {
+  logo: {
+    width: { base: "260px", md: "324px" },
+    height: { base: "71px", md: "89px" },
+  },
+  bear: {
+    size: { base: "40px", md: "52px" },
+    gap: { base: "20px", md: "32px" },
+  },
+  container: {
+    gap: { base: "48px", md: "64px" },
+    maxWidth: { base: "320px", md: "400px" },
+  },
+} as const;
+
+const ANIMATIONS = {
+  logo: {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+  bearContainer: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.4, delay: 0.3 },
+  },
+  bear: {
+    animate: {
+      opacity: [0.25, 1, 0.25],
+      scale: [0.85, 1.05, 0.85],
+    },
+    transition: {
+      duration: 1.8,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+  overlay: {
+    initial: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+} as const;
+
 interface LoadingScreenProps {
+  /** ローディング完了時のコールバック */
   onComplete?: () => void;
+  /** ローディング表示時間（ミリ秒） */
   duration?: number;
 }
 
 export function LoadingScreen({
   onComplete,
-  duration = 2000,
+  duration = 3500,
 }: LoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
+  const handleComplete = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onComplete?.();
+    }, FADE_OUT_DURATION);
+  }, [onComplete]);
+
   useEffect(() => {
     setIsMounted(true);
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(() => {
-        onComplete?.();
-      }, 600);
-    }, duration);
+    const timer = setTimeout(handleComplete, duration);
     return () => clearTimeout(timer);
-  }, [duration, onComplete]);
+  }, [duration, handleComplete]);
 
+  // SSR対応
   if (!isMounted) return null;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isVisible && (
         <MotionBox
           position="fixed"
-          top="0"
-          left="0"
-          right="0"
-          bottom="0"
+          inset="0"
           zIndex="9999"
-          bg="white"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          bg="#fafafa"
+          {...ANIMATIONS.overlay}
         >
           <MotionFlex
             height="100vh"
@@ -54,73 +104,74 @@ export function LoadingScreen({
             direction="column"
             align="center"
             justify="center"
-            gap={{ base: 6, md: 8 }}
-            px={{ base: 4, md: 8 }}
+            px={4}
           >
-            {/* ロゴのみ中央配置 */}
-            <MotionBox
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+            <Flex
+              direction="column"
+              align="center"
+              justify="center"
+              gap={SIZES.container.gap}
+              maxW={SIZES.container.maxWidth}
+              w="100%"
             >
-              <Box
-                position="relative"
-                width={{ base: "220px", sm: "260px", md: "320px", lg: "380px" }}
-                height={{ base: "60px", sm: "70px", md: "90px", lg: "110px" }}
+              {/* Manaby Logo */}
+              <MotionBox
+                {...ANIMATIONS.logo}
+                w="100%"
+                display="flex"
+                justifyContent="center"
               >
-                <Image
-                  src="/manabylogo.png"
-                  alt="manaby logo"
-                  fill
-                  style={{ objectFit: "contain" }}
-                  sizes="(max-width: 480px) 220px, (max-width: 768px) 260px, (max-width: 1024px) 320px, 380px"
-                  priority
-                />
-              </Box>
-            </MotionBox>
-            {/* 熊アイコン3つのアニメーション */}
-            <MotionBox
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <Flex gap={{ base: 2, md: 3, lg: 4 }} align="center">
-                {[0, 1, 2].map((i) => (
-                  <MotionBox
-                    key={i}
-                    w={{ base: "30px", sm: "34px", md: "40px", lg: "44px" }}
-                    h={{ base: "30px", sm: "34px", md: "40px", lg: "44px" }}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    animate={{
-                      scale: [1, 1.3, 1],
-                      opacity: [0.5, 1, 0.5],
-                    }}
-                    transition={{
-                      duration: 1.2,
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      delay: i * 0.25,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <Image
-                      src="/manabyicon.png"
-                      alt="manaby icon"
-                      width={44}
-                      height={44}
-                      style={{
-                        objectFit: "contain",
-                        width: "100%",
-                        height: "100%",
+                <Box
+                  position="relative"
+                  width={SIZES.logo.width}
+                  height={SIZES.logo.height}
+                >
+                  <Image
+                    src="/manabylogo.png"
+                    alt="Manaby"
+                    fill
+                    style={{ objectFit: "contain" }}
+                    sizes="(max-width: 768px) 260px, 324px"
+                    priority
+                  />
+                </Box>
+              </MotionBox>
+
+              {/* Bear Loading Animation */}
+              <MotionBox
+                {...ANIMATIONS.bearContainer}
+                display="flex"
+                justifyContent="center"
+              >
+                <Flex gap={SIZES.bear.gap} align="center">
+                  {Array.from({ length: BEAR_COUNT }, (_, i) => (
+                    <MotionBox
+                      key={i}
+                      w={SIZES.bear.size}
+                      h={SIZES.bear.size}
+                      animate={ANIMATIONS.bear.animate}
+                      transition={{
+                        ...ANIMATIONS.bear.transition,
+                        delay: i * 0.3,
                       }}
-                      priority
-                    />
-                  </MotionBox>
-                ))}
-              </Flex>
-            </MotionBox>
+                    >
+                      <Image
+                        src="/manabyicon.png"
+                        alt=""
+                        width={52}
+                        height={52}
+                        style={{
+                          objectFit: "contain",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                        priority
+                      />
+                    </MotionBox>
+                  ))}
+                </Flex>
+              </MotionBox>
+            </Flex>
           </MotionFlex>
         </MotionBox>
       )}

@@ -41,9 +41,9 @@ export interface TechStack {
  * アニメーション設定型
  */
 export interface AnimationConfig {
-  initial: Record<string, any>;
-  animate: Record<string, any>;
-  transition: Record<string, any>;
+  initial: Record<string, unknown>;
+  animate: Record<string, unknown>;
+  transition: Record<string, unknown>;
 }
 
 /**
@@ -100,13 +100,13 @@ export interface MessageTemplate {
 /**
  * API レスポンス型
  */
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: {
     code: string;
     message: string;
-    details?: any;
+    details?: unknown;
   };
   meta?: {
     page?: number;
