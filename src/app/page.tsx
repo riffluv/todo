@@ -1,13 +1,11 @@
 "use client";
 
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
-import { MessageCard } from "@/components/ui/MessageCard";
 import {
   Box,
   Container,
   HStack,
   Icon,
-  Stack,
   Text,
   VStack
 } from "@chakra-ui/react";
@@ -37,8 +35,8 @@ export default function Home() {
       bg="#fafafa"
       position="relative"
     >
-      <Container maxW="4xl" py={{ base: 16, md: 24 }} position="relative">
-        <VStack gap={{ base: 16, md: 20 }} align="center">
+      <Container maxW="4xl" py={{ base: 16, md: 20 }} position="relative">
+        <VStack gap={{ base: 12, md: 16 }} align="center">
           {/* 熊さんキャラクターヘッダー */}
           <MotionBox
             initial={{ opacity: 0, y: 20 }}
@@ -128,76 +126,136 @@ export default function Home() {
             </VStack>
           </MotionBox>
 
-          {/* 共通メッセージ */}
+          {/* メインカード */}
           <MotionBox
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             w="100%"
-            maxW="600px"
+            maxW="500px"
             bg="white"
+            borderRadius="xl"
+            shadow="sm"
             border="1px solid"
-            borderColor="gray.200"
-            borderRadius="lg"
-            p={{ base: 8, md: 10 }}
+            borderColor="gray.100"
+            overflow="hidden"
           >
-            <VStack gap={6} textAlign="center">
-              <HStack gap={3}>
+            {/* カードヘッダー */}
+            <Box
+              bg="orange.50"
+              px={{ base: 6, md: 8 }}
+              py={4}
+              borderBottom="1px solid"
+              borderColor="orange.100"
+            >
+              <HStack gap={3} justify="center">
                 <Icon as={FaUserFriends} color="orange.500" boxSize={5} />
                 <Text
                   fontSize="sm"
-                  color="orange.500"
-                  fontWeight="500"
+                  color="orange.600"
+                  fontWeight="600"
                   textTransform="uppercase"
                   letterSpacing="0.05em"
                 >
-                  お二人へ
+                  お二人へのメッセージ
                 </Text>
               </HStack>
-              <Text
-                fontSize={{ base: "md", md: "lg" }}
-                lineHeight="1.7"
-                color="gray.700"
-              >
-                manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
-                お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
-                いつも支えてくれて、本当にありがとうございました。
-                これからもお二人の活躍を心から応援しています。
-              </Text>
-            </VStack>
+            </Box>
+
+            {/* カードコンテンツ */}
+            <Box p={{ base: 6, md: 8 }}>
+              <VStack gap={6} textAlign="center">
+                <Text
+                  fontSize={{ base: "sm", md: "md" }}
+                  lineHeight="1.7"
+                  color="gray.700"
+                >
+                  manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
+                  お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
+                  いつも支えてくれて、本当にありがとうございました。
+                  これからもお二人の活躍を心から応援しています。
+                </Text>
+
+                {/* アクションエリア */}
+                <Box
+                  w="100%"
+                  bg="gray.50"
+                  borderRadius="lg"
+                  p={4}
+                  mt={4}
+                >
+                  <Text fontSize="xs" color="gray.500" mb={3} textAlign="center">
+                    メッセージを選択してください
+                  </Text>
+                  <HStack gap={8} justify="center">
+                    <MotionBox
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <VStack
+                        gap={3}
+                        cursor="pointer"
+                        onClick={() => handleNavigate("/message/saito")}
+                        _hover={{ opacity: 0.8 }}
+                        transition="all 0.2s"
+                      >
+                        <Box
+                          w={16}
+                          h={16}
+                          bg="orange.50"
+                          borderRadius="full"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          border="2px solid"
+                          borderColor="orange.200"
+                        >
+                          <Icon as={FaEnvelope} boxSize={6} color="orange.500" />
+                        </Box>
+                        <Text fontSize="sm" fontWeight="500" color="gray.700">
+                          斎藤さんへ
+                        </Text>
+                      </VStack>
+                    </MotionBox>
+
+                    <MotionBox
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <VStack
+                        gap={3}
+                        cursor="pointer"
+                        onClick={() => handleNavigate("/message/sakuta")}
+                        _hover={{ opacity: 0.8 }}
+                        transition="all 0.2s"
+                      >
+                        <Box
+                          w={16}
+                          h={16}
+                          bg="orange.50"
+                          borderRadius="full"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          border="2px solid"
+                          borderColor="orange.200"
+                        >
+                          <Icon as={FaHeart} boxSize={6} color="orange.500" />
+                        </Box>
+                        <Text fontSize="sm" fontWeight="500" color="gray.700">
+                          作田さんへ
+                        </Text>
+                      </VStack>
+                    </MotionBox>
+                  </HStack>
+                </Box>
+              </VStack>
+            </Box>
           </MotionBox>
 
-          {/* メッセージカード */}
-          <MotionBox
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            w="100%"
-            maxW="800px"
-          >
-            <Stack
-              direction={{ base: "column", md: "row" }}
-              gap={8}
-              w="100%"
-              justify="center"
-            >
-              <MessageCard
-                icon={<Icon as={FaEnvelope} boxSize={6} color="orange.500" />}
-                title="斎藤さんへ"
-                message="いつも優しく教えてくれた斎藤さんへの特別なメッセージです"
-                buttonText="読む"
-                onClick={() => handleNavigate("/message/saito")}
-              />
 
-              <MessageCard
-                icon={<Icon as={FaHeart} boxSize={6} color="orange.500" />}
-                title="作田さんへ"
-                message="いつも一緒に頑張ってくれた作田さんへの感謝のメッセージです"
-                buttonText="読む"
-                onClick={() => handleNavigate("/message/sakuta")}
-              />
-            </Stack>
-          </MotionBox>
 
           {/* フッター */}
           <MotionBox
@@ -211,7 +269,7 @@ export default function Home() {
             </Text>
           </MotionBox>
         </VStack>
-      </Container>
-    </Box>
+      </Container >
+    </Box >
   );
 }
