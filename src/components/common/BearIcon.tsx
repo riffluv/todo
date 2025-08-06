@@ -25,7 +25,7 @@ export interface BearIconProps {
   /** 透明度 */
   opacity?: number;
   /** 表示設定 */
-  display?: any;
+  display?: "flex" | "none" | { base: string; md: string };
 }
 
 export function BearIcon({

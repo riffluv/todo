@@ -11,7 +11,6 @@ import { MessageView } from "@/components/views/MessageView";
 import { getAllMessages, getMessageById } from "@/data/messages";
 import { useAppState } from "@/hooks/useAppState";
 import { Box } from "@chakra-ui/react";
-import Image from "next/image";
 
 export default function Home() {
   const {
@@ -23,21 +22,10 @@ export default function Home() {
     handleLoadingComplete,
   } = useAppState();
 
-  // ハイドレーション対応：マウント前は基本的なレンダリングのみ
+  // ハイドレーション対応：マウント前は空の画面
   if (!isMounted) {
     return (
-      <Box minHeight="100vh" bg="#fafafa" display="flex" alignItems="center" justifyContent="center">
-        <Box w="100px" h="100px">
-          <Image
-            src="/manaby-jump2.png"
-            alt="manaby character"
-            width={100}
-            height={100}
-            style={{ objectFit: "contain", width: "100%", height: "100%" }}
-            priority
-          />
-        </Box>
-      </Box>
+      <Box minHeight="100vh" bg="#fafafa" />
     );
   }
 

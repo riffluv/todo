@@ -29,50 +29,69 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
   return (
     <Box {...componentStyles.page.container} {...themes.home.background}>
       <Container {...componentStyles.page.content}>
-        <VStack gap={{ base: 16, md: 20 }} align="center">
-          {/* キャラクターヘッダー */}
+        <VStack
+          gap={{ base: tokens.spacing['2xl'], md: tokens.spacing['4xl'] }}
+          align="center"
+          w="100%"
+        >
+          {/* 現代的キャラクターヘッダー */}
           <CharacterHeader>
             <AnimatedTitle text="Thanks!" delay={0.4} />
           </CharacterHeader>
 
-          {/* メッセージコンテナ */}
+          {/* 改良されたメッセージコンテナ */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             w="100%"
-            maxW="680px"
+            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
-            <VStack {...componentStyles.messageCard.content}>
-              {/* メインメッセージカード */}
+            <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+              {/* グラスモーフィズムメッセージカード */}
               <MotionBox
                 {...componentStyles.messageCard.container}
                 whileHover={{
-                  y: -4,
+                  y: -8,
+                  scale: 1.02,
                   transition: { duration: 0.3, ease: "easeOut" }
                 }}
+                whileTap={{
+                  scale: 0.98,
+                  transition: { duration: 0.1 }
+                }}
               >
-                {/* 熊さんアイコン群 */}
+                {/* 装飾的な熊さんアイコン群 */}
                 <BearIcon
-                  position={{ top: "-12px", left: "50%", transform: "translateX(-50%)" }}
+                  position={{ top: "-16px", left: "50%", transform: "translateX(-50%)" }}
                   opacity={0.9}
+                  size={28}
+                  imageSize={20}
                 />
                 <BearIcon
-                  position={{ top: "-10px", left: "50%", transform: "translateX(-200%)" }}
-                  opacity={0.7}
+                  position={{ top: "-12px", left: "50%", transform: "translateX(-250%)" }}
+                  opacity={0.6}
+                  size={20}
+                  imageSize={14}
                   display={{ base: "none", md: "flex" }}
                 />
                 <BearIcon
-                  position={{ top: "-10px", left: "50%", transform: "translateX(100%)" }}
-                  opacity={0.7}
+                  position={{ top: "-12px", left: "50%", transform: "translateX(150%)" }}
+                  opacity={0.6}
+                  size={20}
+                  imageSize={14}
                   display={{ base: "none", md: "flex" }}
                 />
 
-                <VStack gap={8}>
+                <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
                   <Text {...componentStyles.messageCard.text.label}>
                     お二人へ
                   </Text>
 
-                  <Text {...componentStyles.messageCard.text.primary}>
+                  <Text
+                    {...componentStyles.messageCard.text.primary}
+                    textAlign="center"
+                    maxW="none"
+                  >
                     manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
                     お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
                     いつも支えてくれて、本当にありがとうございました。
@@ -81,12 +100,15 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 </VStack>
               </MotionBox>
 
-              {/* アクションエリア */}
-              <Box w="100%" pt={4}>
+              {/* 平等な横並びアクションエリア */}
+              <Box w="100%" pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
                 <HStack
-                  gap={{ base: 8, md: 16 }}
+                  gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
                   justify="center"
+                  align="center"
                   flexWrap="wrap"
+                  // 全デバイスで横並び - 平等で自然
+                  spacing={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
                 >
                   {messages.map((person, index) => (
                     <MessageButton
@@ -101,9 +123,19 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
             </VStack>
           </MotionBox>
 
-          {/* フッター */}
-          <MotionBox {...componentStyles.animations.fadeIn} textAlign="center" mt={8}>
-            <Text fontSize="xs" color={tokens.colors.gray[400]} lineHeight="1.5">
+          {/* 改良されたフッター */}
+          <MotionBox
+            {...componentStyles.animations.fadeIn}
+            textAlign="center"
+            mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+            px={tokens.spacing.md}
+          >
+            <Text
+              fontSize={{ base: "xs", md: "sm" }}
+              color={tokens.colors.gray[400]}
+              lineHeight="1.6"
+              fontWeight={tokens.typography.fontWeights.medium}
+            >
               Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>

@@ -19,10 +19,14 @@ export function useAppState() {
 
   const handleNavigate = (view: ViewType) => {
     setCurrentView(view);
+    // ページトップにスクロール
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToHome = () => {
     setCurrentView("home");
+    // ページトップにスクロール
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLoadingComplete = () => {

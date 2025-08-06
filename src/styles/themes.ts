@@ -41,7 +41,7 @@ export const themes = {
   // 斎藤さんページテーマ
   saito: {
     background: {
-      bg: tokens.colors.gray[50]
+      bg: '#fefcf9' // 温かみのあるクリーム白で統一
     },
     card: {
       bg: 'white',
@@ -91,18 +91,7 @@ export const themes = {
   // 作田さんページテーマ
   sakuda: {
     background: {
-      bg: 'linear-gradient(135deg, #FFF5E6 0%, #FFE4B5 50%, #FFF8DC 100%)',
-      pattern: {
-        position: 'absolute' as const,
-        top: '0',
-        left: '0',
-        right: '0',
-        bottom: '0',
-        opacity: '0.05',
-        backgroundImage: `radial-gradient(circle, ${tokens.colors.primary[700]} 1px, transparent 1px)`,
-        backgroundSize: '30px 30px',
-        pointerEvents: 'none' as const
-      }
+      bg: tokens.colors.semantic.background // 統一されたクリーム白背景
     },
     card: {
       bg: 'white',

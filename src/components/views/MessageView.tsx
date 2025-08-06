@@ -12,18 +12,15 @@ import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
 import {
-  Badge,
   Box,
-  Button,
   Container,
   Heading,
-  HStack,
   Icon,
   Text,
   VStack
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { FaArrowLeft, FaHeart } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
@@ -39,46 +36,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
 
   return (
     <Box {...componentStyles.page.container} {...theme.background}>
-      {/* 背景パターン（作田さんの場合のみ） */}
-      {person.themeKey === "sakuda" && (
-        <Box {...theme.background.pattern} />
-      )}
-
       <Container {...componentStyles.page.content}>
         <VStack gap={{ base: 16, md: 20 }} align="center">
-          {/* 戻るボタン */}
-          <MotionBox
-            {...componentStyles.animations.fadeInUp}
-            alignSelf="flex-start"
-          >
-            <Button
-              {...componentStyles.button.back.secondary}
-              onClick={onBack}
-            >
-              <Icon as={FaArrowLeft} mr={2} />
-              戻る
-            </Button>
-          </MotionBox>
-
-          {/* キャラクターヘッダー */}
+          {/* キャラクターヘッダー - メインページと同じ位置 */}
           <CharacterHeader delay={0.1}>
-            <VStack gap={2}>
-              <HStack gap={3}>
-                <Heading {...theme.header.title}>
-                  {person.name}へ
-                </Heading>
-                {person.themeKey === "sakuda" && (
-                  <Badge {...theme.header.badge}>
-                    感謝の手紙
-                  </Badge>
-                )}
-              </HStack>
-              {person.themeKey === "saito" && (
-                <Text {...theme.header.subtitle}>
-                  感謝の手紙
-                </Text>
-              )}
-            </VStack>
+            <Heading {...theme.header.title}>
+              {person.name}へ
+            </Heading>
           </CharacterHeader>
 
           {/* メッセージカード */}
@@ -114,10 +78,6 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                 />
 
                 <VStack gap={8}>
-                  <Text {...componentStyles.messageCard.text.label}>
-                    {person.name}への感謝
-                  </Text>
-
                   <VStack gap={6} align="stretch">
                     {person.message.paragraphs.map((paragraph, index) => (
                       <MotionBox
@@ -151,31 +111,9 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       >
                         {person.message.closing}
                       </Text>
-                      <HStack gap={2} justify="center">
-                        <MotionBox
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                          <Icon
-                            as={FaHeart}
-                            color={person.themeKey === "saito" ? tokens.colors.gray[400] : tokens.colors.primary[700]}
-                            boxSize={3}
-                          />
-                        </MotionBox>
-                        <Text fontSize="sm" color={tokens.colors.gray[600]}>
-                          {person.message.signature}
-                        </Text>
-                        <MotionBox
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                        >
-                          <Icon
-                            as={FaHeart}
-                            color={person.themeKey === "saito" ? tokens.colors.gray[400] : tokens.colors.primary[700]}
-                            boxSize={3}
-                          />
-                        </MotionBox>
-                      </HStack>
+                      <Text fontSize="sm" color={tokens.colors.gray[600]} textAlign="center">
+                        {person.message.signature}
+                      </Text>
                     </VStack>
                   </MotionBox>
                 </VStack>
@@ -183,18 +121,23 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             </VStack>
           </MotionBox>
 
-          {/* 戻るボタン（下部） */}
+          {/* 戻るボタン（アイコンのみ） */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            display="flex"
+            justifyContent="center"
+            cursor="pointer"
+            onClick={onBack}
           >
-            <Button
-              {...componentStyles.button.back.primary}
-              onClick={onBack}
-            >
-              <Icon as={FaArrowLeft} mr={2} />
-              メッセージ一覧に戻る
-            </Button>
+            <Box {...componentStyles.button.message.icon}>
+              <Icon
+                as={FaArrowLeft}
+                boxSize={{ base: 6, md: 7 }}
+                color={tokens.colors.primary[600]}
+                transition={`all ${tokens.animations.durations.normal} ease`}
+              />
+            </Box>
           </MotionBox>
 
           {/* フッター */}

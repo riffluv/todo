@@ -41,13 +41,13 @@ export const tokens = {
       900: '#171717'
     },
     semantic: {
-      background: '#fafafa',
+      background: '#fefcf9', // 温かみのあるクリーム白
       surface: 'rgba(255, 255, 255, 0.8)',
       border: 'rgba(229, 231, 235, 0.6)',
       text: {
-        primary: '#374151',
-        secondary: '#6b7280',
-        muted: '#9ca3af'
+        primary: '#2d1810', // オレンジに調和する濃いブラウン
+        secondary: '#8b4513', // オレンジ系ブラウン
+        muted: '#a0522d' // 温かみのあるブラウン
       }
     }
   },
@@ -83,7 +83,7 @@ export const tokens = {
     }
   },
 
-  // スペーシング
+  // スペーシング（2025年モバイルファースト最適化）
   spacing: {
     xs: '4px',
     sm: '8px',
@@ -93,7 +93,23 @@ export const tokens = {
     '2xl': '48px',
     '3xl': '64px',
     '4xl': '80px',
-    '5xl': '96px'
+    '5xl': '96px',
+    '6xl': '128px',
+    '7xl': '160px'
+  },
+
+  // モバイル最適化サイズ
+  mobile: {
+    touchTarget: '48px', // 最小タッチターゲット
+    characterSize: {
+      sm: '120px',
+      md: '140px',
+      lg: '160px'
+    },
+    safeArea: {
+      top: '44px', // iPhone notch対応
+      bottom: '34px' // iPhone home indicator対応
+    }
   },
 
   // ボーダーラディウス
@@ -105,13 +121,21 @@ export const tokens = {
     full: '9999px'
   },
 
-  // シャドウ
+  // シャドウ（2025年ニューモーフィズム対応）
   shadows: {
     sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px rgba(0, 0, 0, 0.1)',
     lg: '0 8px 25px rgba(234, 88, 12, 0.15)',
     xl: '0 20px 25px rgba(0, 0, 0, 0.1)',
-    bear: 'drop-shadow(0 0 1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))'
+    bear: 'drop-shadow(0 0 1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))',
+    // ニューモーフィズム
+    neumorphism: {
+      raised: '8px 8px 16px rgba(163, 177, 198, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.5)',
+      pressed: 'inset 8px 8px 16px rgba(163, 177, 198, 0.6), inset -8px -8px 16px rgba(255, 255, 255, 0.5)',
+      floating: '0 8px 32px rgba(31, 38, 135, 0.37)'
+    },
+    // グラスモーフィズム
+    glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
   },
 
   /**
