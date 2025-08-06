@@ -17,7 +17,7 @@ import { FaArrowLeft, FaHeart, FaUser } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
-export default function SakutaMessage() {
+export default function SakudaMessage() {
   return (
     <Box
       minHeight="100vh"

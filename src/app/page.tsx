@@ -1,9 +1,15 @@
 "use client";
 
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
+import { componentStyles } from "@/styles/components";
+import { themes } from "@/styles/themes";
+import { tokens } from "@/styles/tokens";
 import {
+  Badge,
   Box,
+  Button,
   Container,
+  Heading,
   HStack,
   Icon,
   Text,
@@ -11,56 +17,340 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaEnvelope } from "react-icons/fa";
+import { FaArrowLeft, FaEnvelope, FaHeart, FaUser } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
+type ViewType = "home" | "saito" | "sakuda";
+
 export default function Home() {
   const [showLoading, setShowLoading] = useState(true);
-  const router = useRouter();
+  const [currentView, setCurrentView] = useState<ViewType>("home");
 
-  const handleNavigate = (path: string) => {
-    router.push(path);
+  const handleNavigate = (view: "saito" | "sakuda") => {
+    setCurrentView(view);
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView("home");
   };
 
   if (showLoading) {
     return <LoadingScreen onComplete={() => setShowLoading(false)} />;
   }
 
-  return (
+  // 熊さんアイコンコンポーネント（デザインシステム準拠）
+  const BearIcon = ({
+    size = componentStyles.bearIcon.main.size,
+    imageSize = componentStyles.bearIcon.main.imageSize,
+    position,
+    opacity = 1,
+    display = "flex"
+  }: {
+    size?: number;
+    imageSize?: number;
+    position: { top?: string; left?: string; right?: string; bottom?: string; transform?: string };
+    opacity?: number;
+    display?: any;
+  }) => (
     <Box
-      minHeight="100vh"
-      bg="#fafafa"
-      position="relative"
+      position="absolute"
+      {...position}
+      w={`${size}px`}
+      h={`${size}px`}
+      display={display}
+      alignItems="center"
+      justifyContent="center"
     >
-      <Container maxW="4xl" py={{ base: 20, md: 24 }} position="relative">
-        <VStack gap={{ base: 16, md: 20 }} align="center">
-          {/* 熊さんキャラクターヘッダー */}
+      <Image
+        src="/manabyicon.png"
+        alt="manaby"
+        width={imageSize}
+        height={imageSize}
+        style={{
+          objectFit: "contain",
+          width: "100%",
+          height: "100%",
+          filter: tokens.shadows.bear,
+          opacity,
+        }}
+      />
+    </Box>
+  );
+
+  // メッセージボタンコンポーネント（デザインシステム準拠）
+  const MessageButton = ({
+    onClick,
+    label
+  }: {
+    onClick: () => void;
+    label: string;
+  }) => (
+    <MotionBox {...componentStyles.animations.bounce}>
+      <VStack {...componentStyles.button.message.container}>
+        <Box {...componentStyles.button.message.icon}>
+          <Icon
+            as={FaEnvelope}
+            boxSize={{ base: 5, md: 6 }}
+            color={tokens.colors.primary[500]}
+            transition={`all ${tokens.animations.durations.normal} ${tokens.animations.easings.easeOut}`}
+          />
+        </Box>
+        <Text {...componentStyles.button.message.label}>
+          {label}
+        </Text>
+      </VStack>
+    </MotionBox>
+  );
+
+  // 斎藤さんへのメッセージビュー（テーマシステム準拠）
+  const SaitoMessageView = () => (
+    <Box {...componentStyles.page.container} {...themes.saito.background}>
+      <Container maxW="3xl" py={{ base: 12, md: 20 }} position="relative">
+        <VStack gap={{ base: 12, md: 16 }} align="center">
+          {/* 戻るボタン */}
           <MotionBox
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            {...componentStyles.animations.fadeInUp}
+            alignSelf="flex-start"
+          >
+            <Button
+              {...componentStyles.button.back.secondary}
+              onClick={handleBackToHome}
+            >
+              <Icon as={FaArrowLeft} mr={2} />
+              戻る
+            </Button>
+          </MotionBox>
+
+          {/* ヘッダー */}
+          <MotionBox
+            {...componentStyles.animations.fadeInUp}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             textAlign="center"
           >
+            <VStack gap={6}>
+              <Icon {...themes.saito.header.icon} as={FaUser} />
+              <VStack gap={2}>
+                <Heading {...themes.saito.header.title}>
+                  斎藤さんへ
+                </Heading>
+                <Text {...themes.saito.header.subtitle}>
+                  感謝の手紙
+                </Text>
+              </VStack>
+            </VStack>
+          </MotionBox>
+
+          {/* メッセージカード */}
+          <MotionBox
+            {...componentStyles.animations.fadeInUp}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+          >
+            <Box {...themes.saito.card}>
+              <VStack gap={8} textAlign="left" align="stretch">
+                <Text {...themes.saito.text.title}>
+                  斎藤さん、本当にありがとうございました
+                </Text>
+
+                <Box {...themes.saito.text.divider} />
+
+                <VStack gap={6} align="stretch">
+                  <Text {...themes.saito.text.body}>
+                    斎藤さんがmanaby大宮事業所にいてくれて、本当に心強かったです。
+                    分からないことがあったときに、いつも優しく丁寧に教えてくれました。
+                  </Text>
+
+                  <Text {...themes.saito.text.body}>
+                    特に、Web制作で行き詰まったときに、一緒に考えてくれたり、
+                    「大丈夫だよ、一歩ずつ進めばいいんだから」と励ましてくれたりして、
+                    何度も救われました。
+                  </Text>
+
+                  <Text {...themes.saito.text.body}>
+                    斎藤さんの優しさと温かい人柄に、いつも癒されていました。
+                    一緒に過ごした時間は、私にとって本当に大切な思い出です。
+                  </Text>
+
+                  <Text {...themes.saito.text.body}>
+                    就職されてからも、お体に気をつけて、新しい環境でも
+                    斎藤さんらしく頑張ってください。いつまでも応援しています。
+                  </Text>
+                </VStack>
+
+                <Box {...themes.saito.text.divider} />
+
+                <VStack gap={3}>
+                  <Text
+                    fontSize="md"
+                    color={tokens.colors.gray[900]}
+                    fontWeight={tokens.typography.fontWeights.semibold}
+                    textAlign="center"
+                  >
+                    改めて、本当にありがとうございました
+                  </Text>
+                  <Text fontSize="sm" color={tokens.colors.gray[600]}>
+                    感謝を込めて
+                  </Text>
+                </VStack>
+              </VStack>
+            </Box>
+          </MotionBox>
+
+          {/* 戻るボタン（下部） */}
+          <MotionBox
+            {...componentStyles.animations.fadeInUp}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+          >
+            <Button
+              {...componentStyles.button.back.primary}
+              onClick={handleBackToHome}
+            >
+              <Icon as={FaArrowLeft} mr={2} />
+              メッセージ一覧に戻る
+            </Button>
+          </MotionBox>
+        </VStack>
+      </Container>
+    </Box>
+  );
+
+  // 作田さんへのメッセージビュー（テーマシステム準拠）
+  const SakudaMessageView = () => (
+    <Box {...componentStyles.page.container} {...themes.sakuda.background}>
+      {/* 背景パターン */}
+      <Box {...themes.sakuda.background.pattern} />
+
+      <Container maxW="3xl" py={{ base: 8, md: 16 }} position="relative">
+        <VStack gap={{ base: 8, md: 12 }} align="center">
+          {/* 戻るボタン */}
+          <MotionBox
+            {...componentStyles.animations.fadeInLeft}
+            alignSelf="flex-start"
+          >
+            <Button
+              variant="ghost"
+              color={tokens.colors.primary[700]}
+              _hover={{ bg: "orange.50" }}
+              onClick={handleBackToHome}
+            >
+              <Icon as={FaArrowLeft} mr={2} />
+              戻る
+            </Button>
+          </MotionBox>
+
+          {/* ヘッダー */}
+          <MotionBox
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            textAlign="center"
+          >
+            <VStack gap={4}>
+              <Icon {...themes.sakuda.header.icon} as={FaUser} />
+              <HStack gap={3}>
+                <Heading {...themes.sakuda.header.title}>
+                  作田さんへ
+                </Heading>
+                <Badge {...themes.sakuda.header.badge}>
+                  感謝の手紙
+                </Badge>
+              </HStack>
+            </VStack>
+          </MotionBox>
+
+          {/* メッセージカード */}
+          <MotionBox {...componentStyles.animations.scaleIn}>
+            <Box {...themes.sakuda.card}>
+              <VStack gap={6} textAlign="left" align="stretch">
+                <Text {...themes.sakuda.text.title}>
+                  作田さん、本当にありがとうございました
+                </Text>
+
+                <Box {...themes.sakuda.text.divider} />
+
+                <VStack gap={4} align="stretch">
+                  <Text {...themes.sakuda.text.body}>
+                    作田さんと一緒にmanaby大宮事業所で学べて、本当に良かったです。
+                    いつも前向きで、一生懸命に取り組む姿勢に、とても刺激を受けました。
+                  </Text>
+
+                  <Text {...themes.sakuda.text.body}>
+                    困ったときには一緒に悩んでくれて、成功したときには一緒に喜んでくれて、
+                    作田さんがいてくれたから、どんな課題も乗り越えることができました。
+                  </Text>
+
+                  <Text {...themes.sakuda.text.body}>
+                    作田さんの頑張り屋さんなところや、いつも笑顔でいてくれるところが
+                    本当に素敵で、私も作田さんのように前向きに頑張ろうと思えました。
+                  </Text>
+
+                  <Text {...themes.sakuda.text.body}>
+                    就職されてからも、作田さんらしく元気に頑張ってください。
+                    きっと新しい職場でも、作田さんの明るさで周りを笑顔にしてくれると思います。
+                    心から応援しています！
+                  </Text>
+                </VStack>
+
+                <Box {...themes.sakuda.text.divider} />
+
+                <VStack gap={2}>
+                  <Text
+                    fontSize="md"
+                    color={tokens.colors.primary[700]}
+                    fontWeight={tokens.typography.fontWeights.semibold}
+                    textAlign="center"
+                  >
+                    一緒に頑張れて本当に幸せでした
+                  </Text>
+                  <HStack gap={2} justify="center">
+                    <Icon as={FaHeart} color={tokens.colors.primary[700]} />
+                    <Text fontSize="sm" color={tokens.colors.gray[600]} fontStyle="italic">
+                      感謝を込めて
+                    </Text>
+                    <Icon as={FaHeart} color={tokens.colors.primary[700]} />
+                  </HStack>
+                </VStack>
+              </VStack>
+            </Box>
+          </MotionBox>
+
+          {/* 戻るボタン（下部） */}
+          <MotionBox
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <Button
+              size="lg"
+              colorScheme="orange"
+              onClick={handleBackToHome}
+            >
+              <Icon as={FaArrowLeft} mr={2} />
+              メッセージ一覧に戻る
+            </Button>
+          </MotionBox>
+        </VStack>
+      </Container>
+    </Box>
+  );
+
+  // ホームビュー（デザインシステム準拠）
+  const HomeView = () => (
+    <Box {...componentStyles.page.container} {...themes.home.background}>
+      <Container {...componentStyles.page.content}>
+        <VStack gap={{ base: 16, md: 20 }} align="center">
+          {/* 熊さんキャラクターヘッダー */}
+          <MotionBox {...componentStyles.animations.fadeInUp} textAlign="center">
             <VStack gap={{ base: 10, md: 12 }}>
               {/* 熊さんキャラクター */}
-              <Box
-                w={{ base: "80px", md: "100px" }}
-                h={{ base: "80px", md: "100px" }}
-                position="relative"
-              >
+              <Box {...themes.home.character.container}>
                 <Image
                   src="/manaby-jump2.png"
                   alt="manaby character"
                   width={100}
                   height={100}
-                  style={{
-                    objectFit: "contain",
-                    width: "100%",
-                    height: "100%",
-                  }}
+                  style={themes.home.character.image}
                   priority
                 />
               </Box>
@@ -70,10 +360,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-                display="flex"
-                gap={{ base: "1px", md: "2px" }}
-                justifyContent="center"
-                alignItems="baseline"
+                {...themes.home.textAnimation.container}
               >
                 {["T", "h", "a", "n", "k", "s", "!"].map((letter, index) => (
                   <MotionBox
@@ -107,17 +394,7 @@ export default function Home() {
                       times: [0, 0.1, 0.25, 0.4, 0.7, 1],
                     }}
                   >
-                    <Text
-                      fontSize={{ base: "xl", md: "2xl" }}
-                      fontWeight="600"
-                      color="orange.500"
-                      display="inline-block"
-                      letterSpacing={{ base: "0.05em", md: "0.03em" }}
-                      lineHeight="1.2"
-                      style={{
-                        textShadow: "0 0 1px rgba(255, 165, 0, 0.3)"
-                      }}
-                    >
+                    <Text {...themes.home.textAnimation.letter}>
                       {letter}
                     </Text>
                   </MotionBox>
@@ -128,130 +405,31 @@ export default function Home() {
 
           {/* モダンなテキストコンテナ */}
           <MotionBox
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...componentStyles.animations.fadeInUp}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             w="100%"
             maxW="600px"
           >
-            {/* モダンなテキストエリア */}
-            <VStack gap={10} textAlign="center" w="100%">
+            <VStack {...componentStyles.messageCard.content}>
               {/* メインメッセージ */}
-              <Box
-                bg="rgba(255, 255, 255, 0.8)"
-                backdropFilter="blur(10px)"
-                borderRadius="16px"
-                p={{ base: 8, md: 10 }}
-                border="1px solid"
-                borderColor="rgba(229, 231, 235, 0.6)"
-                position="relative"
-
-              >
-                {/* 中央上部の熊さんアイコン */}
-                <Box
-                  position="absolute"
-                  top="-12px"
-                  left="50%"
-                  transform="translateX(-50%)"
-                  w="24px"
-                  h="24px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Image
-                    src="/manabyicon.png"
-                    alt="manaby"
-                    width={16}
-                    height={16}
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: "100%",
-                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))",
-                    }}
-                  />
-                </Box>
-
-                {/* 左側の熊さんアイコン */}
-                <Box
-                  position="absolute"
-                  top="-10px"
-                  left="50%"
-                  transform="translateX(-200%)"
-                  w="20px"
-                  h="20px"
-                  display={{ base: "none", md: "flex" }}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Image
-                    src="/manabyicon.png"
-                    alt="manaby"
-                    width={14}
-                    height={14}
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: "100%",
-                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
-                      opacity: 0.7,
-                      transform: "rotate(-10deg)",
-                    }}
-                  />
-                </Box>
-
-                {/* 右側の熊さんアイコン */}
-                <Box
-                  position="absolute"
-                  top="-10px"
-                  left="50%"
-                  transform="translateX(100%)"
-                  w="20px"
-                  h="20px"
-                  display={{ base: "none", md: "flex" }}
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Image
-                    src="/manabyicon.png"
-                    alt="manaby"
-                    width={14}
-                    height={14}
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: "100%",
-                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
-                      opacity: 0.7,
-                      transform: "rotate(10deg)",
-                    }}
-                  />
-                </Box>
-
-
+              <Box {...componentStyles.messageCard.container}>
+                {/* 熊さんアイコン群 */}
+                <BearIcon position={componentStyles.bearIcon.main.position} />
+                <BearIcon
+                  {...componentStyles.bearIcon.side}
+                  position={{ top: "-10px", left: "50%", transform: "translateX(-200%)" }}
+                />
+                <BearIcon
+                  {...componentStyles.bearIcon.side}
+                  position={{ top: "-10px", left: "50%", transform: "translateX(100%)" }}
+                />
 
                 <VStack gap={6}>
-                  <Text
-                    fontSize="13px"
-                    color="#6b7280"
-                    fontWeight="500"
-                    textTransform="uppercase"
-                    letterSpacing="0.05em"
-                    mt={2}
-                  >
+                  <Text {...componentStyles.messageCard.text.label}>
                     お二人へ
                   </Text>
 
-                  <Text
-                    fontSize={{ base: "16px", md: "17px" }}
-                    lineHeight={{ base: "1.7", md: "1.75" }}
-                    color="#374151"
-                    fontWeight="400"
-                    letterSpacing="0.01em"
-                    textAlign="center"
-                    maxW="480px"
-                  >
+                  <Text {...componentStyles.messageCard.text.primary}>
                     manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
                     お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
                     いつも支えてくれて、本当にありがとうございました。
@@ -260,181 +438,40 @@ export default function Home() {
                 </VStack>
               </Box>
 
-              {/* モダンなアクションエリア */}
+              {/* アクションエリア */}
               <Box w="100%">
                 <HStack gap={12} justify="center">
-                  <MotionBox
-                    whileHover={{
-                      scale: 1.02,
-                      y: -2
-                    }}
-                    whileTap={{
-                      scale: 0.98,
-                      y: 0
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 25
-                    }}
-                  >
-                    <VStack
-                      gap={4}
-                      cursor="pointer"
-                      onClick={() => handleNavigate("/message/saito")}
-                      transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                      _hover={{
-                        "& > div": {
-                          bg: "rgba(255, 247, 237, 0.9)",
-                          borderColor: "#f97316",
-                          boxShadow: "0 8px 25px rgba(234, 88, 12, 0.15)"
-                        },
-                        "& svg": {
-                          color: "#ea580c",
-                          transform: "scale(1.1)"
-                        }
-                      }}
-                    >
-                      <Box
-                        w={{ base: 14, md: 16 }}
-                        h={{ base: 14, md: 16 }}
-                        bg="orange.50"
-                        borderRadius="full"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        border="2px solid"
-                        borderColor="orange.200"
-                        transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                        position="relative"
-                        _before={{
-                          content: '""',
-                          position: "absolute",
-                          inset: "-4px",
-                          borderRadius: "full",
-                          background: "linear-gradient(45deg, transparent, rgba(255, 165, 0, 0.1), transparent)",
-                          opacity: 0,
-                          transition: "opacity 0.3s ease"
-                        }}
-                        _hover={{
-                          _before: {
-                            opacity: 1
-                          }
-                        }}
-                      >
-                        <Icon
-                          as={FaEnvelope}
-                          boxSize={{ base: 5, md: 6 }}
-                          color="#f97316"
-                          transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                        />
-                      </Box>
-                      <Text
-                        fontSize="13px"
-                        fontWeight="600"
-                        color="#1f2937"
-                        letterSpacing="0.02em"
-                      >
-                        斎藤さんへ
-                      </Text>
-                    </VStack>
-                  </MotionBox>
-
-                  <MotionBox
-                    whileHover={{
-                      scale: 1.02,
-                      y: -2
-                    }}
-                    whileTap={{
-                      scale: 0.98,
-                      y: 0
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 25
-                    }}
-                  >
-                    <VStack
-                      gap={4}
-                      cursor="pointer"
-                      onClick={() => handleNavigate("/message/sakuta")}
-                      transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                      _hover={{
-                        "& > div": {
-                          bg: "rgba(255, 247, 237, 0.9)",
-                          borderColor: "#f97316",
-                          boxShadow: "0 8px 25px rgba(234, 88, 12, 0.15)"
-                        },
-                        "& svg": {
-                          color: "#ea580c",
-                          transform: "scale(1.1)"
-                        }
-                      }}
-                    >
-                      <Box
-                        w={{ base: 14, md: 16 }}
-                        h={{ base: 14, md: 16 }}
-                        bg="orange.50"
-                        borderRadius="full"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        border="2px solid"
-                        borderColor="orange.200"
-                        transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                        position="relative"
-                        _before={{
-                          content: '""',
-                          position: "absolute",
-                          inset: "-4px",
-                          borderRadius: "full",
-                          background: "linear-gradient(45deg, transparent, rgba(255, 165, 0, 0.1), transparent)",
-                          opacity: 0,
-                          transition: "opacity 0.3s ease"
-                        }}
-                        _hover={{
-                          _before: {
-                            opacity: 1
-                          }
-                        }}
-                      >
-                        <Icon
-                          as={FaEnvelope}
-                          boxSize={{ base: 5, md: 6 }}
-                          color="#f97316"
-                          transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                        />
-                      </Box>
-                      <Text
-                        fontSize="13px"
-                        fontWeight="600"
-                        color="#1f2937"
-                        letterSpacing="0.02em"
-                      >
-                        作田さんへ
-                      </Text>
-                    </VStack>
-                  </MotionBox>
+                  <MessageButton
+                    onClick={() => handleNavigate("saito")}
+                    label="斎藤さんへ"
+                  />
+                  <MessageButton
+                    onClick={() => handleNavigate("sakuda")}
+                    label="作田さんへ"
+                  />
                 </HStack>
               </Box>
             </VStack>
           </MotionBox>
 
           {/* フッター */}
-          <MotionBox
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-            textAlign="center"
-            mt={8}
-          >
-            <Text fontSize="xs" color="gray.400" lineHeight="1.5">
+          <MotionBox {...componentStyles.animations.fadeIn} textAlign="center" mt={8}>
+            <Text fontSize="xs" color={tokens.colors.gray[400]} lineHeight="1.5">
               Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>
         </VStack>
-      </Container >
-    </Box >
+      </Container>
+    </Box>
   );
+
+  // ビューの条件分岐
+  switch (currentView) {
+    case "saito":
+      return <SaitoMessageView />;
+    case "sakuda":
+      return <SakudaMessageView />;
+    default:
+      return <HomeView />;
+  }
 }
