@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaEnvelope, FaHeart } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
@@ -173,113 +173,63 @@ export default function Home() {
                   />
                 </Box>
 
-                {/* 左上コーナーの熊さん */}
+                {/* 左側の熊さんアイコン */}
                 <Box
                   position="absolute"
-                  top="-8px"
-                  left="-8px"
-                  w="18px"
-                  h="18px"
-                  display={{ base: "flex", md: "flex" }}
-                  alignItems="center"
-                  justifyContent="center"
-                  transform="rotate(-15deg)"
-                >
-                  <Image
-                    src="/manabyicon.png"
-                    alt="manaby corner"
-                    width={12}
-                    height={12}
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: "100%",
-                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
-                      opacity: 0.7,
-                    }}
-                  />
-                </Box>
-
-                {/* 右上コーナーの熊さん */}
-                <Box
-                  position="absolute"
-                  top="-8px"
-                  right="-8px"
-                  w="18px"
-                  h="18px"
-                  display={{ base: "flex", md: "flex" }}
-                  alignItems="center"
-                  justifyContent="center"
-                  transform="rotate(15deg)"
-                >
-                  <Image
-                    src="/manabyicon.png"
-                    alt="manaby corner"
-                    width={12}
-                    height={12}
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: "100%",
-                      filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
-                      opacity: 0.7,
-                    }}
-                  />
-                </Box>
-
-                {/* 左下コーナーの熊さん（デスクトップのみ） */}
-                <Box
-                  position="absolute"
-                  bottom="-8px"
-                  left="-8px"
-                  w="18px"
-                  h="18px"
+                  top="-10px"
+                  left="50%"
+                  transform="translateX(-200%)"
+                  w="20px"
+                  h="20px"
                   display={{ base: "none", md: "flex" }}
                   alignItems="center"
                   justifyContent="center"
-                  transform="rotate(-25deg)"
                 >
                   <Image
                     src="/manabyicon.png"
-                    alt="manaby corner"
-                    width={12}
-                    height={12}
+                    alt="manaby"
+                    width={14}
+                    height={14}
                     style={{
                       objectFit: "contain",
                       width: "100%",
                       height: "100%",
                       filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
                       opacity: 0.7,
+                      transform: "rotate(-10deg)",
                     }}
                   />
                 </Box>
 
-                {/* 右下コーナーの熊さん（デスクトップのみ） */}
+                {/* 右側の熊さんアイコン */}
                 <Box
                   position="absolute"
-                  bottom="-8px"
-                  right="-8px"
-                  w="18px"
-                  h="18px"
+                  top="-10px"
+                  left="50%"
+                  transform="translateX(100%)"
+                  w="20px"
+                  h="20px"
                   display={{ base: "none", md: "flex" }}
                   alignItems="center"
                   justifyContent="center"
-                  transform="rotate(25deg)"
                 >
                   <Image
                     src="/manabyicon.png"
-                    alt="manaby corner"
-                    width={12}
-                    height={12}
+                    alt="manaby"
+                    width={14}
+                    height={14}
                     style={{
                       objectFit: "contain",
                       width: "100%",
                       height: "100%",
                       filter: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1))",
                       opacity: 0.7,
+                      transform: "rotate(10deg)",
                     }}
                   />
                 </Box>
+
+
 
                 <VStack gap={6}>
                   <Text
@@ -312,15 +262,6 @@ export default function Home() {
 
               {/* モダンなアクションエリア */}
               <Box w="100%">
-                <Text
-                  fontSize="14px"
-                  color="#6b7280"
-                  textAlign="center"
-                  fontWeight="500"
-                  mb={8}
-                >
-                  メッセージを選択してください
-                </Text>
                 <HStack gap={12} justify="center">
                   <MotionBox
                     whileHover={{
@@ -459,7 +400,7 @@ export default function Home() {
                         }}
                       >
                         <Icon
-                          as={FaHeart}
+                          as={FaEnvelope}
                           boxSize={{ base: 5, md: 6 }}
                           color="#f97316"
                           transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
