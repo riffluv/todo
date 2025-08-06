@@ -88,7 +88,7 @@ export default function Home() {
     label: string;
   }) => (
     <MotionBox {...componentStyles.animations.bounce}>
-      <VStack {...componentStyles.button.message.container}>
+      <VStack {...componentStyles.button.message.container} onClick={onClick}>
         <Box {...componentStyles.button.message.icon}>
           <Icon
             as={FaEnvelope}
