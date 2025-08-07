@@ -1,6 +1,6 @@
 /**
  * MessageButton Component - 再利用可能なメッセージボタン
- * 
+ *
  * @description 統一されたデザインシステムに基づくメッセージボタンコンポーネント
  */
 "use client";
@@ -29,8 +29,10 @@ export function MessageButton({
   onClick,
   label,
   delay = 0,
-  disabled = false
+  disabled = false,
 }: MessageButtonProps) {
+  const { transition, ...iconProps } = componentStyles.button.message.icon;
+
   return (
     <MotionBox
       {...componentStyles.animations.bounce}
@@ -39,7 +41,7 @@ export function MessageButton({
       transition={{
         duration: 0.8,
         delay: delay,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.16, 1, 0.3, 1],
       }}
     >
       <VStack
@@ -48,10 +50,7 @@ export function MessageButton({
         opacity={disabled ? 0.6 : 1}
         cursor={disabled ? "not-allowed" : "pointer"}
       >
-        <MotionIconBox
-          {...componentStyles.button.message.icon}
-          {...componentStyles.animations.pulse}
-        >
+        <MotionIconBox {...iconProps} {...componentStyles.animations.pulse}>
           <Icon
             as={FaEnvelope}
             boxSize={{ base: 5, md: 6 }}
@@ -59,9 +58,7 @@ export function MessageButton({
             transition={`all ${tokens.animations.durations.normal} ${tokens.animations.easings.bounce}`}
           />
         </MotionIconBox>
-        <Text {...componentStyles.button.message.label}>
-          {label}
-        </Text>
+        <Text {...componentStyles.button.message.label}>{label}</Text>
       </VStack>
     </MotionBox>
   );

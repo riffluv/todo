@@ -1,9 +1,10 @@
+"use client";
+import { cubicBezier } from "framer-motion";
 /**
  * HomeView Component - ホームページビュー
- * 
+ *
  * @description メインのホームページコンポーネント
  */
-"use client";
 
 import { AnimatedTitle } from "@/components/common/AnimatedTitle";
 import { BearIcon } from "@/components/common/BearIcon";
@@ -26,11 +27,13 @@ export interface HomeViewProps {
 }
 
 export function HomeView({ messages, onNavigate }: HomeViewProps) {
+  const { transition, ...containerProps } =
+    componentStyles.messageCard.container;
   return (
     <Box {...componentStyles.page.container} {...themes.home.background}>
       <Container {...componentStyles.page.content}>
         <VStack
-          gap={{ base: tokens.spacing['2xl'], md: tokens.spacing['4xl'] }}
+          gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["4xl"] }}
           align="center"
           w="100%"
         >
@@ -42,47 +45,68 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
           {/* 改良されたメッセージコンテナ */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{
+              duration: 0.8,
+              delay: 0.3,
+              ease: cubicBezier(0.16, 1, 0.3, 1),
+            }}
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
             <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
               {/* グラスモーフィズムメッセージカード */}
               <MotionBox
-                {...componentStyles.messageCard.container}
+                {...containerProps}
                 whileHover={{
                   y: -8,
                   scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
+                  transition: {
+                    duration: 0.3,
+                    ease: cubicBezier(0.16, 1, 0.3, 1),
+                  },
                 }}
                 whileTap={{
                   scale: 0.98,
-                  transition: { duration: 0.1 }
+                  transition: { duration: 0.1 },
                 }}
               >
                 {/* 装飾的な熊さんアイコン群 */}
                 <BearIcon
-                  position={{ top: "-16px", left: "50%", transform: "translateX(-50%)" }}
+                  position={{
+                    top: "-16px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
                   opacity={0.9}
                   size={28}
                   imageSize={20}
                 />
                 <BearIcon
-                  position={{ top: "-12px", left: "50%", transform: "translateX(-250%)" }}
+                  position={{
+                    top: "-12px",
+                    left: "50%",
+                    transform: "translateX(-250%)",
+                  }}
                   opacity={0.6}
                   size={20}
                   imageSize={14}
                   display={{ base: "none", md: "flex" }}
                 />
                 <BearIcon
-                  position={{ top: "-12px", left: "50%", transform: "translateX(150%)" }}
+                  position={{
+                    top: "-12px",
+                    left: "50%",
+                    transform: "translateX(150%)",
+                  }}
                   opacity={0.6}
                   size={20}
                   imageSize={14}
                   display={{ base: "none", md: "flex" }}
                 />
 
-                <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+                <VStack
+                  gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+                >
                   <Text {...componentStyles.messageCard.text.label}>
                     お二人へ
                   </Text>
@@ -101,14 +125,16 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               </MotionBox>
 
               {/* 平等な横並びアクションエリア */}
-              <Box w="100%" pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+              <Box
+                w="100%"
+                pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+              >
                 <HStack
                   gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
                   justify="center"
                   align="center"
                   flexWrap="wrap"
                   // 全デバイスで横並び - 平等で自然
-                  spacing={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
                 >
                   {messages.map((person, index) => (
                     <MessageButton
@@ -129,6 +155,11 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
             textAlign="center"
             mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
             px={tokens.spacing.md}
+            transition={{
+              duration: 0.8,
+              delay: 0.6,
+              ease: cubicBezier(0.16, 1, 0.3, 1),
+            }}
           >
             <Text
               fontSize={{ base: "xs", md: "sm" }}
