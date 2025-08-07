@@ -105,12 +105,6 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   pointerEvents: "none",
                   zIndex: 0,
                 }}
-                sx={{
-                  "& > *": {
-                    position: "relative",
-                    zIndex: 1,
-                  }
-                }}
                 whileHover={{
                   y: -8,
                   scale: 1.02,
@@ -170,7 +164,11 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   display={{ base: "none", md: "block" }}
                 />
 
-                <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+                <VStack
+                  gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+                  position="relative"
+                  zIndex={1}
+                >
                   {/* カード内日本語名前 */}
                   <MotionBox
                     initial={{ opacity: 0, y: 10 }}
