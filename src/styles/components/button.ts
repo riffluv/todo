@@ -53,10 +53,23 @@ export const buttonStyles = {
           }
         },
         _active: {
-          transform: 'scale(0.95)',
+          transform: 'scale(0.85)',
+          transition: 'transform 0.1s ease-out',
           '& > div': {
-            background: `rgba(255, 247, 237, 0.8)`,
-            transform: 'scale(0.95)'
+            background: `
+              linear-gradient(135deg, rgba(255, 247, 237, 0.9), rgba(255, 237, 213, 0.8)),
+              radial-gradient(circle at 50% 50%, ${tokens.colors.primary[500]}25, transparent 70%)
+            `,
+            transform: 'scale(0.9)',
+            borderColor: tokens.colors.primary[600],
+            boxShadow: `
+              0 2px 8px ${tokens.colors.primary[500]}20,
+              inset 0 2px 4px rgba(0, 0, 0, 0.1)
+            `
+          },
+          '& svg': {
+            color: tokens.colors.primary[700],
+            transform: 'scale(0.9)'
           }
         }
       }

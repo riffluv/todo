@@ -228,17 +228,23 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               },
             }}
             whileTap={{
-              scale: 0.95,
-              transition: { duration: 0.1 },
+              scale: 0.85,
+              transition: { duration: 0.15, type: "spring", stiffness: 400 },
             }}
-            // スマホ用のタッチフィードバック
+            // Android/iOS対応のタッチフィードバック
             _active={{
-              transform: "scale(0.95)",
-              transition: "all 0.1s ease-out",
+              transform: "scale(0.85)",
+              transition: "transform 0.1s ease-out",
+            }}
+            _focus={{
+              transform: "scale(0.9)",
+              outline: "none",
             }}
             style={{
               WebkitTapHighlightColor: "transparent",
               touchAction: "manipulation",
+              userSelect: "none",
+              WebkitUserSelect: "none",
             }}
           >
             <MotionBox

@@ -33,6 +33,19 @@ export function MessageButton({
 }: MessageButtonProps) {
   const { transition: _, ...iconProps } = componentStyles.button.message.icon;
 
+  // スマホ用のタッチイベントハンドラー
+  const handleTouchStart = () => {
+    if (!disabled) {
+      // タッチ開始時の処理（必要に応じて）
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!disabled) {
+      // タッチ終了時の処理（必要に応じて）
+    }
+  };
+
   return (
     <MotionBox
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -58,20 +71,28 @@ export function MessageButton({
           transition: { stiffness: 500, damping: 30 },
         } : undefined}
         whileTap={!disabled ? {
-          scale: 0.95,
+          scale: 0.9,
           y: 0,
-          transition: { duration: 0.1 },
+          transition: { duration: 0.15, type: "spring", stiffness: 400 },
         } : undefined}
-        // スマホ用のタッチフィードバック
+        // Android/iOS対応のタッチフィードバック
         _active={{
-          transform: "scale(0.95) translateY(0px)",
-          transition: "all 0.1s ease-out",
+          transform: "scale(0.9)",
+          transition: "transform 0.1s ease-out",
         }}
-        // iOS Safari用のタッチハイライト無効化
+        _focus={{
+          transform: "scale(0.95)",
+          outline: "none",
+        }}
+        // 全デバイス対応のタッチ設定
         style={{
           WebkitTapHighlightColor: "transparent",
           touchAction: "manipulation",
+          userSelect: "none",
+          WebkitUserSelect: "none",
         }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         <MotionIconBox {...iconProps} {...componentStyles.animations.pulse}>
           <Icon
