@@ -205,9 +205,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             </VStack>
           </MotionBox>
 
-          {/* 戻るボタン（アイコンのみ） */}
+          {/* 戻るボタン（手紙ボタンと同じスタイル） */}
           <MotionBox
-            {...componentStyles.animations.bounce}
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
@@ -215,50 +214,56 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               delay: 0.4,
               ease: [0.16, 1, 0.3, 1],
             }}
-            display="flex"
-            justifyContent="center"
-            cursor="pointer"
-            onClick={onBack}
-            whileHover={{
-              scale: 1.1,
-              y: -2,
-              transition: {
-                duration: 0.3,
-                ease: [0.16, 1, 0.3, 1],
-              },
-            }}
-            whileTap={{
-              scale: 0.85,
-              transition: { duration: 0.15, type: "spring", stiffness: 400 },
-            }}
-            // Android/iOS対応のタッチフィードバック
-            _active={{
-              transform: "scale(0.85)",
-              transition: "transform 0.1s ease-out",
-            }}
-            _focus={{
-              transform: "scale(0.9)",
-              outline: "none",
-            }}
-            style={{
-              WebkitTapHighlightColor: "transparent",
-              touchAction: "manipulation",
-              userSelect: "none",
-              WebkitUserSelect: "none",
-            }}
           >
             <MotionBox
+              as={VStack}
               {...(() => {
-                const { transition: _, ...iconStyles } = componentStyles.button.message.icon;
-                return { ...iconStyles, ...componentStyles.animations.pulse };
+                const { transition: _, ...containerStyles } = componentStyles.button.message.container;
+                return containerStyles;
               })()}
+              onClick={onBack}
+              whileHover={{
+                scale: 1.03,
+                y: -6,
+                transition: { stiffness: 500, damping: 30 },
+              }}
+              whileTap={{
+                scale: 0.9,
+                y: 0,
+                transition: { duration: 0.15, type: "spring", stiffness: 400 },
+              }}
+              // Android/iOS対応のタッチフィードバック
+              _active={{
+                transform: "scale(0.9)",
+                transition: "transform 0.1s ease-out",
+              }}
+              _focus={{
+                transform: "scale(0.95)",
+                outline: "none",
+              }}
+              // 全デバイス対応のタッチ設定
+              style={{
+                WebkitTapHighlightColor: "transparent",
+                touchAction: "manipulation",
+                userSelect: "none",
+                WebkitUserSelect: "none",
+              }}
             >
-              <Icon
-                as={FaArrowLeft}
-                boxSize={{ base: 6, md: 7 }}
-                color={tokens.colors.primary[600]}
-                transition={`all ${tokens.animations.durations.normal} ${tokens.animations.easings.bounce}`}
-              />
+              <MotionBox
+                {...(() => {
+                  const { transition: _, ...iconProps } = componentStyles.button.message.icon;
+                  return iconProps;
+                })()}
+                {...componentStyles.animations.pulse}
+              >
+                <Icon
+                  as={FaArrowLeft}
+                  boxSize={{ base: 5, md: 6 }}
+                  color={tokens.colors.primary[500]}
+                  transition={`all ${tokens.animations.durations.normal} ${tokens.animations.easings.bounce}`}
+                />
+              </MotionBox>
+              <Text {...componentStyles.button.message.label}>戻る</Text>
             </MotionBox>
           </MotionBox>
 
