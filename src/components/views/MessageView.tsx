@@ -231,6 +231,15 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               scale: 0.95,
               transition: { duration: 0.1 },
             }}
+            // スマホ用のタッチフィードバック
+            _active={{
+              transform: "scale(0.95)",
+              transition: "all 0.1s ease-out",
+            }}
+            sx={{
+              WebkitTapHighlightColor: "transparent",
+              touchAction: "manipulation",
+            }}
           >
             <MotionBox
               {...(() => {

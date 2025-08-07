@@ -44,11 +44,32 @@ export function MessageButton({
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      <VStack
+      <MotionBox
+        as={VStack}
         {...componentStyles.button.message.container}
         onClick={disabled ? undefined : onClick}
         opacity={disabled ? 0.6 : 1}
         cursor={disabled ? "not-allowed" : "pointer"}
+        whileHover={!disabled ? {
+          scale: 1.03,
+          y: -6,
+          transition: { stiffness: 500, damping: 30 },
+        } : undefined}
+        whileTap={!disabled ? {
+          scale: 0.95,
+          y: 0,
+          transition: { duration: 0.1, ease: "easeOut" },
+        } : undefined}
+        // スマホ用のタッチフィードバック
+        _active={{
+          transform: "scale(0.95) translateY(0px)",
+          transition: "all 0.1s ease-out",
+        }}
+        // iOS Safari用のタッチハイライト無効化
+        sx={{
+          WebkitTapHighlightColor: "transparent",
+          touchAction: "manipulation",
+        }}
       >
         <MotionIconBox {...iconProps} {...componentStyles.animations.pulse}>
           <Icon
@@ -59,7 +80,7 @@ export function MessageButton({
           />
         </MotionIconBox>
         <Text {...componentStyles.button.message.label}>{label}</Text>
-      </VStack>
+      </MotionBox>
     </MotionBox>
   );
 }

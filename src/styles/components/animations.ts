@@ -37,9 +37,18 @@ export const animationStyles = {
       transition: { stiffness: 500, damping: 30 },
     },
     whileTap: {
-      scale: 0.97,
-      y: -2,
-      transition: { stiffness: 600, damping: 35 },
+      scale: 0.95,
+      y: 0,
+      transition: { duration: 0.1, ease: "easeOut" },
+    },
+    // スマホ用のタッチフィードバック
+    onTouchStart: {
+      scale: 0.95,
+      transition: { duration: 0.1 },
+    },
+    onTouchEnd: {
+      scale: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
     },
   },
   float: {
