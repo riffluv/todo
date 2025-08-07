@@ -236,7 +236,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               transform: "scale(0.95)",
               transition: "all 0.1s ease-out",
             }}
-            sx={{
+            style={{
               WebkitTapHighlightColor: "transparent",
               touchAction: "manipulation",
             }}

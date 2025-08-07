@@ -39,16 +39,7 @@ export const animationStyles = {
     whileTap: {
       scale: 0.95,
       y: 0,
-      transition: { duration: 0.1, ease: "easeOut" },
-    },
-    // スマホ用のタッチフィードバック
-    onTouchStart: {
-      scale: 0.95,
       transition: { duration: 0.1 },
-    },
-    onTouchEnd: {
-      scale: 1,
-      transition: { duration: 0.2, ease: "easeOut" },
     },
   },
   float: {

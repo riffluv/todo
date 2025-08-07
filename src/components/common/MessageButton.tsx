@@ -35,7 +35,6 @@ export function MessageButton({
 
   return (
     <MotionBox
-      {...componentStyles.animations.bounce}
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
@@ -46,7 +45,10 @@ export function MessageButton({
     >
       <MotionBox
         as={VStack}
-        {...componentStyles.button.message.container}
+        {...(() => {
+          const { transition: _, ...containerStyles } = componentStyles.button.message.container;
+          return containerStyles;
+        })()}
         onClick={disabled ? undefined : onClick}
         opacity={disabled ? 0.6 : 1}
         cursor={disabled ? "not-allowed" : "pointer"}
@@ -58,7 +60,7 @@ export function MessageButton({
         whileTap={!disabled ? {
           scale: 0.95,
           y: 0,
-          transition: { duration: 0.1, ease: "easeOut" },
+          transition: { duration: 0.1 },
         } : undefined}
         // スマホ用のタッチフィードバック
         _active={{
@@ -66,7 +68,7 @@ export function MessageButton({
           transition: "all 0.1s ease-out",
         }}
         // iOS Safari用のタッチハイライト無効化
-        sx={{
+        style={{
           WebkitTapHighlightColor: "transparent",
           touchAction: "manipulation",
         }}
