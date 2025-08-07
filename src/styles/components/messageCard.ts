@@ -27,7 +27,7 @@ export const messageCardStyles = {
       0 1px 0 rgba(255, 255, 255, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.8)
     `,
-    transition: `all ${tokens.animations.durations.normal} ${tokens.animations.easings.bounce}`,
+  // transitionはFramer Motion側で指定するため削除
     // エレガントなホバー効果
     _hover: {
       transform: 'translateY(-4px) scale(1.01)',

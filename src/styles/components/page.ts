@@ -8,7 +8,6 @@ import { tokens } from '../tokens';
 
 export const pageStyles = {
   container: {
-    minHeight: '100vh',
     minHeight: '100dvh',
     position: 'relative' as const,
     py: {

@@ -35,6 +35,25 @@ export const themes = {
         lineHeight: tokens.typography.lineHeights.tight,
         textShadow: `0 0 1px ${tokens.colors.primary[500]}4D`
       }
+    },
+    header: {
+      icon: {
+        boxSize: { base: 10, md: 12 },
+        color: tokens.colors.primary[500]
+      },
+      title: {
+        as: 'h1' as const,
+        size: { base: 'xl', md: '2xl' },
+        color: tokens.colors.primary[700],
+        fontWeight: tokens.typography.fontWeights.semibold
+      },
+      subtitle: {
+        fontSize: tokens.typography.fontSizes.sm,
+        color: tokens.colors.primary[500],
+        fontWeight: tokens.typography.fontWeights.medium,
+        textTransform: 'uppercase' as const,
+        letterSpacing: tokens.typography.letterSpacings.widest
+      }
     }
   },
 

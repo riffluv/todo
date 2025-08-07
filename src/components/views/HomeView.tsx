@@ -27,8 +27,7 @@ export interface HomeViewProps {
 }
 
 export function HomeView({ messages, onNavigate }: HomeViewProps) {
-  const { transition, ...containerProps } =
-    componentStyles.messageCard.container;
+  const containerProps = componentStyles.messageCard.container;
   return (
     <Box {...componentStyles.page.container} {...themes.home.background}>
       <Container {...componentStyles.page.content}>
