@@ -19,7 +19,11 @@ export const animationStyles = {
   fadeIn: {
     initial: { opacity: 0, filter: "blur(2px)" },
     animate: { opacity: 1, filter: "blur(0px)" },
-    transition: { duration: 0.8, delay: 0.6, ease: cubicBezier(0.16, 1, 0.3, 1) },
+    transition: {
+      duration: 0.8,
+      delay: 0.6,
+      ease: cubicBezier(0.16, 1, 0.3, 1),
+    },
   },
   scaleIn: {
     initial: { opacity: 0, scale: 0.85, filter: "blur(4px)" },

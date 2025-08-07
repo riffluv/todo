@@ -31,7 +31,7 @@ export function MessageButton({
   delay = 0,
   disabled = false,
 }: MessageButtonProps) {
-  const { transition, ...iconProps } = componentStyles.button.message.icon;
+  const { transition: _, ...iconProps } = componentStyles.button.message.icon;
 
   return (
     <MotionBox

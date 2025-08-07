@@ -1,7 +1,8 @@
 /**
- * MessageView Component - 汎用メッセージビュー
+ * MessageView Component - 個別メッセージビュー
  * 
- * @description 再利用可能なメッセージ表示コンポーネント
+ * @description 個人宛メッセージを表示するコンポーネント
+ * メインページと統一されたデザインシステムを使用
  */
 "use client";
 
@@ -88,23 +89,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               <MotionBox
                 {...componentStyles.messageCard.container}
                 position="relative"
-                // 個別画面専用の背景パターン
-                _before={{
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  borderRadius: "inherit",
-                  background: person.id === "saito"
-                    ? `radial-gradient(circle at 20% 80%, ${tokens.colors.primary[100]}40 0%, transparent 50%),
-                       radial-gradient(circle at 80% 20%, ${tokens.colors.primary[200]}30 0%, transparent 50%)`
-                    : `radial-gradient(circle at 30% 70%, ${tokens.colors.primary[100]}40 0%, transparent 50%),
-                       radial-gradient(circle at 70% 30%, ${tokens.colors.primary[200]}30 0%, transparent 50%)`,
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
+
                 whileHover={{
                   y: -8,
                   scale: 1.02,
@@ -140,35 +125,9 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   display={{ base: "none", md: "flex" }}
                 />
 
-                {/* 個別装飾エフェクト */}
-                <Box
-                  position="absolute"
-                  top="-8px"
-                  right="-8px"
-                  w="16px"
-                  h="16px"
-                  borderRadius="full"
-                  bg={`linear-gradient(45deg, ${tokens.colors.primary[400]}, ${tokens.colors.primary[600]})`}
-                  opacity={0.7}
-                  display={{ base: "none", md: "block" }}
-                />
-                <Box
-                  position="absolute"
-                  bottom="-6px"
-                  left="-6px"
-                  w="12px"
-                  h="12px"
-                  borderRadius="full"
-                  bg={`linear-gradient(135deg, ${tokens.colors.primary[300]}, ${tokens.colors.primary[500]})`}
-                  opacity={0.6}
-                  display={{ base: "none", md: "block" }}
-                />
 
-                <VStack
-                  gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
-                  position="relative"
-                  zIndex={1}
-                >
+
+                <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
                   {/* カード内日本語名前 */}
                   <MotionBox
                     initial={{ opacity: 0, y: 10 }}
@@ -274,8 +233,10 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             }}
           >
             <MotionBox
-              {...componentStyles.button.message.icon}
-              {...componentStyles.animations.pulse}
+              {...(() => {
+                const { transition: _, ...iconStyles } = componentStyles.button.message.icon;
+                return { ...iconStyles, ...componentStyles.animations.pulse };
+              })()}
             >
               <Icon
                 as={FaArrowLeft}
