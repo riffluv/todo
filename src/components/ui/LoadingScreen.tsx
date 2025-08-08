@@ -9,8 +9,6 @@ import { useCallback, useEffect, useState } from "react";
 const MotionBox = motion.create(Box);
 const MotionFlex = motion.create(Flex);
 
-// Constants - 黄金比ベースの設計値
-const GOLDEN_RATIO = 1.618;
 const FADE_OUT_DURATION = 500;
 const BEAR_COUNT = 3;
 
@@ -65,10 +63,7 @@ interface LoadingScreenProps {
   duration?: number;
 }
 
-export function LoadingScreen({
-  onComplete,
-  duration = 3500,
-}: LoadingScreenProps) {
+export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -91,13 +86,7 @@ export function LoadingScreen({
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
-        <MotionBox
-          position="fixed"
-          inset="0"
-          zIndex="9999"
-          bg="#fafafa"
-          {...ANIMATIONS.overlay}
-        >
+        <MotionBox position="fixed" inset="0" zIndex="9999" bg="#fafafa" {...ANIMATIONS.overlay}>
           <MotionFlex
             height="100vh"
             width="100vw"
@@ -117,17 +106,8 @@ export function LoadingScreen({
               w="100%"
             >
               {/* Manaby Logo */}
-              <MotionBox
-                {...ANIMATIONS.logo}
-                w="100%"
-                display="flex"
-                justifyContent="center"
-              >
-                <Box
-                  position="relative"
-                  width={SIZES.logo.width}
-                  height={SIZES.logo.height}
-                >
+              <MotionBox {...ANIMATIONS.logo} w="100%" display="flex" justifyContent="center">
+                <Box position="relative" width={SIZES.logo.width} height={SIZES.logo.height}>
                   <Image
                     src="/manabylogo.png"
                     alt="Manaby"
@@ -140,11 +120,7 @@ export function LoadingScreen({
               </MotionBox>
 
               {/* Bear Loading Animation */}
-              <MotionBox
-                {...ANIMATIONS.bearContainer}
-                display="flex"
-                justifyContent="center"
-              >
+              <MotionBox {...ANIMATIONS.bearContainer} display="flex" justifyContent="center">
                 <Flex gap={SIZES.bear.gap} align="center">
                   {Array.from({ length: BEAR_COUNT }, (_, i) => (
                     <MotionBox

@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 export function useLocalStorage<T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((val: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {
@@ -30,8 +30,7 @@ export function useLocalStorage<T>(
   const setValue = useCallback(
     (value: T | ((val: T) => T)) => {
       try {
-        const valueToStore =
-          value instanceof Function ? value(storedValue) : value;
+        const valueToStore = value instanceof Function ? value(storedValue) : value;
         setStoredValue(valueToStore);
         if (typeof window !== "undefined") {
           window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -40,7 +39,7 @@ export function useLocalStorage<T>(
         console.warn(`Error setting localStorage key "${key}":`, error);
       }
     },
-    [key, storedValue]
+    [key, storedValue],
   );
 
   return [storedValue, setValue];
@@ -166,7 +165,7 @@ export function useScrollPosition(): { x: number; y: number } {
  */
 export function useIntersectionObserver(
   elementRef: React.RefObject<Element>,
-  options?: IntersectionObserverInit
+  options?: IntersectionObserverInit,
 ): boolean {
   const [isIntersecting, setIsIntersecting] = useState(false);
 
@@ -174,7 +173,7 @@ export function useIntersectionObserver(
     if (!elementRef.current) return;
 
     const observer = new IntersectionObserver(([entry]) => {
-      setIsIntersecting(entry.isIntersecting);
+      if (entry) setIsIntersecting(entry.isIntersecting);
     }, options);
 
     observer.observe(elementRef.current);
@@ -190,7 +189,7 @@ export function useIntersectionObserver(
  */
 export function useClickOutside(
   ref: React.RefObject<HTMLElement>,
-  handler: (event: MouseEvent | TouchEvent) => void
+  handler: (event: MouseEvent | TouchEvent) => void,
 ): void {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
@@ -216,7 +215,7 @@ export function useClickOutside(
 export function useHotkey(
   keys: string[],
   callback: () => void,
-  deps: React.DependencyList = []
+  deps: React.DependencyList = [],
 ): void {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -249,10 +248,7 @@ export function useHotkey(
 /**
  * コピー機能フック
  */
-export function useCopyToClipboard(): [
-  boolean,
-  (text: string) => Promise<void>
-] {
+export function useCopyToClipboard(): [boolean, (text: string) => Promise<void>] {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = useCallback(async (text: string) => {
@@ -290,7 +286,7 @@ export function useLoading(initialValue: boolean = false): {
  * トグル状態フック
  */
 export function useToggle(
-  initialValue: boolean = false
+  initialValue: boolean = false,
 ): [boolean, () => void, (value: boolean) => void] {
   const [value, setValue] = useState(initialValue);
 
@@ -338,12 +334,9 @@ export function useArray<T>(initialValue: T[] = []): {
     setArray((prev) => [...prev, element]);
   }, []);
 
-  const filter = useCallback(
-    (callback: (element: T, index: number) => boolean) => {
-      setArray((prev) => prev.filter(callback));
-    },
-    []
-  );
+  const filter = useCallback((callback: (element: T, index: number) => boolean) => {
+    setArray((prev) => prev.filter(callback));
+  }, []);
 
   const update = useCallback((index: number, element: T) => {
     setArray((prev) => {
@@ -414,7 +407,7 @@ export function useTimer(initialTime: number = 0): {
  */
 export function useFetch<T>(
   url: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): {
   data: T | null;
   loading: boolean;

@@ -54,6 +54,9 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
             }}
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
           >
             <VStack
               gap={{
@@ -117,9 +120,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                     md: `calc(${tokens.spacing.xl} - 2px)`,
                   }}
                 >
-                  <Text {...componentStyles.messageCard.text.label}>
-                    お二人へ
-                  </Text>
+                  <Text {...componentStyles.messageCard.text.label}>お二人へ</Text>
 
                   <Text
                     {...componentStyles.messageCard.text.primary}
@@ -135,10 +136,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               </MotionBox>
 
               {/* 平等な横並びアクションエリア */}
-              <Box
-                w="100%"
-                pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
-              >
+              <Box w="100%" pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
                 <HStack
                   gap={{
                     base: `calc(${tokens.spacing.lg} + 2px)`,

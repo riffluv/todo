@@ -18,9 +18,7 @@ export const MessageCard = ({
   title,
   message,
   buttonText = "手紙を読む",
-  buttonIcon,
   onClick,
-  color = "gray.900",
   subText,
   ...boxProps
 }: MessageCardProps) => (
@@ -30,19 +28,19 @@ export const MessageCard = ({
     border="1px solid"
     borderColor="gray.200"
     borderRadius="xl"
-    cursor={onClick ? "pointer" : undefined}
-    _hover={
-      onClick
-        ? {
+    {...(onClick
+      ? {
+          cursor: "pointer" as const,
+          _hover: {
             transform: "translateY(-3px)",
             borderColor: "gray.300",
             boxShadow: tokens.shadows.md,
-          }
-        : undefined
-    }
+          },
+        }
+      : {})}
     transition={`all ${tokens.animations.durations.fast} ${tokens.animations.easings.emphasized}`}
     p={{ base: 7, md: 8 }}
-    onClick={onClick}
+    {...(onClick ? { onClick } : {})}
     {...boxProps}
   >
     <VStack gap={{ base: 5, md: 6 }} textAlign="center">

@@ -22,7 +22,7 @@ export function delay(ms: number): Promise<void> {
  */
 export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
 
@@ -37,7 +37,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  */
 export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let lastFunc: NodeJS.Timeout;
   let lastRan: number;
@@ -48,12 +48,15 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
       lastRan = Date.now();
     } else {
       clearTimeout(lastFunc);
-      lastFunc = setTimeout(() => {
-        if (Date.now() - lastRan >= limit) {
-          func(...args);
-          lastRan = Date.now();
-        }
-      }, limit - (Date.now() - lastRan));
+      lastFunc = setTimeout(
+        () => {
+          if (Date.now() - lastRan >= limit) {
+            func(...args);
+            lastRan = Date.now();
+          }
+        },
+        limit - (Date.now() - lastRan),
+      );
     }
   };
 }
@@ -62,8 +65,7 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
  * ランダムID生成
  */
 export function generateId(length: number = 8): string {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -85,10 +87,7 @@ export function generateUUID(): string {
 /**
  * 日付フォーマット関数
  */
-export function formatDate(
-  date: Date,
-  format: "short" | "long" | "time" = "short"
-): string {
+export function formatDate(date: Date, format: "short" | "long" | "time" = "short"): string {
   const options: Intl.DateTimeFormatOptions = {
     timeZone: "Asia/Tokyo",
   };
@@ -135,11 +134,7 @@ export function formatRelativeTime(date: Date): string {
 /**
  * 文字列を切り詰める
  */
-export function truncate(
-  str: string,
-  length: number,
-  suffix: string = "..."
-): string {
+export function truncate(str: string, length: number, suffix: string = "..."): string {
   if (str.length <= length) return str;
   return str.slice(0, length - suffix.length) + suffix;
 }
@@ -160,9 +155,7 @@ export function slugify(str: string): string {
  * 文字列をパスカルケースに変換
  */
 export function toPascalCase(str: string): string {
-  return str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word) => word.toUpperCase())
-    .replace(/\s+/g, "");
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word) => word.toUpperCase()).replace(/\s+/g, "");
 }
 
 /**
@@ -272,7 +265,11 @@ export function shuffle<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    // noUncheckedIndexedAccess により配列アクセスが T | undefined となるため、
+    // インデックスが常に有効範囲であることを利用して非nullアサーションでスワップする。
+    const tmp = shuffled[i]!;
+    shuffled[i] = shuffled[j]!;
+    shuffled[j] = tmp;
   }
   return shuffled;
 }
@@ -287,18 +284,18 @@ export function unique<T>(array: T[]): T[] {
 /**
  * 配列をグループ化
  */
-export function groupBy<T, K extends keyof T>(
-  array: T[],
-  key: K
-): Record<string, T[]> {
-  return array.reduce((groups, item) => {
-    const groupKey = String(item[key]);
-    if (!groups[groupKey]) {
-      groups[groupKey] = [];
-    }
-    groups[groupKey].push(item);
-    return groups;
-  }, {} as Record<string, T[]>);
+export function groupBy<T, K extends keyof T>(array: T[], key: K): Record<string, T[]> {
+  return array.reduce(
+    (groups, item) => {
+      const groupKey = String(item[key]);
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push(item);
+      return groups;
+    },
+    {} as Record<string, T[]>,
+  );
 }
 
 /**
@@ -337,7 +334,7 @@ export const storage = {
   get<T>(key: string, defaultValue?: T): T | null {
     try {
       const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue ?? null;
+      return item ? JSON.parse(item) : (defaultValue ?? null);
     } catch {
       return defaultValue ?? null;
     }
@@ -430,8 +427,18 @@ export function isInViewport(element: Element): boolean {
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
-    rect.bottom <=
-      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
+}
+
+/**
+ * オブジェクトから指定キーを除外する（型安全な omit）
+ */
+export function omit<T extends Record<string, unknown>, K extends keyof T>(
+  obj: T,
+  ...keys: K[]
+): Omit<T, K> {
+  const set = new Set<string>(keys as string[]);
+  return Object.fromEntries(Object.entries(obj).filter(([k]) => !set.has(k))) as Omit<T, K>;
 }

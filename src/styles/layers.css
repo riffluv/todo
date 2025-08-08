@@ -1,0 +1,28 @@
+@layer reset, base, tokens, utilities, components, overrides;
+
+@layer tokens {
+  @import url("./tokens.css");
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html {
+    font-size: 100%;
+  }
+
+  body {
+    color: var(--color-fg);
+    background: var(--color-bg);
+    text-rendering: optimizelegibility;
+  }
+}
+
+@layer utilities {
+  .max-inline-68ch {
+    max-inline-size: 68ch;
+  }
+}
+
+/* componentsレイヤーは各コンポーネントCSSに分割していく */

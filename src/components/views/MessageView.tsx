@@ -12,8 +12,9 @@ import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
-import { Box, Container, Heading, Icon, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Heading, Icon, Text, VStack, chakra } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
+import type React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
@@ -168,6 +169,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   <VStack gap={6} align="stretch">
                     {person.message.paragraphs.map((paragraph, index) => (
                       <MotionBox
+                        as="article"
                         key={index}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -176,10 +178,9 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                           delay: 0.6 + index * 0.1,
                           ease: cubicBezier(0.16, 1, 0.3, 1),
                         }}
+                        aria-label={`メッセージ段落 ${index + 1}`}
                       >
-                        <Text {...componentStyles.messageCard.text.primary}>
-                          {paragraph}
-                        </Text>
+                        <Text {...componentStyles.messageCard.text.primary}>{paragraph}</Text>
                       </MotionBox>
                     ))}
                   </VStack>
@@ -194,6 +195,15 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                     }}
                   >
                     <VStack gap={3} mt={{ base: 5, md: 6 }}>
+                      <chakra.time
+                        dateTime={new Date().toISOString()}
+                        aria-label="作成日時"
+                        style={{ display: "block" }}
+                      >
+                        <Text fontSize="xs" color={tokens.colors.gray[500]} textAlign="center">
+                          {new Date().toLocaleDateString()}
+                        </Text>
+                      </chakra.time>
                       <Text
                         fontSize="md"
                         color={tokens.colors.primary[700]}
@@ -202,11 +212,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       >
                         {person.message.closing}
                       </Text>
-                      <Text
-                        fontSize="sm"
-                        color={tokens.colors.gray[600]}
-                        textAlign="center"
-                      >
+                      <Text fontSize="sm" color={tokens.colors.gray[600]} textAlign="center">
                         {person.message.signature}
                       </Text>
                     </VStack>
@@ -229,11 +235,20 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             <MotionBox
               as={VStack}
               {...(() => {
-                const { transition: _, ...containerStyles } =
+                const { transition: _transition, ...containerStyles } =
                   componentStyles.button.message.container;
                 return containerStyles;
               })()}
               onClick={onBack}
+              role="button"
+              aria-label="戻る"
+              tabIndex={0}
+              onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onBack();
+                }
+              }}
               whileHover={{
                 scale: 1.03,
                 y: -6,
@@ -263,7 +278,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             >
               <MotionBox
                 {...(() => {
-                  const { transition: _, ...iconProps } =
+                  const { transition: _transitionUnused, ...iconProps } =
                     componentStyles.button.message.icon;
                   return iconProps;
                 })()}
@@ -281,16 +296,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
           </MotionBox>
 
           {/* フッター */}
-          <MotionBox
-            {...componentStyles.animations.fadeIn}
-            textAlign="center"
-            mt={4}
-          >
-            <Text
-              fontSize="xs"
-              color={tokens.colors.gray[400]}
-              lineHeight="1.5"
-            >
+          <MotionBox {...componentStyles.animations.fadeIn} textAlign="center" mt={4}>
+            <Text fontSize="xs" color={tokens.colors.gray[400]} lineHeight="1.5">
               Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>
