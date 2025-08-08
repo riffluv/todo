@@ -32,7 +32,10 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
     <Box {...componentStyles.page.container} {...themes.home.background}>
       <Container {...componentStyles.page.content}>
         <VStack
-          gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["4xl"] }}
+          gap={{
+            base: `calc(${tokens.spacing["2xl"]} - 6px)`,
+            md: tokens.spacing["4xl"],
+          }}
           align="center"
           w="100%"
         >
@@ -52,7 +55,12 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
-            <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+            <VStack
+              gap={{
+                base: `calc(${tokens.spacing.lg} + 2px)`,
+                md: tokens.spacing.xl,
+              }}
+            >
               {/* グラスモーフィズムメッセージカード */}
               <MotionBox
                 {...containerProps}
@@ -104,7 +112,10 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 />
 
                 <VStack
-                  gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+                  gap={{
+                    base: tokens.spacing.lg,
+                    md: `calc(${tokens.spacing.xl} - 2px)`,
+                  }}
                 >
                   <Text {...componentStyles.messageCard.text.label}>
                     お二人へ
@@ -129,7 +140,10 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
               >
                 <HStack
-                  gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+                  gap={{
+                    base: `calc(${tokens.spacing.lg} + 2px)`,
+                    md: tokens.spacing.xl,
+                  }}
                   justify="center"
                   align="center"
                   flexWrap="wrap"

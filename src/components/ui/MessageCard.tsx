@@ -1,3 +1,4 @@
+import { tokens } from "@/styles/tokens";
 import { Box, BoxProps, Button, Heading, Text, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
@@ -28,31 +29,44 @@ export const MessageCard = ({
     bg="white"
     border="1px solid"
     borderColor="gray.200"
-    borderRadius="lg"
+    borderRadius="xl"
     cursor={onClick ? "pointer" : undefined}
     _hover={
       onClick
         ? {
-          transform: "translateY(-2px)",
-          borderColor: "gray.300",
-          shadow: "sm",
-        }
+            transform: "translateY(-3px)",
+            borderColor: "gray.300",
+            boxShadow: tokens.shadows.md,
+          }
         : undefined
     }
-    transition="all 0.2s ease"
-    p={8}
+    transition={`all ${tokens.animations.durations.fast} ${tokens.animations.easings.emphasized}`}
+    p={{ base: 7, md: 8 }}
     onClick={onClick}
     {...boxProps}
   >
-    <VStack gap={6} textAlign="center">
+    <VStack gap={{ base: 5, md: 6 }} textAlign="center">
       <Box color="gray.600">{icon}</Box>
-      <Heading size="md" color="gray.900" fontWeight="600">
+      <Heading
+        as="h3"
+        fontSize={{
+          base: tokens.typography.fontSizes.lg,
+          md: tokens.typography.fontSizes.xl,
+        }}
+        color={tokens.colors.gray[900]}
+        fontWeight={tokens.typography.fontWeights.semibold}
+        letterSpacing={tokens.typography.letterSpacings.wide}
+      >
         {title}
       </Heading>
       <Text
-        fontSize="sm"
-        color="gray.600"
-        lineHeight="1.6"
+        fontSize={{
+          base: tokens.typography.fontSizes.sm,
+          md: tokens.typography.fontSizes.md,
+        }}
+        color={tokens.colors.gray[700]}
+        lineHeight={tokens.typography.lineHeights.relaxed}
+        letterSpacing={tokens.typography.letterSpacings.wide}
         css={{
           WebkitLineClamp: 3,
           WebkitBoxOrient: "vertical",
@@ -65,8 +79,9 @@ export const MessageCard = ({
       </Text>
       {subText && (
         <Text
-          fontSize="xs"
-          color="gray.500"
+          fontSize={tokens.typography.fontSizes.xs}
+          color={tokens.colors.gray[500]}
+          letterSpacing={tokens.typography.letterSpacings.wider}
           css={{
             WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
@@ -80,11 +95,13 @@ export const MessageCard = ({
       )}
       <Button
         size="sm"
-        bg="gray.900"
+        bg={tokens.colors.gray[900]}
         color="white"
-        _hover={{ bg: "gray.800" }}
-        transition="all 0.2s"
-        borderRadius="md"
+        _hover={{ bg: tokens.colors.gray[800] }}
+        transition={`all ${tokens.animations.durations.fast} ease`}
+        borderRadius="full"
+        px={5}
+        py={2}
       >
         {buttonText}
       </Button>

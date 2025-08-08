@@ -1,6 +1,6 @@
 /**
  * MessageView Component - 個別メッセージビュー
- * 
+ *
  * @description 個人宛メッセージを表示するコンポーネント
  * メインページと統一されたデザインシステムを使用
  */
@@ -12,14 +12,7 @@ import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
-import {
-  Box,
-  Container,
-  Heading,
-  Icon,
-  Text,
-  VStack
-} from "@chakra-ui/react";
+import { Box, Container, Heading, Icon, Text, VStack } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -55,15 +48,15 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                 fontWeight={tokens.typography.fontWeights.bold}
                 color={tokens.colors.primary[600]}
                 textAlign="center"
-                letterSpacing="0.02em"
+                letterSpacing={tokens.typography.letterSpacings.wide}
                 position="relative"
                 _after={{
                   content: '""',
                   position: "absolute",
-                  bottom: "-8px",
+                  bottom: "-10px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  w: "40px",
+                  w: "48px",
                   h: "2px",
                   bg: `linear-gradient(90deg, transparent, ${tokens.colors.primary[400]}, transparent)`,
                   borderRadius: "full",
@@ -89,7 +82,6 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               <MotionBox
                 {...componentStyles.messageCard.container}
                 position="relative"
-
                 whileHover={{
                   y: -8,
                   scale: 1.02,
@@ -105,29 +97,44 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               >
                 {/* 熊さんアイコン群 */}
                 <BearIcon
-                  position={{ top: "-16px", left: "50%", transform: "translateX(-50%)" }}
+                  position={{
+                    top: "-16px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
                   opacity={0.9}
                   size={28}
                   imageSize={20}
                 />
                 <BearIcon
-                  position={{ top: "-12px", left: "50%", transform: "translateX(-250%)" }}
+                  position={{
+                    top: "-12px",
+                    left: "50%",
+                    transform: "translateX(-250%)",
+                  }}
                   opacity={0.6}
                   size={20}
                   imageSize={14}
                   display={{ base: "none", md: "flex" }}
                 />
                 <BearIcon
-                  position={{ top: "-12px", left: "50%", transform: "translateX(150%)" }}
+                  position={{
+                    top: "-12px",
+                    left: "50%",
+                    transform: "translateX(150%)",
+                  }}
                   opacity={0.6}
                   size={20}
                   imageSize={14}
                   display={{ base: "none", md: "flex" }}
                 />
 
-
-
-                <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+                <VStack
+                  gap={{
+                    base: `calc(${tokens.spacing.lg} + 4px)`,
+                    md: tokens.spacing.xl,
+                  }}
+                >
                   {/* カード内日本語名前 */}
                   <MotionBox
                     initial={{ opacity: 0, y: 10 }}
@@ -142,13 +149,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       {...componentStyles.messageCard.text.label}
                       borderBottom="none"
                       pb={tokens.spacing.xs}
-                      mb={0}
+                      mb={1}
                     >
                       {person.name}へ
                     </Text>
                     {/* オレンジのボーダー */}
                     <Box
-                      w="60px"
+                      w="64px"
                       h="3px"
                       bg={`linear-gradient(90deg, ${tokens.colors.primary[400]}, ${tokens.colors.primary[600]})`}
                       borderRadius="full"
@@ -186,7 +193,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       ease: cubicBezier(0.16, 1, 0.3, 1),
                     }}
                   >
-                    <VStack gap={3} mt={6}>
+                    <VStack gap={3} mt={{ base: 5, md: 6 }}>
                       <Text
                         fontSize="md"
                         color={tokens.colors.primary[700]}
@@ -195,7 +202,11 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       >
                         {person.message.closing}
                       </Text>
-                      <Text fontSize="sm" color={tokens.colors.gray[600]} textAlign="center">
+                      <Text
+                        fontSize="sm"
+                        color={tokens.colors.gray[600]}
+                        textAlign="center"
+                      >
                         {person.message.signature}
                       </Text>
                     </VStack>
@@ -218,7 +229,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             <MotionBox
               as={VStack}
               {...(() => {
-                const { transition: _, ...containerStyles } = componentStyles.button.message.container;
+                const { transition: _, ...containerStyles } =
+                  componentStyles.button.message.container;
                 return containerStyles;
               })()}
               onClick={onBack}
@@ -251,7 +263,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             >
               <MotionBox
                 {...(() => {
-                  const { transition: _, ...iconProps } = componentStyles.button.message.icon;
+                  const { transition: _, ...iconProps } =
+                    componentStyles.button.message.icon;
                   return iconProps;
                 })()}
                 {...componentStyles.animations.pulse}
@@ -268,13 +281,21 @@ export function MessageView({ person, onBack }: MessageViewProps) {
           </MotionBox>
 
           {/* フッター */}
-          <MotionBox {...componentStyles.animations.fadeIn} textAlign="center" mt={4}>
-            <Text fontSize="xs" color={tokens.colors.gray[400]} lineHeight="1.5">
+          <MotionBox
+            {...componentStyles.animations.fadeIn}
+            textAlign="center"
+            mt={4}
+          >
+            <Text
+              fontSize="xs"
+              color={tokens.colors.gray[400]}
+              lineHeight="1.5"
+            >
               Web制作で学んだ技術を込めて作成しました
             </Text>
           </MotionBox>
         </VStack>
-      </Container >
-    </Box >
+      </Container>
+    </Box>
   );
 }
