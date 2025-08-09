@@ -9,15 +9,15 @@ import { tokens } from "../tokens";
 export const buttonStyles = {
   message: {
     container: {
-      gap: { base: `calc(${tokens.spacing.md} - 2px)`, md: tokens.spacing.lg }, // 均等ではなく微差
+      gap: { base: tokens.spacing.md, md: tokens.spacing.lg },
       cursor: "pointer",
       transition: `all ${tokens.animations.durations.fast} ${tokens.animations.easings.emphasized}`,
-      p: { base: `calc(${tokens.spacing.md} + 2px)`, md: tokens.spacing.lg },
+      p: { base: tokens.spacing.md, md: tokens.spacing.lg },
       borderRadius: tokens.radii.xl,
-      minW: { base: "120px", md: "140px" }, // より大きなタッチターゲット
-      minH: tokens.mobile.touchTarget,
+      minW: { base: "140px", md: "160px" },
+      minH: "48px",
       _hover: {
-        transform: "translateY(-5px) scale(1.03)",
+        transform: "translateY(-2px) scale(1.01)",
         "& > div": {
           background: `
             linear-gradient(135deg, ${tokens.colors.primary[500]}10, ${tokens.colors.primary[500]}06),
@@ -39,7 +39,7 @@ export const buttonStyles = {
         },
       },
       _active: {
-        transform: "translateY(-2px) scale(1.0)",
+        transform: "translateY(0px) scale(0.99)",
       },
       "@media (hover: none)": {
         _hover: {
@@ -49,7 +49,7 @@ export const buttonStyles = {
           },
         },
         _active: {
-          transform: "scale(0.85)",
+          transform: "scale(0.95)",
           transition: "transform 0.1s ease-out",
           "& > div": {
             background: `

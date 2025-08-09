@@ -41,15 +41,14 @@ export const tokens = {
       900: "#171717",
     },
     semantic: {
-      background: "#fefcf9", // 温かみのあるクリーム白
+      background: "#fefcf9",
       surface: "rgba(255, 255, 255, 0.8)",
       border: "rgba(229, 231, 235, 0.6)",
       text: {
-        primary: "#2d1810",
-        secondary: "#8b4513",
-        muted: "#a0522d",
+        primary: "#1a1a1a",
+        secondary: "#4a4a4a",
+        muted: "#6a6a6a",
       },
-      // v3のcolorPalette運用を想定した補助セマンティクス
       fg: "#1f2937",
       muted: "#6b7280",
       subtle: "#9ca3af",
@@ -62,11 +61,12 @@ export const tokens = {
   typography: {
     fontSizes: {
       xs: "12px",
-      sm: "13px",
+      sm: "14px",
       md: "16px",
-      lg: "17px",
-      xl: "20px",
-      "2xl": "24px",
+      lg: "18px",
+      xl: "24px",
+      "2xl": "32px",
+      "3xl": "40px",
     },
     fontWeights: {
       normal: 400,
@@ -89,19 +89,19 @@ export const tokens = {
     },
   },
 
-  // スペーシング（2025年モバイルファースト最適化）
+  // スペーシング（8ptグリッドシステム準拠）
   spacing: {
     xs: "4px",
     sm: "8px",
     md: "16px",
     lg: "24px",
     xl: "32px",
-    "2xl": "48px",
-    "3xl": "64px",
-    "4xl": "80px",
-    "5xl": "96px",
-    "6xl": "128px",
-    "7xl": "160px",
+    "2xl": "40px",
+    "3xl": "48px",
+    "4xl": "64px",
+    "5xl": "80px",
+    "6xl": "96px",
+    "7xl": "128px",
   },
 
   // モバイル最適化サイズ
@@ -157,11 +157,11 @@ export const tokens = {
   animations: {
     durations: {
       instant: "0.1s",
-      fast: "0.2s",
-      normal: "0.3s",
-      slow: "0.6s",
-      slower: "0.8s",
-      slowest: "1.2s",
+      fast: "0.15s",
+      normal: "0.25s",
+      slow: "0.4s",
+      slower: "0.6s",
+      slowest: "0.8s",
     },
     easings: {
       // Material Design 3.0準拠

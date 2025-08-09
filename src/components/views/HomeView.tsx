@@ -33,8 +33,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
       <Container {...componentStyles.page.content}>
         <VStack
           gap={{
-            base: `calc(${tokens.spacing["2xl"]} - 6px)`,
-            md: tokens.spacing["4xl"],
+            base: tokens.spacing["2xl"],
+            md: tokens.spacing["3xl"],
           }}
           align="center"
           w="100%"
@@ -60,7 +60,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
           >
             <VStack
               gap={{
-                base: `calc(${tokens.spacing.lg} + 2px)`,
+                base: tokens.spacing.lg,
                 md: tokens.spacing.xl,
               }}
             >
@@ -68,10 +68,10 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               <MotionBox
                 {...containerProps}
                 whileHover={{
-                  y: -8,
-                  scale: 1.02,
+                  y: -2,
+                  scale: 1.01,
                   transition: {
-                    duration: 0.3,
+                    duration: 0.25,
                     ease: cubicBezier(0.16, 1, 0.3, 1),
                   },
                 }}
@@ -117,7 +117,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 <VStack
                   gap={{
                     base: tokens.spacing.lg,
-                    md: `calc(${tokens.spacing.xl} - 2px)`,
+                    md: tokens.spacing.xl,
                   }}
                 >
                   <Text {...componentStyles.messageCard.text.label}>お二人へ</Text>
@@ -139,13 +139,12 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               <Box w="100%" pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
                 <HStack
                   gap={{
-                    base: `calc(${tokens.spacing.lg} + 2px)`,
+                    base: tokens.spacing.lg,
                     md: tokens.spacing.xl,
                   }}
                   justify="center"
                   align="center"
                   flexWrap="wrap"
-                  // 全デバイスで横並び - 平等で自然
                 >
                   {messages.map((person, index) => (
                     <MessageButton

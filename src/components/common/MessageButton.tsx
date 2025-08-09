@@ -5,6 +5,8 @@
  */
 "use client";
 
+import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { componentStyles } from "@/styles/components";
 import { tokens } from "@/styles/tokens";
 import { Icon, Text, VStack } from "@chakra-ui/react";
@@ -26,7 +28,13 @@ export interface MessageButtonProps {
   disabled?: boolean;
 }
 
-export function MessageButton({ onClick, label, delay = 0, disabled = false }: MessageButtonProps) {
+export function MessageButton({ onClick, label, delay = 0.6, disabled = false }: MessageButtonProps) {
+  const prefersReducedMotion = useReducedMotion();
+  
+  useKeyboardNavigation({
+    onEnter: onClick,
+    onSpace: onClick,
+  });
   const { transition: _transitionUnused, ...iconProps } = componentStyles.button.message.icon;
 
   // スマホ用のタッチイベントハンドラー
@@ -53,11 +61,11 @@ export function MessageButton({ onClick, label, delay = 0, disabled = false }: M
 
   return (
     <MotionBox
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20, scale: 0.9 }}
+      animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
       transition={{
-        duration: 0.8,
-        delay: delay,
+        duration: prefersReducedMotion ? 0 : 0.8,
+        delay: prefersReducedMotion ? 0 : delay,
         ease: [0.16, 1, 0.3, 1],
       }}
     >

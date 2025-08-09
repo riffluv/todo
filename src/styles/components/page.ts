@@ -11,16 +11,16 @@ export const pageStyles = {
     minHeight: "100dvh",
     position: "relative" as const,
     py: {
-      base: `calc(${tokens.spacing.xl} + 6px)`,
-      md: tokens.spacing["4xl"],
+      base: tokens.spacing.xl,
+      md: tokens.spacing["3xl"],
     },
     px: {
-      base: `calc(${tokens.spacing.lg} - 2px)`,
+      base: tokens.spacing.lg,
       md: tokens.spacing.xl,
     },
     pb: {
-      base: `calc(${tokens.spacing["2xl"]} + 10px)`,
-      md: tokens.spacing["4xl"],
+      base: tokens.spacing["2xl"],
+      md: tokens.spacing["3xl"],
     },
     // 微細なテクスチャ背景
     _before: {
@@ -35,10 +35,10 @@ export const pageStyles = {
     },
   },
   content: {
-    maxW: { base: "100%", sm: "420px", md: "740px", lg: "980px" },
+    maxW: { base: "100%", sm: "400px", md: "600px", lg: "800px", xl: "1000px" },
     gap: {
-      base: `calc(${tokens.spacing["3xl"]} - 6px)`,
-      md: tokens.spacing["5xl"],
+      base: tokens.spacing["2xl"],
+      md: tokens.spacing["3xl"],
     },
     align: "center" as const,
     w: "100%",

@@ -14,7 +14,7 @@ export const messageCardStyles = {
     `,
     borderRadius: tokens.radii.xl,
     p: {
-      base: `calc(${tokens.spacing.xl} - 2px)`, // 余白を微妙に調整
+      base: tokens.spacing.xl,
       md: tokens.spacing["2xl"],
     },
     border: "1px solid",
@@ -22,12 +22,12 @@ export const messageCardStyles = {
     position: "relative" as const,
     boxShadow: tokens.shadows.sm, // 影は控えめに
     _hover: {
-      transform: "translateY(-3px)",
+      transform: "translateY(-2px)",
       boxShadow: tokens.shadows.md,
       background: `linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94))`,
     },
     _active: {
-      transform: "translateY(-1px)",
+      transform: "translateY(0px)",
       boxShadow: tokens.shadows.sm,
     },
     _focusVisible: {
@@ -41,7 +41,7 @@ export const messageCardStyles = {
     },
   },
   content: {
-    gap: { base: `calc(${tokens.spacing.lg} + 2px)`, md: tokens.spacing.xl }, // 均等ではない隙間
+    gap: { base: tokens.spacing.lg, md: tokens.spacing.xl },
     textAlign: "center" as const,
     w: "100%",
   },
@@ -67,7 +67,7 @@ export const messageCardStyles = {
       fontWeight: tokens.typography.fontWeights.medium,
       textTransform: "none" as const, // 手紙らしく自然体
       letterSpacing: tokens.typography.letterSpacings.wider,
-      mb: `calc(${tokens.spacing.sm} - 2px)`,
+      mb: tokens.spacing.sm,
       textAlign: "center" as const,
       pb: tokens.spacing.xs,
       display: "inline-block",

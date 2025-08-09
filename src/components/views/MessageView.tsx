@@ -32,7 +32,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
   return (
     <Box {...componentStyles.page.container} {...theme.background}>
       <Container {...componentStyles.page.content}>
-        <VStack gap={{ base: 16, md: 20 }} align="center">
+        <VStack gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["3xl"] }} align="center">
           {/* 英語タイトルヘッダー */}
           <CharacterHeader delay={0.1}>
             <MotionBox
@@ -77,17 +77,17 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               ease: cubicBezier(0.16, 1, 0.3, 1),
             }}
             w="100%"
-            maxW="680px"
+            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "700px" }}
           >
             <VStack {...componentStyles.messageCard.content}>
               <MotionBox
                 {...componentStyles.messageCard.container}
                 position="relative"
                 whileHover={{
-                  y: -8,
-                  scale: 1.02,
+                  y: -2,
+                  scale: 1.01,
                   transition: {
-                    duration: 0.3,
+                    duration: 0.25,
                     ease: cubicBezier(0.16, 1, 0.3, 1),
                   },
                 }}
@@ -250,22 +250,21 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                 }
               }}
               whileHover={{
-                scale: 1.03,
-                y: -6,
+                scale: 1.01,
+                y: -2,
                 transition: { stiffness: 500, damping: 30 },
               }}
               whileTap={{
-                scale: 0.9,
+                scale: 0.95,
                 y: 0,
                 transition: { duration: 0.15, type: "spring", stiffness: 400 },
               }}
-              // Android/iOS対応のタッチフィードバック
               _active={{
-                transform: "scale(0.9)",
+                transform: "scale(0.95)",
                 transition: "transform 0.1s ease-out",
               }}
               _focus={{
-                transform: "scale(0.95)",
+                transform: "scale(0.98)",
                 outline: "none",
               }}
               // 全デバイス対応のタッチ設定
