@@ -136,7 +136,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               </MotionBox>
 
               {/* 平等な横並びアクションエリア */}
-              <Box w="100%" pt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
+              <Box w="100%" pt={{ base: tokens.spacing.xl, md: tokens.spacing["2xl"] }}>
                 <HStack
                   gap={{
                     base: tokens.spacing.lg,

@@ -28,8 +28,8 @@ export const themes = {
       },
       letter: {
         fontSize: {
-          base: tokens.typography.fontSizes.xl,
-          md: tokens.typography.fontSizes["2xl"],
+          base: tokens.typography.fontSizes["2xl"],
+          md: tokens.typography.fontSizes["3xl"],
         },
         fontWeight: tokens.typography.fontWeights.semibold,
         color: tokens.colors.primary[500],

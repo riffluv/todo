@@ -71,7 +71,19 @@ export const messageCardStyles = {
       textAlign: "center" as const,
       pb: tokens.spacing.xs,
       display: "inline-block",
-      borderBottom: `1px solid ${tokens.colors.primary[500]}33`, // 繊細な下線
+      borderBottom: "none",
+      position: "relative" as const,
+      _after: {
+        content: '""',
+        position: "absolute",
+        bottom: "-2px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        w: "32px",
+        h: "2px",
+        bg: `linear-gradient(90deg, transparent, ${tokens.colors.primary[400]}, transparent)`,
+        borderRadius: "full",
+      },
     },
     // 補足文用（必要な箇所で使用）
     caption: {

@@ -8,11 +8,12 @@
 
 import { BearIcon } from "@/components/common/BearIcon";
 import { CharacterHeader } from "@/components/common/CharacterHeader";
+import { TypewriterTitle } from "@/components/common/TypewriterTitle";
 import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
-import { Box, Container, Heading, Icon, Text, VStack, chakra } from "@chakra-ui/react";
+import { Box, Container, Icon, Text, VStack, chakra } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
 import type React from "react";
 import { FaArrowLeft } from "react-icons/fa";
@@ -35,37 +36,12 @@ export function MessageView({ person, onBack }: MessageViewProps) {
         <VStack gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["3xl"] }} align="center">
           {/* 英語タイトルヘッダー */}
           <CharacterHeader delay={0.1}>
-            <MotionBox
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                ease: cubicBezier(0.16, 1, 0.3, 1),
-              }}
-            >
-              <Heading
-                fontSize={{ base: "2xl", md: "3xl" }}
-                fontWeight={tokens.typography.fontWeights.bold}
-                color={tokens.colors.primary[600]}
-                textAlign="center"
-                letterSpacing={tokens.typography.letterSpacings.wide}
-                position="relative"
-                _after={{
-                  content: '""',
-                  position: "absolute",
-                  bottom: "-10px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  w: "48px",
-                  h: "2px",
-                  bg: `linear-gradient(90deg, transparent, ${tokens.colors.primary[400]}, transparent)`,
-                  borderRadius: "full",
-                }}
-              >
-                Dear {person.id === "saito" ? "Saito-san" : "Sakuda-san"}
-              </Heading>
-            </MotionBox>
+            <TypewriterTitle 
+              text={`Dear ${person.id === "saito" ? "Saito-san" : "Sakuda-san"}`}
+              delay={0.3}
+              fontSize={{ base: "2xl", md: "3xl" }}
+              color={tokens.colors.primary[600]}
+            />
           </CharacterHeader>
 
           {/* メッセージカード */}
@@ -148,25 +124,12 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   >
                     <Text
                       {...componentStyles.messageCard.text.label}
-                      borderBottom="none"
-                      pb={tokens.spacing.xs}
-                      mb={1}
                     >
                       {person.name}へ
                     </Text>
-                    {/* オレンジのボーダー */}
-                    <Box
-                      w="64px"
-                      h="3px"
-                      bg={`linear-gradient(90deg, ${tokens.colors.primary[400]}, ${tokens.colors.primary[600]})`}
-                      borderRadius="full"
-                      mx="auto"
-                      mt={0}
-                      opacity={0.8}
-                    />
                   </MotionBox>
 
-                  <VStack gap={6} align="stretch">
+                  <VStack gap={{ base: 5, md: 6 }} align="stretch">
                     {person.message.paragraphs.map((paragraph, index) => (
                       <MotionBox
                         as="article"
@@ -180,7 +143,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                         }}
                         aria-label={`メッセージ段落 ${index + 1}`}
                       >
-                        <Text {...componentStyles.messageCard.text.primary}>{paragraph}</Text>
+                        <Text
+                          {...componentStyles.messageCard.text.primary}
+                          lineHeight={{ base: "1.7", md: "1.75" }}
+                          mb={{ base: 2, md: 3 }}
+                        >
+                          {paragraph}
+                        </Text>
                       </MotionBox>
                     ))}
                   </VStack>

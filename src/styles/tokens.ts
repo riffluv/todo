@@ -106,16 +106,27 @@ export const tokens = {
 
   // モバイル最適化サイズ
   mobile: {
-    touchTarget: "48px", // 最小タッチターゲット
+    touchTarget: "48px",
     characterSize: {
       sm: "120px",
       md: "140px",
       lg: "160px",
     },
     safeArea: {
-      top: "44px", // iPhone notch対応
-      bottom: "34px", // iPhone home indicator対応
+      top: "44px",
+      bottom: "34px",
     },
+  },
+
+  // フォーカス状態の強化
+  focus: {
+    ring: {
+      width: "3px",
+      color: "#f97316",
+      offset: "2px",
+      style: "solid",
+    },
+    background: "rgba(249, 115, 22, 0.1)",
   },
 
   // ボーダーラディウス
