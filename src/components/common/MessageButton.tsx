@@ -11,7 +11,7 @@ import { componentStyles } from "@/styles/components";
 import { tokens } from "@/styles/tokens";
 import { Icon, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import type React from "react";
+import React from "react";
 import { FaEnvelope } from "react-icons/fa";
 
 const MotionBox = motion.create(VStack);
@@ -26,37 +26,114 @@ export interface MessageButtonProps {
   delay?: number;
   /** 無効化状態 */
   disabled?: boolean;
+  /** アイコン（省略時は封筒） */
+  icon?: React.ElementType;
 }
 
-export function MessageButton({ onClick, label, delay = 0.6, disabled = false }: MessageButtonProps) {
+export function MessageButton({ onClick, label, delay = 0.6, disabled = false, icon = FaEnvelope }: MessageButtonProps) {
   const prefersReducedMotion = useReducedMotion();
-  
+  const [pressed, setPressed] = React.useState(false);
+  const [showRipple, setShowRipple] = React.useState(false);
+  const [showDelayedBorder, setShowDelayedBorder] = React.useState(false);
+  const [iconColorStage, setIconColorStage] = React.useState<'normal' | 'pressed' | 'delayed'>('normal');
+
   useKeyboardNavigation({
-    onEnter: onClick,
-    onSpace: onClick,
+    onEnter: () => !disabled && onClick(),
+    onSpace: () => !disabled && onClick(),
   });
   const { transition: _transitionUnused, ...iconProps } = componentStyles.button.message.icon;
 
-  // スマホ用のタッチイベントハンドラー
-  const handleTouchStart = () => {
-    if (!disabled) {
-      // タッチ開始時の処理（必要に応じて）
-    }
+  // Pointerイベントで統一（iOS/Android/デスクトップ一貫）
+  const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (disabled) return;
+    // マウス右クリックなどは無視
+    if (e.button && e.button !== 0) return;
+    setPressed(true);
+    
+    // アイコン色変化の段階的アニメーション
+    setIconColorStage('pressed'); // 即座に押下色に
+    setTimeout(() => setIconColorStage('delayed'), 100); // 100ms後に遅延色に
+    
+    // リップル効果を開始
+    setShowRipple(true);
+    setTimeout(() => setShowRipple(false), 600);
+    
+    // 遅延オレンジボーダーを表示（150ms後）
+    setTimeout(() => setShowDelayedBorder(true), 150);
   };
 
-  const handleTouchEnd = () => {
-    if (!disabled) {
-      // タッチ終了時の処理（必要に応じて）
-    }
+  const clearPressed = () => {
+    setPressed(false);
+    // アイコン色を通常に戻す（少し遅延させて自然に）
+    setTimeout(() => setIconColorStage('normal'), 150);
+    // 遅延ボーダーもクリア
+    setTimeout(() => setShowDelayedBorder(false), 200);
   };
 
-  // キーボード操作対応（Enter / Spaceで発火）
+  const handlePointerUp: React.PointerEventHandler<HTMLDivElement> = () => {
+    if (disabled) return;
+    clearPressed();
+  };
+
+  const handlePointerCancel: React.PointerEventHandler<HTMLDivElement> = () => {
+    clearPressed();
+  };
+
+  const handlePointerLeave: React.PointerEventHandler<HTMLDivElement> = () => {
+    clearPressed();
+  };
+
+  // キーボード操作対応（Enter / Spaceで発火）＋視覚的押下
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
     if (disabled) return;
-    if (e.key === "Enter" || e.key === " ") {
+    if (e.key === " " || e.key === "Enter") {
       e.preventDefault();
+      setPressed(true);
+      
+      // キーボード操作でもリッチエフェクトを適用（アイコン色変化含む）
+      setIconColorStage('pressed');
+      setTimeout(() => setIconColorStage('delayed'), 100);
+      setShowRipple(true);
+      setTimeout(() => setShowRipple(false), 600);
+      setTimeout(() => setShowDelayedBorder(true), 150);
+      
       onClick();
     }
+  };
+
+  const handleKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (e.key === " " || e.key === "Enter") {
+      clearPressed();
+    }
+  };
+
+  // アンマウント/ページ遷移時に押下状態を確実に解除
+  React.useEffect(() => {
+    const onWinPointerUp = () => clearPressed();
+    const onVisibility = () => {
+      if (document.visibilityState !== "visible") clearPressed();
+    };
+    const onWinKeyUp = (e: KeyboardEvent) => {
+      if (e.key === " " || e.key === "Enter") clearPressed();
+    };
+    window.addEventListener("pointerup", onWinPointerUp, true);
+    window.addEventListener("keyup", onWinKeyUp, true);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      setPressed(false);
+      window.removeEventListener("pointerup", onWinPointerUp, true);
+      window.removeEventListener("keyup", onWinKeyUp, true);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  // クリック時は先に押下状態を解除してから遷移
+  const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (disabled) return;
+    // マウス操作時はフォーカスを残さない
+    (e.currentTarget as HTMLElement).blur();
+    clearPressed();
+    onClick();
   };
 
   return (
@@ -72,18 +149,36 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false }:
       <MotionBox
         as={VStack}
         {...(() => {
-          const { transition: _transitionUnused2, ...containerStyles } =
-            componentStyles.button.message.container;
-          return containerStyles;
+          const {
+            transition: _transitionUnused2,
+            _active: _omitActive,
+            _hover: _omitHover,
+            _focus: _omitFocus,
+            _focusVisible: _omitFocusVisible,
+            // Chakraの型の都合で as any
+            ["@media (hover: none)"]: _omitMedia,
+            ...containerBase
+          } = componentStyles.button.message.container as any;
+          return containerBase;
         })()}
-        {...(!disabled ? { onClick } : {})}
+        {...(!disabled ? { onClick: handleClick } : {})}
         role="button"
         aria-label={label}
         aria-disabled={disabled || undefined}
         tabIndex={disabled ? -1 : 0}
         onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+        // マウスクリックでフォーカスを当てない（focus-visibleのみ表示）
+        onMouseDown={(e) => e.preventDefault()}
         opacity={disabled ? 0.6 : 1}
         cursor={disabled ? "not-allowed" : "pointer"}
+        // フォーカス時のオレンジ背景・スケールは無効化（枠線のみ）
+        _focus={{ outline: "none" }}
+        _focusVisible={{
+          outline: `${tokens.focus.ring.width} ${tokens.focus.ring.style} ${tokens.focus.ring.color}`,
+          outlineOffset: tokens.focus.ring.offset,
+          // 影は付けない（背景っぽく見えるのを防ぐ）
+        }}
         {...(!disabled
           ? {
               whileHover: {
@@ -91,39 +186,109 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false }:
                 y: -6,
                 transition: { stiffness: 500, damping: 30 },
               },
-              whileTap: {
-                scale: 0.9,
-                y: 0,
-                transition: { duration: 0.15, type: "spring", stiffness: 400 },
-              },
             }
           : {})}
-        // Android/iOS対応のタッチフィードバック
-        _active={{
-          transform: "scale(0.9)",
-          transition: "transform 0.1s ease-out",
-        }}
-        _focus={{
-          transform: "scale(0.95)",
-          outline: "none",
-        }}
-        // 全デバイス対応のタッチ設定
+        // 押下時の縮小量を強め、タッチに素早く反応
+        animate={pressed ? { scale: 0.92, y: 0 } : { scale: 1, y: 0 }}
+        transition={pressed
+          ? { type: "spring", stiffness: 900, damping: 40, mass: 0.4 }
+          : { type: "spring", stiffness: 500, damping: 28, mass: 0.6 }}
+        // 全デバイス対応のタッチ設定（Pointerイベント）
         style={{
           WebkitTapHighlightColor: "transparent",
           touchAction: "manipulation",
           userSelect: "none",
           WebkitUserSelect: "none",
         }}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onPointerLeave={handlePointerLeave}
+        // 押下中の見た目（コンテナ側）
+        {...(pressed
+          ? {
+              transform: "scale(0.95)",
+            }
+          : {})}
       >
-        <MotionIconBox {...iconProps} {...componentStyles.animations.pulse}>
-          <Icon
-            as={FaEnvelope}
-            boxSize={{ base: 5, md: 6 }}
-            color={tokens.colors.primary[500]}
-            transition={`all ${tokens.animations.durations.normal} ${tokens.animations.easings.bounce}`}
-          />
+        <MotionIconBox
+          {...iconProps}
+          {...componentStyles.animations.pulse}
+          position="relative"
+          overflow="hidden"
+          // 押下中の見た目（アイコン円）- より洗練されたスタイル
+          {...(pressed
+            ? {
+                background: `rgba(255, 248, 240, 0.9)`,
+                transform: "scale(0.92)",
+                borderColor: tokens.colors.primary[300],
+                boxShadow: `0 1px 4px ${tokens.colors.primary[200]}40, inset 0 1px 2px rgba(0, 0, 0, 0.05)`,
+              }
+            : {})}
+          // 遅延サブトルボーダーのスタイル
+          {...(showDelayedBorder
+            ? {
+                borderColor: tokens.colors.primary[400],
+                borderWidth: "1px",
+                boxShadow: `0 0 0 1px ${tokens.colors.primary[300]}60, 0 2px 8px ${tokens.colors.primary[200]}30`,
+              }
+            : {})}
+          animate={pressed ? { scale: 0.92, rotate: 1 } : { scale: 1, rotate: 0 }}
+          transition={pressed
+            ? { type: "spring", stiffness: 800, damping: 40, mass: 0.4 }
+            : { type: "spring", stiffness: 500, damping: 30, mass: 0.6 }}
+        >
+          {/* サブトルリップル効果 */}
+          {showRipple && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0.4 }}
+              animate={{ scale: 2, opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                background: `radial-gradient(circle, ${tokens.colors.primary[200]}40 0%, ${tokens.colors.primary[300]}20 50%, transparent 70%)`,
+                transform: "translate(-50%, -50%)",
+                pointerEvents: "none",
+                zIndex: 1,
+              }}
+            />
+          )}
+          
+          <motion.div
+            animate={
+              iconColorStage === 'delayed' 
+                ? { scale: 1.05, rotate: -1 } // 遅延色時に少し大きく
+                : pressed 
+                  ? { scale: 0.95, rotate: -1 } 
+                  : { scale: 1, rotate: 0 }
+            }
+            transition={
+              iconColorStage === 'delayed'
+                ? { type: "spring", stiffness: 1200, damping: 50, mass: 0.25 } // 遅延時はより弾性的に
+                : pressed
+                  ? { type: "spring", stiffness: 900, damping: 45, mass: 0.3 }
+                  : { type: "spring", stiffness: 600, damping: 35, mass: 0.5 }
+            }
+            style={{ position: "relative", zIndex: 2 }}
+          >
+            <Icon
+              as={icon}
+              boxSize={{ base: 5, md: 6 }}
+              color={
+                iconColorStage === 'delayed'
+                  ? tokens.colors.primary[700] // 遅延時：最も濃い色
+                  : iconColorStage === 'pressed'
+                    ? tokens.colors.primary[600] // 押下時：中間色
+                    : tokens.colors.primary[500] // 通常時：標準色
+              }
+              transition={`color ${tokens.animations.durations.fast} ${tokens.animations.easings.easeInOut}`}
+            />
+          </motion.div>
         </MotionIconBox>
         <Text {...componentStyles.button.message.label}>{label}</Text>
       </MotionBox>

@@ -8,7 +8,10 @@
 
 import { BearIcon } from "@/components/common/BearIcon";
 import { CharacterHeader } from "@/components/common/CharacterHeader";
+import { MessageButton } from "@/components/common/MessageButton";
 import { TypewriterTitle } from "@/components/common/TypewriterTitle";
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
@@ -29,6 +32,8 @@ export interface MessageViewProps {
 
 export function MessageView({ person, onBack }: MessageViewProps) {
   const theme = themes[person.themeKey];
+  const { gpuAcceleration } = usePerformanceOptimization();
+  useScrollEnhancement();
 
   return (
     <Box {...componentStyles.page.container} {...theme.background}>
@@ -59,6 +64,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               <MotionBox
                 {...componentStyles.messageCard.container}
                 position="relative"
+                style={gpuAcceleration}
                 whileHover={{
                   y: -2,
                   scale: 1.01,
@@ -191,7 +197,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             </VStack>
           </MotionBox>
 
-          {/* 戻るボタン（手紙ボタンと同じスタイル） */}
+          {/* 戻るボタン（MessageButtonで統一） */}
           <MotionBox
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -201,66 +207,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               ease: [0.16, 1, 0.3, 1],
             }}
           >
-            <MotionBox
-              as={VStack}
-              {...(() => {
-                const { transition: _transition, ...containerStyles } =
-                  componentStyles.button.message.container;
-                return containerStyles;
-              })()}
-              onClick={onBack}
-              role="button"
-              aria-label="戻る"
-              tabIndex={0}
-              onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  onBack();
-                }
-              }}
-              whileHover={{
-                scale: 1.01,
-                y: -2,
-                transition: { stiffness: 500, damping: 30 },
-              }}
-              whileTap={{
-                scale: 0.95,
-                y: 0,
-                transition: { duration: 0.15, type: "spring", stiffness: 400 },
-              }}
-              _active={{
-                transform: "scale(0.95)",
-                transition: "transform 0.1s ease-out",
-              }}
-              _focus={{
-                transform: "scale(0.98)",
-                outline: "none",
-              }}
-              // 全デバイス対応のタッチ設定
-              style={{
-                WebkitTapHighlightColor: "transparent",
-                touchAction: "manipulation",
-                userSelect: "none",
-                WebkitUserSelect: "none",
-              }}
-            >
-              <MotionBox
-                {...(() => {
-                  const { transition: _transitionUnused, ...iconProps } =
-                    componentStyles.button.message.icon;
-                  return iconProps;
-                })()}
-                {...componentStyles.animations.pulse}
-              >
-                <Icon
-                  as={FaArrowLeft}
-                  boxSize={{ base: 5, md: 6 }}
-                  color={tokens.colors.primary[500]}
-                  transition={`all ${tokens.animations.durations.normal} ${tokens.animations.easings.bounce}`}
-                />
-              </MotionBox>
-              <Text {...componentStyles.button.message.label}>戻る</Text>
-            </MotionBox>
+            <MessageButton onClick={onBack} label="戻る" icon={FaArrowLeft} />
           </MotionBox>
 
           {/* フッター */}

@@ -443,3 +443,10 @@ export function useFetch<T>(
 
   return { data, loading, error, refetch: fetchData };
 }
+
+// Re-export individual hooks
+export { useAppState } from './useAppState';
+export { useKeyboardNavigation } from './useKeyboardNavigation';
+export { useReducedMotion } from './useReducedMotion';
+export { usePerformanceOptimization } from './usePerformanceOptimization';
+export { useScrollEnhancement } from './useScrollEnhancement';
