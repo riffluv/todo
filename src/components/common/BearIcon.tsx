@@ -46,7 +46,7 @@ export function BearIcon({
       justifyContent="center"
     >
       <Image
-        src="/manabyicon.png"
+        src="/manabyicon.webp"
         alt="manaby"
         width={imageSize}
         height={imageSize}

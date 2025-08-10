@@ -109,7 +109,7 @@ export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProp
               <MotionBox {...ANIMATIONS.logo} w="100%" display="flex" justifyContent="center">
                 <Box position="relative" width={SIZES.logo.width} height={SIZES.logo.height}>
                   <Image
-                    src="/manabylogo.png"
+                    src="/manabylogo.webp"
                     alt="Manaby"
                     fill
                     style={{ objectFit: "contain" }}
@@ -134,7 +134,7 @@ export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProp
                       }}
                     >
                       <Image
-                        src="/manabyicon.png"
+                        src="/manabyicon.webp"
                         alt=""
                         width={52}
                         height={52}

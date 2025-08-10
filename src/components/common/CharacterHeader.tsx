@@ -27,7 +27,7 @@ export interface CharacterHeaderProps {
 export function CharacterHeader({
   children,
   delay = 0,
-  characterSrc = "/manaby-jump2.png",
+  characterSrc = "/manaby-jump2.webp",
   characterAlt = "manaby character"
 }: CharacterHeaderProps) {
   return (

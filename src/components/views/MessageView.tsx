@@ -47,9 +47,9 @@ export function MessageView({ person, onBack }: MessageViewProps) {
           <CharacterHeader 
             delay={0.1}
             characterSrc={
-              person.id === "sakuda" ? "/sakuda.png" : 
-              person.id === "saito" ? "/saito.png" : 
-              "/manaby-jump2.png"
+              person.id === "sakuda" ? "/sakuda.webp" : 
+              person.id === "saito" ? "/saito.webp" : 
+              "/manaby-jump2.webp"
             }
             characterAlt={
               person.id === "sakuda" ? "作田さんのキャラクター" : 
