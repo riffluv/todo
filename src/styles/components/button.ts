@@ -130,7 +130,7 @@ export const buttonStyles = {
       },
       fontWeight: tokens.typography.fontWeights.semibold,
       color: tokens.colors.primary[600],
-      letterSpacing: tokens.typography.letterSpacings.wide,
+      letterSpacing: "0.005em", // 日本語ボタンラベルに最適化
       transition: `color ${tokens.animations.durations.fast} ease, transform ${tokens.animations.durations.fast} ease`,
     },
   },
@@ -169,11 +169,17 @@ export const buttonStyles = {
       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.08)",
       _hover: {
         bg: "rgba(255, 255, 255, 0.95)",
-        transform: "translateY(-1px)",
+        transform: "translateY(-1px) scale(1.02)",
         boxShadow: "0 6px 14px rgba(0, 0, 0, 0.12)",
+        borderColor: `${tokens.colors.primary[300]}40`,
       },
       _active: {
         transform: "scale(0.98)",
+      },
+      _focus: {
+        outline: "2px solid",
+        outlineColor: `${tokens.colors.primary[400]}60`,
+        outlineOffset: "2px",
       },
       transition: `all ${tokens.animations.durations.fast} ease-out`,
     },

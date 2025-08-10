@@ -57,7 +57,7 @@ export const messageCardStyles = {
       },
       color: tokens.colors.gray[800],
       fontWeight: tokens.typography.fontWeights.normal,
-      letterSpacing: tokens.typography.letterSpacings.wide, // 読みやすさ重視でわずかに広げる
+      letterSpacing: "0.005em", // 日本語に最適化された間隔
       textAlign: "center" as const,
       maxW: "none",
     },
@@ -67,7 +67,7 @@ export const messageCardStyles = {
       color: tokens.colors.primary[600],
       fontWeight: tokens.typography.fontWeights.semibold,
       textTransform: "none" as const, // 手紙らしく自然体
-      letterSpacing: tokens.typography.letterSpacings.wider,
+      letterSpacing: "0.01em", // 日本語ラベルに適した間隔
       mb: tokens.spacing.sm,
       textAlign: "center" as const,
       pb: 0,

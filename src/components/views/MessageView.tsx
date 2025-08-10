@@ -142,7 +142,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                     </Text>
                   </MotionBox>
 
-                  <VStack gap={{ base: 5, md: 6 }} align="stretch">
+                  <VStack gap={{ base: 6, md: 7 }} align="stretch">
                     {person.message.paragraphs.map((paragraph, index) => (
                       <MotionBox
                         as="article"
@@ -182,7 +182,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                         aria-label="作成日時"
                         style={{ display: "block" }}
                       >
-                        <Text fontSize="xs" color={tokens.colors.gray[500]} textAlign="center">
+                        <Text 
+                          fontSize="xs" 
+                          color={tokens.colors.gray[400]} 
+                          textAlign="center"
+                          opacity={0.8}
+                          fontWeight={tokens.typography.fontWeights.normal}
+                        >
                           {new Date().toLocaleDateString()}
                         </Text>
                       </chakra.time>
@@ -214,13 +220,24 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               ease: [0.16, 1, 0.3, 1],
             }}
           >
-            <MessageButton onClick={onBack} label="戻る" icon={FaArrowLeft} />
+            <MessageButton 
+              onClick={onBack} 
+              label="戻る" 
+              icon={FaArrowLeft}
+              aria-label="ホーム画面に戻る"
+            />
           </MotionBox>
 
           {/* フッター */}
           <MotionBox {...componentStyles.animations.fadeIn} textAlign="center" mt={4}>
-            <Text fontSize="xs" color={tokens.colors.gray[400]} lineHeight="1.5">
-              Web制作で学んだ技術を込めて作成しました
+            <Text 
+              fontSize="xs" 
+              color={tokens.colors.gray[500]} 
+              fontWeight={tokens.typography.fontWeights.medium}
+              letterSpacing="0.2px"
+              style={{ opacity: 0.7 }}
+            >
+              ☕ かねこより
             </Text>
           </MotionBox>
         </VStack>

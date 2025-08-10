@@ -176,7 +176,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
 
           {/* 改良されたフッター */}
           <MotionBox
-            {...componentStyles.animations.fadeIn}
+            {...componentStyles.animations.fadeInUp}
             textAlign="center"
             mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
             px={tokens.spacing.md}
@@ -186,13 +186,14 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               ease: cubicBezier(0.16, 1, 0.3, 1),
             }}
           >
-            <Text
-              fontSize={{ base: "xs", md: "sm" }}
-              color={tokens.colors.gray[400]}
-              lineHeight="1.6"
+            <Text 
+              fontSize="xs" 
+              color={tokens.colors.gray[500]} 
               fontWeight={tokens.typography.fontWeights.medium}
+              letterSpacing="0.2px"
+              style={{ opacity: 0.7 }}
             >
-              Web制作で学んだ技術を込めて作成しました
+              ☕ かねこより
             </Text>
           </MotionBox>
         </VStack>
