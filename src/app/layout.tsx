@@ -1,6 +1,6 @@
 import { Provider } from "@/components/ui/provider";
 import { PawEffectProvider } from "@/components/providers/PawEffectProvider";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
+};
+
+export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#F5F0E6" },
     { media: "(prefers-color-scheme: dark)", color: "#111111" },
@@ -30,6 +33,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" suppressHydrationWarning>
+      <head>
+        {/* Preload key images for faster first and subsequent views */}
+        <link rel="preload" as="image" href="/manaby-jump2.webp" />
+        <link rel="preload" as="image" href="/sakuda.webp" />
+        <link rel="preload" as="image" href="/saito.webp" />
+        <link rel="preload" as="image" href="/manabyicon.webp" />
+      </head>
       <body
         className={`${inter.variable} antialiased`}
       >

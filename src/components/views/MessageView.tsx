@@ -74,7 +74,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               ease: cubicBezier(0.16, 1, 0.3, 1),
             }}
             w="100%"
-            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "700px" }}
+            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
             <VStack {...componentStyles.messageCard.content}>
               <MotionBox
@@ -240,7 +240,11 @@ export function MessageView({ person, onBack }: MessageViewProps) {
           </MotionBox>
 
           {/* フッター */}
-          <MotionBox {...componentStyles.animations.fadeIn} textAlign="center" mt={4}>
+          <MotionBox 
+            {...componentStyles.animations.fadeIn} 
+            textAlign="center" 
+            mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
+          >
             <Text 
               fontSize="xs" 
               color={tokens.colors.gray[500]} 
