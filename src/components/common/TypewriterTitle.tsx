@@ -27,11 +27,13 @@ export function TypewriterTitle({
   const prefersReducedMotion = useReducedMotion();
   const [displayText, setDisplayText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
+  const [showExclamation, setShowExclamation] = useState(false);
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      setDisplayText(text);
+      setDisplayText(text + "!");
       setShowCursor(false);
+      setShowExclamation(false);
       return;
     }
 
@@ -48,10 +50,11 @@ export function TypewriterTitle({
             setShowCursor(prev => !prev);
           }, 530);
           
-          // 3秒後にカーソルを非表示
+          // 3秒後にカーソルを非表示にして感嘆符を表示
           setTimeout(() => {
             clearInterval(cursorInterval);
             setShowCursor(false);
+            setShowExclamation(true);
           }, 3000);
         }
       }, 80);
@@ -63,7 +66,8 @@ export function TypewriterTitle({
   return (
     <MotionHeading
       fontSize={fontSize}
-      fontWeight={tokens.typography.fontWeights.bold}
+      fontFamily={tokens.typography.fontFamilies.heading}
+      fontWeight={tokens.typography.fontWeights.semibold}
       color={color}
       textAlign="center"
       letterSpacing={tokens.typography.letterSpacings.wide}
@@ -102,6 +106,23 @@ export function TypewriterTitle({
           }}
         >
           |
+        </motion.span>
+      )}
+      {showExclamation && (
+        <motion.span
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.4,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          style={{ 
+            color: tokens.colors.primary[600],
+            marginLeft: "2px",
+            fontWeight: tokens.typography.fontWeights.bold
+          }}
+        >
+          !
         </motion.span>
       )}
     </MotionHeading>

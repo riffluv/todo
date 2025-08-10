@@ -123,12 +123,13 @@ export const buttonStyles = {
       },
     },
     label: {
+      fontFamily: tokens.typography.fontFamilies.body,
       fontSize: {
         base: tokens.typography.fontSizes.sm,
         md: tokens.typography.fontSizes.md,
       },
       fontWeight: tokens.typography.fontWeights.semibold,
-      color: tokens.colors.semantic.text.primary,
+      color: tokens.colors.primary[600],
       letterSpacing: tokens.typography.letterSpacings.wide,
       transition: `color ${tokens.animations.durations.fast} ease, transform ${tokens.animations.durations.fast} ease`,
     },

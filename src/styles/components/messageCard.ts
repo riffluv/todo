@@ -62,9 +62,10 @@ export const messageCardStyles = {
       maxW: "none",
     },
     label: {
+      fontFamily: tokens.typography.fontFamilies.body,
       fontSize: tokens.typography.fontSizes.sm,
       color: tokens.colors.primary[600],
-      fontWeight: tokens.typography.fontWeights.medium,
+      fontWeight: tokens.typography.fontWeights.semibold,
       textTransform: "none" as const, // 手紙らしく自然体
       letterSpacing: tokens.typography.letterSpacings.wider,
       mb: tokens.spacing.sm,

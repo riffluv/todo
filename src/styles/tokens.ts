@@ -59,6 +59,13 @@ export const tokens = {
 
   // タイポグラフィ
   typography: {
+    fontFamilies: {
+      // 感謝メッセージに適した温かみのあるフォント
+      heading: '"Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Meiryo", sans-serif',
+      body: '"Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Meiryo", sans-serif',
+      // 特別な場面用の手書き風フォント（オプション）
+      handwritten: '"Klee One", "Hiragino Kaku Gothic ProN", cursive, sans-serif',
+    },
     fontSizes: {
       xs: "12px",
       sm: "14px",
