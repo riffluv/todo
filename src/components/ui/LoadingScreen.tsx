@@ -14,8 +14,8 @@ const BEAR_COUNT = 3;
 
 const SIZES = {
   logo: {
-    width: { base: "260px", md: "324px" },
-    height: { base: "71px", md: "89px" },
+    width: { base: "260px", md: "400px", lg: "460px" },
+    height: { base: "71px", md: "109px", lg: "126px" },
   },
   bear: {
     size: { base: "40px", md: "52px" },
@@ -23,7 +23,7 @@ const SIZES = {
   },
   container: {
     gap: { base: "48px", md: "64px" },
-    maxWidth: { base: "320px", md: "400px" },
+    maxWidth: { base: "320px", md: "520px", lg: "600px" },
   },
 } as const;
 
@@ -113,7 +113,7 @@ export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProp
                     alt="Manaby"
                     fill
                     style={{ objectFit: "contain" }}
-                    sizes="(max-width: 768px) 260px, 324px"
+                    sizes="(max-width: 768px) 260px, (max-width: 992px) 400px, 460px"
                     priority
                   />
                 </Box>
