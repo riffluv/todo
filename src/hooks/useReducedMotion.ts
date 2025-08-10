@@ -10,10 +10,20 @@ export function useReducedMotion(): boolean {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
+    
+    // モバイルデバイスの判定
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // モバイルでは、ユーザーが明示的にreduced motionを設定していない限り、アニメーションを有効にする
+    // デスクトップでは従来通りの動作
+    const shouldReduceMotion = isMobile ? false : mediaQuery.matches;
+    
+    setPrefersReducedMotion(shouldReduceMotion);
 
     const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches);
+      // モバイルでは引き続きアニメーションを有効に保つ
+      const newShouldReduceMotion = isMobile ? false : event.matches;
+      setPrefersReducedMotion(newShouldReduceMotion);
     };
 
     mediaQuery.addEventListener("change", handleChange);
