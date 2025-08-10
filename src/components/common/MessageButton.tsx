@@ -41,7 +41,7 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
     onEnter: () => !disabled && onClick(),
     onSpace: () => !disabled && onClick(),
   });
-  const { transition: _transitionUnused, ...iconProps } = componentStyles.button.message.icon;
+  const { transition: _, ...iconProps } = componentStyles.button.message.icon;
 
   // Pointerイベントで統一（iOS/Android/デスクトップ一貫）
   const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
@@ -150,15 +150,15 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
         as={VStack}
         {...(() => {
           const {
-            transition: _transitionUnused2,
-            _active: _omitActive,
-            _hover: _omitHover,
-            _focus: _omitFocus,
-            _focusVisible: _omitFocusVisible,
-            // Chakraの型の都合で as any
-            ["@media (hover: none)"]: _omitMedia,
+            transition: __,
+            _active: ___,
+            _hover: ____,
+            _focus: _____,
+            _focusVisible: ______,
+            // Chakraの型の都合
+            ["@media (hover: none)"]: _______,
             ...containerBase
-          } = componentStyles.button.message.container as any;
+          } = componentStyles.button.message.container as Record<string, unknown>;
           return containerBase;
         })()}
         {...(!disabled ? { onClick: handleClick } : {})}

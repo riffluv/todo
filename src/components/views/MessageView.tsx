@@ -16,7 +16,7 @@ import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
-import { Box, Container, Icon, Text, VStack, chakra } from "@chakra-ui/react";
+import { Box, Container, Text, VStack, chakra } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
 import type React from "react";
 import { FaArrowLeft } from "react-icons/fa";
@@ -64,7 +64,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               <MotionBox
                 {...componentStyles.messageCard.container}
                 position="relative"
-                style={gpuAcceleration}
+                transform="translateZ(0)"
+                willChange="transform"
                 whileHover={{
                   y: -2,
                   scale: 1.01,

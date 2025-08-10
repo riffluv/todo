@@ -12,8 +12,8 @@ export interface CircleButtonProps extends Omit<StackProps, "onClick"> {
 
 export function CircleButton({ label, icon, onClick, disabled, ...rest }: CircleButtonProps) {
   const IconEl = icon;
-  const { transition: _tUnused1, ...iconProps } = componentStyles.button.message.icon;
-  const { transition: _tUnused2, ...containerProps } = componentStyles.button.message.container;
+  const { transition: _, ...iconProps } = componentStyles.button.message.icon;
+  const { transition: __, ...containerProps } = componentStyles.button.message.container;
 
   return (
     <VStack

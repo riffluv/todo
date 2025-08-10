@@ -71,7 +71,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               {/* グラスモーフィズムメッセージカード */}
               <MotionBox
                 {...containerProps}
-                style={gpuAcceleration}
+                transform="translateZ(0)"
+                willChange="transform"
                 whileHover={{
                   y: -2,
                   scale: 1.01,

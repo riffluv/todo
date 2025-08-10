@@ -217,6 +217,7 @@ export function useHotkey(
   callback: () => void,
   deps: React.DependencyList = [],
 ): void {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const pressedKeys: string[] = [];
@@ -242,7 +243,7 @@ export function useHotkey(
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, deps);
+  }, [keys, callback, ...deps]);
 }
 
 /**
