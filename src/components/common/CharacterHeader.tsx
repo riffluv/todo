@@ -18,11 +18,17 @@ export interface CharacterHeaderProps {
   children?: React.ReactNode;
   /** アニメーション遅延時間 */
   delay?: number;
+  /** カスタムキャラクター画像のパス */
+  characterSrc?: string;
+  /** カスタムキャラクターの代替テキスト */
+  characterAlt?: string;
 }
 
 export function CharacterHeader({
   children,
-  delay = 0
+  delay = 0,
+  characterSrc = "/manaby-jump2.png",
+  characterAlt = "manaby character"
 }: CharacterHeaderProps) {
   return (
     <MotionBox
@@ -50,8 +56,8 @@ export function CharacterHeader({
           }}
         >
           <Image
-            src="/manaby-jump2.png"
-            alt="manaby character"
+            src={characterSrc}
+            alt={characterAlt}
             width={160}
             height={160}
             style={{

@@ -7,6 +7,7 @@
 "use client";
 
 import { BearIcon } from "@/components/common/BearIcon";
+import { CharacterIcon } from "@/components/common/CharacterIcon";
 import { CharacterHeader } from "@/components/common/CharacterHeader";
 import { MessageButton } from "@/components/common/MessageButton";
 import { TypewriterTitle } from "@/components/common/TypewriterTitle";
@@ -45,7 +46,19 @@ export function MessageView({ person, onBack }: MessageViewProps) {
       <Container {...componentStyles.page.content}>
         <VStack gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["3xl"] }} align="center">
           {/* 英語タイトルヘッダー */}
-          <CharacterHeader delay={0.1}>
+          <CharacterHeader 
+            delay={0.1}
+            characterSrc={
+              person.id === "sakuda" ? "/sakuda.png" : 
+              person.id === "saito" ? "/saito.png" : 
+              "/manaby-jump2.png"
+            }
+            characterAlt={
+              person.id === "sakuda" ? "作田さんのキャラクター" : 
+              person.id === "saito" ? "斎藤さんのキャラクター" : 
+              "manaby character"
+            }
+          >
             <TypewriterTitle 
               text={`Dear ${person.id === "saito" ? "Saito-san" : "Sakuda-san"}`}
               delay={0.3}
@@ -85,7 +98,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   transition: { duration: 0.1 },
                 }}
               >
-                {/* 熊さんアイコン群 */}
+                {/* 熊さんアイコン群（装飾用） */}
                 <BearIcon
                   position={{
                     top: "-16px",
