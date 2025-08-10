@@ -10,7 +10,6 @@ import { AnimatedTitle } from "@/components/common/AnimatedTitle";
 import { BearIcon } from "@/components/common/BearIcon";
 import { CharacterHeader } from "@/components/common/CharacterHeader";
 import { MessageButton } from "@/components/common/MessageButton";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";

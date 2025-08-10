@@ -42,6 +42,7 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
     onSpace: () => !disabled && onClick(),
   });
   const { transition: _, ...iconProps } = componentStyles.button.message.icon;
+  void _;
 
   // Pointerイベントで統一（iOS/Android/デスクトップ一貫）
   const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
@@ -159,6 +160,8 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
             ["@media (hover: none)"]: _______,
             ...containerBase
           } = componentStyles.button.message.container as Record<string, unknown>;
+          // Silence unused var lints for destructured style props not used directly
+          void __; void ___; void ____; void _____; void ______; void _______;
           return containerBase;
         })()}
         {...(!disabled ? { onClick: handleClick } : {})}

@@ -14,6 +14,8 @@ export function CircleButton({ label, icon, onClick, disabled, ...rest }: Circle
   const IconEl = icon;
   const { transition: _, ...iconProps } = componentStyles.button.message.icon;
   const { transition: __, ...containerProps } = componentStyles.button.message.container;
+  void _; // silence unused var lint
+  void __;
 
   return (
     <VStack

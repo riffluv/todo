@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Box, Image } from "@chakra-ui/react";
+import { tokens, performance } from "@/styles/tokens";
 import { useState } from "react";
 
 export interface PawEffectItem {
@@ -16,6 +17,7 @@ interface PawEffectProps {
 }
 
 export function PawEffect({ effects, onEffectComplete }: PawEffectProps) {
+  const ICON_SIZE = 40; // tokens.spacing["2xl"] is "40px"
   return (
     <Box
       position="fixed"
@@ -33,8 +35,8 @@ export function PawEffect({ effects, onEffectComplete }: PawEffectProps) {
             initial={{
               opacity: 0,
               scale: 0.3,
-              x: effect.x - 20, // アイコンサイズの半分でセンタリング
-              y: effect.y - 20,
+              x: effect.x - ICON_SIZE / 2, // アイコンサイズの半分でセンタリング
+              y: effect.y - ICON_SIZE / 2,
             }}
             animate={{
               opacity: [0, 1, 1, 0],
@@ -52,19 +54,18 @@ export function PawEffect({ effects, onEffectComplete }: PawEffectProps) {
             onAnimationComplete={() => onEffectComplete(effect.id)}
             style={{
               position: "absolute",
-              width: "40px",
-              height: "40px",
-              willChange: "transform, opacity", // GPU最適化
-              transform: "translateZ(0)", // ハードウェアアクセラレーション強制
+              width: tokens.spacing["2xl"],
+              height: tokens.spacing["2xl"],
+              ...performance.gpuAcceleration, // GPU最適化
             }}
           >
             <Image
               src="/manabyicon.png"
               alt="肉球エフェクト"
-              width="40px"
-              height="40px"
+              width={tokens.spacing["2xl"]}
+              height={tokens.spacing["2xl"]}
               objectFit="contain"
-              filter="drop-shadow(0 2px 8px rgba(0,0,0,0.15))"
+              filter={tokens.shadows.bear}
               loading="eager" // 即座にロード
               decoding="sync" // 同期デコード
               style={{

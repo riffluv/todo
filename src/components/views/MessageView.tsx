@@ -7,11 +7,9 @@
 "use client";
 
 import { BearIcon } from "@/components/common/BearIcon";
-import { CharacterIcon } from "@/components/common/CharacterIcon";
 import { CharacterHeader } from "@/components/common/CharacterHeader";
 import { MessageButton } from "@/components/common/MessageButton";
 import { TypewriterTitle } from "@/components/common/TypewriterTitle";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";

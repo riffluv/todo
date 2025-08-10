@@ -3,8 +3,19 @@
 import { Box, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { tokens } from "@/styles/tokens";
+import type { Property } from "csstype";
 
 const MotionBox = motion.create(Box);
+
+type ResponsiveDisplay =
+  | Property.Display
+  | {
+      base?: Property.Display;
+      sm?: Property.Display;
+      md?: Property.Display;
+      lg?: Property.Display;
+      xl?: Property.Display;
+    };
 
 interface CharacterIconProps {
   /** キャラクター画像のパス */
@@ -27,7 +38,7 @@ interface CharacterIconProps {
   /** 不透明度 */
   opacity?: number;
   /** 表示制御 */
-  display?: any;
+  display?: ResponsiveDisplay;
 }
 
 export function CharacterIcon({

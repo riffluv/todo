@@ -217,7 +217,9 @@ export function useHotkey(
   callback: () => void,
   deps: React.DependencyList = [],
 ): void {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const keysKey = JSON.stringify(keys);
+  const depsKey = JSON.stringify(deps);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const pressedKeys: string[] = [];
@@ -234,7 +236,8 @@ export function useHotkey(
         pressedKeys.push(event.key.toLowerCase());
       }
 
-      if (keys.every((key) => pressedKeys.includes(key.toLowerCase()))) {
+      const required = JSON.parse(keysKey) as string[];
+      if (required.every((key) => pressedKeys.includes(key.toLowerCase()))) {
         event.preventDefault();
         callback();
       }
@@ -243,7 +246,7 @@ export function useHotkey(
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [keys, callback, ...deps]);
+  }, [keysKey, callback, depsKey]);
 }
 
 /**

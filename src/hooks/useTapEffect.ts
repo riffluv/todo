@@ -2,6 +2,7 @@
 
 import { useCallback, useRef } from "react";
 import { usePawEffectContext } from "../components/providers/PawEffectProvider";
+import { a11y } from "@/styles/tokens";
 
 export function useTapEffect() {
   const { triggerPawEffect } = usePawEffectContext();
@@ -45,6 +46,6 @@ export function useTapEffectProps() {
   return {
     onClick: handleTap,
     onTouchStart: handleTap,
-    style: { cursor: 'pointer' },
+    style: { cursor: 'pointer', ...a11y.touchTarget },
   };
 }
