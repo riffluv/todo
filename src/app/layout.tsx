@@ -13,6 +13,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "感謝のメッセージアプリ",
   description: "大切な人に感謝の気持ちを伝えるアプリケーション",
+  robots: {
+    index: false,
+    follow: false,
+  },
+  themeColor: "#F5F0E6",
 };
 
 export default function RootLayout({
