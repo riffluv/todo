@@ -41,8 +41,9 @@ export function CharacterHeader({
       <VStack gap={{ base: tokens.spacing.xl, md: tokens.spacing['2xl'] }}>
         {/* シンプルにぷかぷか浮いているキャラクター */}
         <MotionBox
-          w={{ base: tokens.mobile.characterSize.sm, md: tokens.mobile.characterSize.md, lg: tokens.mobile.characterSize.lg }}
-          h={{ base: tokens.mobile.characterSize.sm, md: tokens.mobile.characterSize.md, lg: tokens.mobile.characterSize.lg }}
+          // 画像サイズを完全固定化（まなびー君も斎藤さん・作田さんも同じサイズで表示）
+          w={{ base: "120px", md: "140px", lg: "160px" }}
+          h={{ base: "120px", md: "140px", lg: "160px" }}
           {...componentStyles.animations.float}
           position="relative"
           _before={{
