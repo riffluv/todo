@@ -12,6 +12,7 @@ import { MessageButton } from "@/components/common/MessageButton";
 import { TypewriterTitle } from "@/components/common/TypewriterTitle";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
+import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
@@ -32,11 +33,15 @@ export interface MessageViewProps {
 
 export function MessageView({ person, onBack }: MessageViewProps) {
   const theme = themes[person.themeKey];
-  const { gpuAcceleration } = usePerformanceOptimization();
+  const tapEffectProps = useTapEffectProps();
   useScrollEnhancement();
 
   return (
-    <Box {...componentStyles.page.container} {...theme.background}>
+    <Box 
+      {...componentStyles.page.container} 
+      {...theme.background}
+      {...tapEffectProps}
+    >
       <Container {...componentStyles.page.content}>
         <VStack gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["3xl"] }} align="center">
           {/* 英語タイトルヘッダー */}
@@ -66,6 +71,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                 position="relative"
                 transform="translateZ(0)"
                 willChange="transform"
+                {...tapEffectProps}
                 whileHover={{
                   y: -2,
                   scale: 1.01,

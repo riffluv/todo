@@ -1,4 +1,5 @@
 import { Provider } from "@/components/ui/provider";
+import { PawEffectProvider } from "@/components/providers/PawEffectProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -24,7 +25,11 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-        <Provider>{children}</Provider>
+        <Provider>
+          <PawEffectProvider>
+            {children}
+          </PawEffectProvider>
+        </Provider>
       </body>
     </html>
   );

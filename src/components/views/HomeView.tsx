@@ -12,6 +12,7 @@ import { CharacterHeader } from "@/components/common/CharacterHeader";
 import { MessageButton } from "@/components/common/MessageButton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
+import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
@@ -30,10 +31,14 @@ export interface HomeViewProps {
 
 export function HomeView({ messages, onNavigate }: HomeViewProps) {
   const containerProps = componentStyles.messageCard.container;
-  const { gpuAcceleration } = usePerformanceOptimization();
+  const tapEffectProps = useTapEffectProps();
   useScrollEnhancement();
   return (
-    <Box {...componentStyles.page.container} {...themes.home.background}>
+    <Box 
+      {...componentStyles.page.container} 
+      {...themes.home.background}
+      {...tapEffectProps}
+    >
       <Container {...componentStyles.page.content}>
         <VStack
           gap={{
