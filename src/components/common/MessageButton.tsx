@@ -55,7 +55,10 @@ export function MessageButton({
   const handleClick = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (disabled) return;
-      (e.currentTarget as HTMLButtonElement).blur();
+      // フォーカスが当たっていれば外す（型安全）
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
       setPressed(false);
       onClick();
     },
@@ -112,6 +115,8 @@ export function MessageButton({
       as="button"
       type="button"
       onClick={handleClick}
+      // マウス操作時はフォーカスを発生させない（キーボードは focus-visible で表示）
+      onMouseDown={(e) => e.preventDefault()}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
