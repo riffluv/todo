@@ -5,7 +5,6 @@
  */
 "use client";
 
-import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { componentStyles } from "@/styles/components";
 import { tokens } from "@/styles/tokens";
@@ -30,17 +29,21 @@ export interface MessageButtonProps {
   icon?: React.ElementType;
 }
 
-export function MessageButton({ onClick, label, delay = 0.6, disabled = false, icon = FaEnvelope }: MessageButtonProps) {
+export function MessageButton({
+  onClick,
+  label,
+  delay = 0.6,
+  disabled = false,
+  icon = FaEnvelope,
+}: MessageButtonProps) {
   const prefersReducedMotion = useReducedMotion();
   const [pressed, setPressed] = React.useState(false);
   const [showRipple, setShowRipple] = React.useState(false);
   const [showDelayedBorder, setShowDelayedBorder] = React.useState(false);
-  const [iconColorStage, setIconColorStage] = React.useState<'normal' | 'pressed' | 'delayed'>('normal');
+  const [iconColorStage, setIconColorStage] = React.useState<"normal" | "pressed" | "delayed">(
+    "normal",
+  );
 
-  useKeyboardNavigation({
-    onEnter: () => !disabled && onClick(),
-    onSpace: () => !disabled && onClick(),
-  });
   const { transition: _, ...iconProps } = componentStyles.button.message.icon;
   void _;
 
@@ -52,8 +55,8 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
     setPressed(true);
 
     // アイコン色変化の段階的アニメーション
-    setIconColorStage('pressed'); // 即座に押下色に
-    setTimeout(() => setIconColorStage('delayed'), 100); // 100ms後に遅延色に
+    setIconColorStage("pressed"); // 即座に押下色に
+    setTimeout(() => setIconColorStage("delayed"), 100); // 100ms後に遅延色に
 
     // リップル効果を開始
     setShowRipple(true);
@@ -66,7 +69,7 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
   const clearPressed = () => {
     setPressed(false);
     // アイコン色を通常に戻す（少し遅延させて自然に）
-    setTimeout(() => setIconColorStage('normal'), 150);
+    setTimeout(() => setIconColorStage("normal"), 150);
     // 遅延ボーダーもクリア
     setTimeout(() => setShowDelayedBorder(false), 200);
   };
@@ -84,29 +87,7 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
     clearPressed();
   };
 
-  // キーボード操作対応（Enter / Spaceで発火）＋視覚的押下
-  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
-    if (disabled) return;
-    if (e.key === " " || e.key === "Enter") {
-      e.preventDefault();
-      setPressed(true);
-
-      // キーボード操作でもリッチエフェクトを適用（アイコン色変化含む）
-      setIconColorStage('pressed');
-      setTimeout(() => setIconColorStage('delayed'), 100);
-      setShowRipple(true);
-      setTimeout(() => setShowRipple(false), 600);
-      setTimeout(() => setShowDelayedBorder(true), 150);
-
-      onClick();
-    }
-  };
-
-  const handleKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
-    if (e.key === " " || e.key === "Enter") {
-      clearPressed();
-    }
-  };
+  // button のネイティブ挙動（Enter/Spaceでクリック）に任せる
 
   // アンマウント/ページ遷移時に押下状態を確実に解除
   React.useEffect(() => {
@@ -129,7 +110,7 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
   }, []);
 
   // クリック時は先に押下状態を解除してから遷移
-  const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (disabled) return;
     // マウス操作時はフォーカスを残さない
     (e.currentTarget as HTMLElement).blur();
@@ -148,7 +129,7 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
       }}
     >
       <MotionBox
-        as={VStack}
+        as={motion.create("button")}
         {...(() => {
           const {
             transition: __,
@@ -161,16 +142,20 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
             ...containerBase
           } = componentStyles.button.message.container as Record<string, unknown>;
           // Silence unused var lints for destructured style props not used directly
-          void __; void ___; void ____; void _____; void ______; void _______;
+          void __;
+          void ___;
+          void ____;
+          void _____;
+          void ______;
+          void _______;
           return containerBase;
         })()}
+        type="button"
         {...(!disabled ? { onClick: handleClick } : {})}
-        role="button"
         aria-label={label}
         aria-disabled={disabled || undefined}
         tabIndex={disabled ? -1 : 0}
-        onKeyDown={handleKeyDown}
-        onKeyUp={handleKeyUp}
+        // キーボード操作はネイティブに委譲（重複発火防止）
         // マウスクリックでフォーカスを当てない（focus-visibleのみ表示）
         onMouseDown={(e) => e.preventDefault()}
         opacity={disabled ? 0.6 : 1}
@@ -184,18 +169,20 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
         }}
         {...(!disabled
           ? {
-            whileHover: {
-              scale: 1.03,
-              y: -6,
-              transition: { stiffness: 500, damping: 30 },
-            },
-          }
+              whileHover: {
+                scale: 1.03,
+                y: -6,
+                transition: { stiffness: 500, damping: 30 },
+              },
+            }
           : {})}
         // 一流デザイナー基準の押下アニメーション
         animate={pressed ? { scale: 0.94, y: 1 } : { scale: 1, y: 0 }}
-        transition={pressed
-          ? { type: "tween", duration: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
-          : { type: "tween", duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        transition={
+          pressed
+            ? { type: "tween", duration: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
+            : { type: "tween", duration: 0.15, ease: [0.16, 1, 0.3, 1] }
+        }
         // 全デバイス対応のタッチ設定（Pointerイベント）
         style={{
           WebkitTapHighlightColor: "transparent",
@@ -210,8 +197,8 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
         // 押下中の見た目（コンテナ側）- 一流デザイナー基準
         {...(pressed
           ? {
-            transform: "scale(0.94) translateY(1px)",
-          }
+              transform: "scale(0.94) translateY(1px)",
+            }
           : {})}
       >
         <MotionIconBox
@@ -222,24 +209,26 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
           // 押下中の見た目（アイコン円）- より洗練されたスタイル
           {...(pressed
             ? {
-              background: `rgba(255, 248, 240, 0.9)`,
-              transform: "scale(0.92)",
-              borderColor: tokens.colors.primary[300],
-              boxShadow: `0 1px 4px ${tokens.colors.primary[200]}40, inset 0 1px 2px rgba(0, 0, 0, 0.05)`,
-            }
+                background: `rgba(255, 248, 240, 0.9)`,
+                transform: "scale(0.92)",
+                borderColor: tokens.colors.primary[300],
+                boxShadow: `0 1px 4px ${tokens.colors.primary[200]}40, inset 0 1px 2px rgba(0, 0, 0, 0.05)`,
+              }
             : {})}
           // 遅延サブトルボーダーのスタイル
           {...(showDelayedBorder
             ? {
-              borderColor: tokens.colors.primary[400],
-              borderWidth: "1px",
-              boxShadow: `0 0 0 1px ${tokens.colors.primary[300]}60, 0 2px 8px ${tokens.colors.primary[200]}30`,
-            }
+                borderColor: tokens.colors.primary[400],
+                borderWidth: "1px",
+                boxShadow: `0 0 0 1px ${tokens.colors.primary[300]}60, 0 2px 8px ${tokens.colors.primary[200]}30`,
+              }
             : {})}
           animate={pressed ? { scale: 0.92, rotate: 1 } : { scale: 1, rotate: 0 }}
-          transition={pressed
-            ? { type: "tween", duration: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
-            : { type: "tween", duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={
+            pressed
+              ? { type: "tween", duration: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
+              : { type: "tween", duration: 0.15, ease: [0.16, 1, 0.3, 1] }
+          }
         >
           {/* サブトルリップル効果 */}
           {showRipple && (
@@ -264,14 +253,14 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
 
           <motion.div
             animate={
-              iconColorStage === 'delayed'
+              iconColorStage === "delayed"
                 ? { scale: 1.05, rotate: -1 } // 遅延色時に少し大きく
                 : pressed
                   ? { scale: 0.95, rotate: -1 }
                   : { scale: 1, rotate: 0 }
             }
             transition={
-              iconColorStage === 'delayed'
+              iconColorStage === "delayed"
                 ? { type: "spring", stiffness: 1200, damping: 50, mass: 0.25 } // 遅延時はより弾性的に
                 : pressed
                   ? { type: "spring", stiffness: 900, damping: 45, mass: 0.3 }
@@ -283,9 +272,9 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
               as={icon}
               boxSize={{ base: 5, md: 6 }}
               color={
-                iconColorStage === 'delayed'
+                iconColorStage === "delayed"
                   ? tokens.colors.primary[700] // 遅延時：最も濃い色
-                  : iconColorStage === 'pressed'
+                  : iconColorStage === "pressed"
                     ? tokens.colors.primary[600] // 押下時：中間色
                     : tokens.colors.primary[500] // 通常時：標準色
               }

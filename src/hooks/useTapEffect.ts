@@ -1,40 +1,40 @@
 "use client";
 
+import { a11y } from "@/styles/tokens";
 import { useCallback, useRef } from "react";
 import { usePawEffectContext } from "../components/providers/PawEffectProvider";
-import { a11y } from "@/styles/tokens";
 
 export function useTapEffect() {
   const { triggerPawEffect } = usePawEffectContext();
   const lastTapTime = useRef<number>(0);
+  const isPointerDown = useRef<boolean>(false);
 
-  const handleTap = useCallback((event: React.MouseEvent | React.TouchEvent) => {
-    // パフォーマンス最適化: スロットリング（100ms間隔制限）
-    const now = Date.now();
-    if (now - lastTapTime.current < 100) {
-      return;
-    }
-    lastTapTime.current = now;
+  const handleTap = useCallback(
+    (event: React.PointerEvent) => {
+      // 左クリック/タップのみ許可
+      if (event.pointerType === "mouse" && event.button !== 0) return;
 
-    let clientX: number;
-    let clientY: number;
+      // パフォーマンス最適化: スロットリング（100ms間隔制限）
+      const now = Date.now();
+      if (now - lastTapTime.current < 100) return;
+      lastTapTime.current = now;
 
-    // マウスイベントとタッチイベントの両方に対応
-    if ('touches' in event && event.touches.length > 0) {
-      // タッチイベント
-      clientX = event.touches[0]?.clientX ?? 0;
-      clientY = event.touches[0]?.clientY ?? 0;
-    } else if ('clientX' in event) {
-      // マウスイベント
-      clientX = event.clientX;
-      clientY = event.clientY;
-    } else {
-      return;
-    }
+      // 二重発火防止
+      if (isPointerDown.current) return;
+      isPointerDown.current = true;
 
-    // 肉球エフェクトを発動
-    triggerPawEffect(clientX, clientY);
-  }, [triggerPawEffect]);
+      const clientX = event.clientX;
+      const clientY = event.clientY;
+
+      triggerPawEffect(clientX, clientY);
+
+      // 少し遅らせて解除（長押しや連打に強く）
+      setTimeout(() => {
+        isPointerDown.current = false;
+      }, 80);
+    },
+    [triggerPawEffect],
+  );
 
   return { handleTap };
 }
@@ -44,8 +44,7 @@ export function useTapEffectProps() {
   const { handleTap } = useTapEffect();
 
   return {
-    onClick: handleTap,
-    onTouchStart: handleTap,
-    style: { cursor: 'pointer', ...a11y.touchTarget },
+    onPointerUp: handleTap,
+    style: { cursor: "pointer", ...a11y.touchTarget },
   };
 }
