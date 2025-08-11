@@ -127,16 +127,14 @@ export function MessageButton({
         outline: `2px solid ${tokens.colors.primary[500]}`,
         outlineOffset: "2px",
       }}
-      // タッチ最適化（モバイル強化）
-      style={
-        {
-          WebkitTapHighlightColor: "transparent",
-          touchAction: "manipulation", // スマホでのピンチズームやダブルタップズームを無効化
-          userSelect: "none",
-          WebkitUserSelect: "none", // iOS Safari対応
-          WebkitTouchCallout: "none", // iOS長押しコンテキストメニュー無効
-        } as React.CSSProperties
-      }
+      // タッチ最適化（モバイル強化） - Chakra UIのsx使用で型安全
+      sx={{
+        WebkitTapHighlightColor: "transparent",
+        touchAction: "manipulation", // スマホでのピンチズームやダブルタップズームを無効化
+        userSelect: "none",
+        WebkitUserSelect: "none", // iOS Safari対応
+        WebkitTouchCallout: "none", // iOS長押しコンテキストメニュー無効
+      }}
     >
       {/* アイコン部分 - 高級感のあるオレンジ立体デザイン */}
       <VStack
