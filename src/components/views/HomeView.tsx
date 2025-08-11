@@ -33,11 +33,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
   const tapEffectProps = useTapEffectProps();
   useScrollEnhancement();
   return (
-    <Box
-      {...componentStyles.page.container}
-      {...themes.home.background}
-      {...tapEffectProps}
-    >
+    <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
       <Container {...componentStyles.page.content}>
         {/* 統一ヘッダーセクション */}
         <Box {...componentStyles.page.header}>
@@ -65,12 +61,23 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
             <VStack
               gap={{
                 base: "21px", // 黄金比ベース
-                md: "34px",   // 黄金比ベース
+                md: "34px", // 黄金比ベース
               }}
             >
               {/* グラスモーフィズムメッセージカード */}
               <MotionBox
-                {...containerProps}
+                {...(() => {
+                  const {
+                    transition: __,
+                    _active: ___,
+                    _hover: ____,
+                    ...containerBase
+                  } = containerProps as unknown as Record<string, unknown>;
+                  void __;
+                  void ___;
+                  void ____;
+                  return containerBase;
+                })()}
                 transform="translateZ(0)"
                 willChange="transform"
                 whileHover={{
@@ -156,7 +163,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                   transform: "translateX(-50%)",
                   width: "60px",
                   height: "1px",
-                  background: "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.3), transparent)",
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.3), transparent)",
                   display: { base: "none", md: "block" }, // デスクトップのみ表示
                 }}
               >

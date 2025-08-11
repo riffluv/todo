@@ -35,25 +35,25 @@ export function MessageView({ person, onBack }: MessageViewProps) {
   useScrollEnhancement();
 
   return (
-    <Box
-      {...componentStyles.page.container}
-      {...theme.background}
-      {...tapEffectProps}
-    >
+    <Box {...componentStyles.page.container} {...theme.background} {...tapEffectProps}>
       <Container {...componentStyles.page.content}>
         {/* 統一ヘッダーセクション */}
         <Box {...componentStyles.page.header}>
           <CharacterHeader
             delay={0.1}
             characterSrc={
-              person.id === "sakuda" ? "/sakuda.webp" :
-                person.id === "saito" ? "/saito.webp" :
-                  "/manaby-jump2.webp"
+              person.id === "sakuda"
+                ? "/sakuda.webp"
+                : person.id === "saito"
+                  ? "/saito.webp"
+                  : "/manaby-jump2.webp"
             }
             characterAlt={
-              person.id === "sakuda" ? "作田さんのキャラクター" :
-                person.id === "saito" ? "斎藤さんのキャラクター" :
-                  "manaby character"
+              person.id === "sakuda"
+                ? "作田さんのキャラクター"
+                : person.id === "saito"
+                  ? "斎藤さんのキャラクター"
+                  : "manaby character"
             }
           >
             <TypewriterTitle
@@ -82,11 +82,22 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               {...componentStyles.messageCard.content}
               gap={{
                 base: "21px", // 黄金比ベース
-                md: "34px",   // 黄金比ベース
+                md: "34px", // 黄金比ベース
               }}
             >
               <MotionBox
-                {...componentStyles.messageCard.container}
+                {...(() => {
+                  const {
+                    transition: __,
+                    _active: ___,
+                    _hover: ____,
+                    ...containerBase
+                  } = componentStyles.messageCard.container as unknown as Record<string, unknown>;
+                  void __;
+                  void ___;
+                  void ____;
+                  return containerBase;
+                })()}
                 position="relative"
                 transform="translateZ(0)"
                 willChange="transform"
@@ -155,11 +166,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       ease: cubicBezier(0.16, 1, 0.3, 1),
                     }}
                   >
-                    <Text
-                      {...componentStyles.messageCard.text.label}
-                    >
-                      {person.name}へ
-                    </Text>
+                    <Text {...componentStyles.messageCard.text.label}>{person.name}へ</Text>
                   </MotionBox>
 
                   <VStack gap={{ base: 6, md: 7 }} align="stretch">
@@ -220,12 +227,14 @@ export function MessageView({ person, onBack }: MessageViewProps) {
 
                       {/* 控えめな日付 */}
                       <chakra.time
+                        suppressHydrationWarning
                         dateTime={new Date().toISOString()}
                         aria-label="作成日時"
                         style={{ display: "block" }}
                         mt={2}
                       >
                         <Text
+                          suppressHydrationWarning
                           fontSize="xs"
                           color={tokens.colors.gray[400]}
                           textAlign="center"
@@ -262,7 +271,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               transform: "translateX(-50%)",
               width: "40px",
               height: "1px",
-              background: "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",
+              background:
+                "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",
               display: { base: "none", md: "block" },
             }}
           >

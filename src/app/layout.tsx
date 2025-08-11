@@ -1,5 +1,5 @@
-import { Provider } from "@/components/ui/provider";
 import { PawEffectProvider } from "@/components/providers/PawEffectProvider";
+import { Provider } from "@/components/ui/provider";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -40,13 +40,9 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/saito.webp" />
         <link rel="preload" as="image" href="/manabyicon.webp" />
       </head>
-      <body
-        className={`${inter.variable} antialiased`}
-      >
+      <body suppressHydrationWarning className={`${inter.variable} antialiased`}>
         <Provider>
-          <PawEffectProvider>
-            {children}
-          </PawEffectProvider>
+          <PawEffectProvider>{children}</PawEffectProvider>
         </Provider>
       </body>
     </html>

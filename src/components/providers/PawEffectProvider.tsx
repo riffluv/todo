@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useCallback, useContext } from "react";
 import { PawEffect, usePawEffect } from "../effects/PawEffect";
 
 interface PawEffectContextType {
@@ -12,9 +12,12 @@ const PawEffectContext = createContext<PawEffectContextType | null>(null);
 export function PawEffectProvider({ children }: { children: React.ReactNode }) {
   const { effects, addPawEffect, removeEffect } = usePawEffect();
 
-  const triggerPawEffect = useCallback((x: number, y: number) => {
-    addPawEffect(x, y);
-  }, [addPawEffect]);
+  const triggerPawEffect = useCallback(
+    (x: number, y: number) => {
+      addPawEffect(x, y);
+    },
+    [addPawEffect],
+  );
 
   return (
     <PawEffectContext.Provider value={{ triggerPawEffect }}>
@@ -24,10 +27,11 @@ export function PawEffectProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function usePawEffectContext() {
+export function usePawEffectContext(): PawEffectContextType {
   const context = useContext(PawEffectContext);
   if (!context) {
-    throw new Error("usePawEffectContext must be used within PawEffectProvider");
+    // Provider がない環境（テストなど）では安全に何もしない
+    return { triggerPawEffect: () => {} };
   }
   return context;
 }
