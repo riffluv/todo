@@ -52,18 +52,15 @@ export function MessageButton({
     setPressed(false);
   }, [disabled]);
 
-  const handleClick = React.useCallback(
-    (_e: React.MouseEvent<HTMLDivElement>) => {
-      if (disabled) return;
-      // フォーカスが当たっていれば外す（型安全）
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-      setPressed(false);
-      onClick();
-    },
-    [disabled, onClick],
-  );
+  const handleClick = React.useCallback(() => {
+    if (disabled) return;
+    // フォーカスが当たっていれば外す（型安全）
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    setPressed(false);
+    onClick();
+  }, [disabled, onClick]);
 
   // グローバル押下解除（安全性）
   React.useEffect(() => {
@@ -120,7 +117,6 @@ export function MessageButton({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      disabled={disabled}
       // レイアウト
       gap={{ base: "12px", md: "16px" }}
       align="center"
