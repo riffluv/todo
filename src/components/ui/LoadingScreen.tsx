@@ -14,16 +14,16 @@ const BEAR_COUNT = 3;
 
 const SIZES = {
   logo: {
-    width: { base: "260px", md: "400px", lg: "460px" },
-    height: { base: "71px", md: "109px", lg: "126px" },
+    width: { base: "260px", md: "400px", lg: "560px", xl: "640px" }, // デスクトップでより大きく
+    height: { base: "71px", md: "109px", lg: "153px", xl: "175px" }, // 比例して高さも調整
   },
   bear: {
-    size: { base: "40px", md: "52px" },
-    gap: { base: "20px", md: "32px" },
+    size: { base: "40px", md: "52px", lg: "56px" }, // デスクトップで少し大きく
+    gap: { base: "20px", md: "32px", lg: "36px" },
   },
   container: {
-    gap: { base: "48px", md: "64px" },
-    maxWidth: { base: "320px", md: "520px", lg: "600px" },
+    gap: { base: "48px", md: "64px", lg: "72px" },
+    maxWidth: { base: "320px", md: "520px", lg: "680px", xl: "760px" }, // コンテナも大きく
   },
 } as const;
 
@@ -113,7 +113,7 @@ export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProp
                     alt="Manaby"
                     fill
                     style={{ objectFit: "contain" }}
-                    sizes="(max-width: 768px) 260px, (max-width: 992px) 400px, 460px"
+                    sizes="(max-width: 768px) 260px, (max-width: 992px) 400px, (max-width: 1280px) 560px, 640px"
                     priority
                   />
                 </Box>

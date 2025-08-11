@@ -1,6 +1,6 @@
 /**
  * useAppState Hook - アプリケーション状態管理
- * 
+ *
  * @description アプリケーション全体の状態を管理するカスタムフック
  * ブラウザの戻るボタン・スワイプバック対応
  */
@@ -16,7 +16,7 @@ export function useAppState() {
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     // 初期状態をブラウザ履歴に追加
     if (typeof window !== "undefined") {
       window.history.replaceState({ view: "home" }, "", window.location.pathname);
@@ -49,15 +49,15 @@ export function useAppState() {
     // ブラウザ履歴に状態を追加
     window.history.pushState({ view }, "", window.location.pathname);
     // ページトップにスクロール
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleBackToHome = () => {
     setCurrentView("home");
-    // ブラウザ履歴を戻る
-    window.history.back();
-    // ページトップにスクロール
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // アプリ内ナビゲーション（履歴操作なし）- スクロール位置リセット
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    // 履歴の状態を更新（戻る操作ではなく状態変更）
+    window.history.replaceState({ view: "home" }, "", window.location.pathname);
   };
 
   const handleLoadingComplete = () => {
