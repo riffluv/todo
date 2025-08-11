@@ -53,9 +53,9 @@ export function MessageButton({
   }, [disabled]);
 
   const handleClick = React.useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       if (disabled) return;
-      e.currentTarget.blur();
+      (e.currentTarget as HTMLButtonElement).blur();
       setPressed(false);
       onClick();
     },
@@ -149,12 +149,12 @@ export function MessageButton({
         borderRadius="50%"
         bg={
           pressed
-            ? `linear-gradient(135deg, rgba(255,255,255,0.85), rgba(248,246,243,0.9))`
-            : `linear-gradient(135deg, rgba(255,255,255,0.95), rgba(253,251,248,0.92))`
+            ? `linear-gradient(135deg, #f8f6f4, #efebe7)` // 押下時：便箋のような温かいベージュ
+            : `linear-gradient(135deg, #fdfcfb, #f8f6f4)` // 通常時：手紙用紙のような温かい白
         }
         border="1px solid"
         borderColor={
-          pressed ? `${tokens.colors.primary[500]}40` : `${tokens.colors.primary[500]}20`
+          pressed ? "rgba(209, 120, 66, 0.25)" : "rgba(209, 120, 66, 0.15)" // アプリのボーダー色に合わせた温かみのある色
         }
         boxShadow={
           pressed
@@ -166,8 +166,8 @@ export function MessageButton({
         transition={`all ${tokens.animations.durations.fast} cubic-bezier(0.4, 0, 0.2, 1)`}
         // ホバー時の立体感強化
         _groupHover={{
-          bg: `linear-gradient(135deg, rgba(255,255,255,0.98), rgba(251,249,246,0.95))`,
-          borderColor: `${tokens.colors.primary[500]}35`,
+          bg: `linear-gradient(135deg, #fefcf8, #fdfcfb)`, // ホバー時：手紙全体の背景色に近い温かさ
+          borderColor: "rgba(209, 120, 66, 0.2)", // ホバー時も統一感のある温かい色
           boxShadow: `0 8px 20px ${tokens.colors.primary[500]}22, 0 4px 12px ${tokens.colors.primary[500]}15, inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 ${tokens.colors.primary[500]}20`,
         }}
       >
