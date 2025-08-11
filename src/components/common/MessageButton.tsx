@@ -53,7 +53,7 @@ export function MessageButton({
   }, [disabled]);
 
   const handleClick = React.useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+    (e: React.MouseEvent<HTMLDivElement>) => {
       if (disabled) return;
       (e.currentTarget as HTMLButtonElement).blur();
       setPressed(false);
