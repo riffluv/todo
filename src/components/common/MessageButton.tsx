@@ -14,6 +14,8 @@ import React from "react";
 import { FaEnvelope } from "react-icons/fa";
 
 const MotionButton = motion.create(VStack);
+const MotionCircle = motion.create(VStack);
+const MotionText = motion.create(Text);
 
 export interface MessageButtonProps {
   /** クリック時のハンドラー */
@@ -43,6 +45,13 @@ export function MessageButton({
     (e: React.PointerEvent) => {
       if (disabled || e.button !== 0) return;
       setPressed(true);
+      // 軽い触覚フィードバック（対応端末のみ）
+      try {
+        if (e.pointerType !== "mouse" && "vibrate" in navigator) {
+          // @ts-expect-error: vibrate は一部ブラウザで未定義
+          navigator.vibrate?.(10);
+        }
+      } catch {}
     },
     [disabled],
   );
@@ -90,16 +99,7 @@ export function MessageButton({
         delay: prefersReducedMotion ? 0 : delay,
         ease: [0.25, 0.8, 0.25, 1], // Material Design ease-out
       }}
-      // 押下アニメーション（モバイル最適化 - y軸移動を削除）
-      {...(!disabled && {
-        whileTap: {
-          scale: 0.96,
-          transition: {
-            duration: parseFloat(tokens.animations.durations.fast),
-            ease: [0.4, 0, 0.2, 1], // Material emphasized
-          },
-        },
-      })}
+      // 押下アニメーションは内側要素で制御（ゲーム風の押し込み感）
       // ボタン基本設定
       as="button"
       onClick={handleClick}
@@ -131,7 +131,7 @@ export function MessageButton({
       className="touch-optimized"
     >
       {/* アイコン部分 - 高級感のあるオレンジ立体デザイン */}
-      <VStack
+      <MotionCircle
         w={{ base: "72px", md: "80px", lg: "88px" }}
         h={{ base: "72px", md: "80px", lg: "88px" }}
         borderRadius="50%"
@@ -146,17 +146,21 @@ export function MessageButton({
         }
         boxShadow={
           pressed
-            ? `0 2px 6px ${tokens.colors.primary[500]}25, inset 0 2px 4px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.2)`
-            : `0 6px 16px ${tokens.colors.primary[500]}18, 0 3px 8px ${tokens.colors.primary[500]}12, inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 ${tokens.colors.primary[500]}15`
+            ? `0 2px 6px ${tokens.colors.primary[500]}30, inset 0 3px 6px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.25)`
+            : `0 10px 22px ${tokens.colors.primary[500]}22, 0 4px 12px ${tokens.colors.primary[500]}14, inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 ${tokens.colors.primary[500]}18`
         }
         justify="center"
         align="center"
         transition={`all ${tokens.animations.durations.fast} cubic-bezier(0.4, 0, 0.2, 1)`}
+        animate={pressed ? { scale: 0.94, y: 2 } : { scale: 1, y: 0 }}
+        transitionEnd={pressed ? undefined : {}}
+        // しっかりしたスプリングで戻す
+        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.7 }}
         // ホバー時の立体感強化
         _groupHover={{
           bg: `linear-gradient(135deg, #fefcf8, #fdfcfb)`, // ホバー時：手紙全体の背景色に近い温かさ
           borderColor: "rgba(209, 120, 66, 0.2)", // ホバー時も統一感のある温かい色
-          boxShadow: `0 8px 20px ${tokens.colors.primary[500]}22, 0 4px 12px ${tokens.colors.primary[500]}15, inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 ${tokens.colors.primary[500]}20`,
+          boxShadow: `0 12px 28px ${tokens.colors.primary[500]}26, 0 6px 16px ${tokens.colors.primary[500]}18, inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -1px 0 ${tokens.colors.primary[500]}22`,
         }}
       >
         <Icon
@@ -170,10 +174,10 @@ export function MessageButton({
           }
           transition={`all ${tokens.animations.durations.fast} cubic-bezier(0.4, 0, 0.2, 1)`}
         />
-      </VStack>
+      </MotionCircle>
 
       {/* ラベル部分 */}
-      <Text
+      <MotionText
         fontFamily={tokens.typography.fontFamilies.body}
         fontSize={{
           base: tokens.typography.fontSizes.sm,
@@ -184,9 +188,11 @@ export function MessageButton({
         letterSpacing="0.01em"
         textAlign="center"
         transition={`all ${tokens.animations.durations.fast} cubic-bezier(0.4, 0, 0.2, 1)`}
+        animate={pressed ? { y: 1, scale: 0.98, opacity: 0.95 } : { y: 0, scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.7 }}
       >
         {label}
-      </Text>
+      </MotionText>
     </MotionButton>
   );
 }
