@@ -53,7 +53,7 @@ export function MessageButton({
   }, [disabled]);
 
   const handleClick = React.useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    (_e: React.MouseEvent<HTMLDivElement>) => {
       if (disabled) return;
       // フォーカスが当たっていれば外す（型安全）
       if (document.activeElement instanceof HTMLElement) {
@@ -113,7 +113,6 @@ export function MessageButton({
       }
       // ボタン基本設定
       as="button"
-      type="button"
       onClick={handleClick}
       // マウス操作時はフォーカスを発生させない（キーボードは focus-visible で表示）
       onMouseDown={(e) => e.preventDefault()}
