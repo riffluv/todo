@@ -8,8 +8,7 @@ expect.extend(a11yMatchers);
 
 // jsdom には matchMedia が無いのでテスト用にモック
 if (typeof window !== "undefined" && !window.matchMedia) {
-  // @ts-expect-error jsdom の型拡張
-  window.matchMedia = (query: string) => ({
+  (window as any).matchMedia = (query: string) => ({
     matches: false,
     media: query,
     onchange: null,
