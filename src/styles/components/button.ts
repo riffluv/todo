@@ -65,9 +65,24 @@ export const buttonStyles = {
         bg: tokens.focus.background.medium,
       },
       _active: {
-        transform: "scale(0.95)",
-        transition: `transform ${tokens.animations.durations.instant} ${tokens.animations.easings.easeOut}`,
+        transform: "scale(0.94) translateY(1px)",
+        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.08s ease-out",
         bg: tokens.focus.background.medium,
+        "& > div": {
+          transform: "scale(0.92)",
+          boxShadow: `0 2px 8px ${tokens.colors.primary[500]}15, inset 0 1px 0 rgba(255,255,255,0.4)`,
+          background: `
+            linear-gradient(135deg, ${tokens.colors.primary[500]}12, ${tokens.colors.primary[500]}08),
+            linear-gradient(225deg, rgba(248, 246, 243, 0.9), rgba(245, 243, 240, 0.8))
+          `,
+        },
+        "& svg": {
+          transform: "scale(0.9)",
+          color: tokens.colors.primary[700],
+        },
+        "& p": {
+          transform: "translateY(0.5px)",
+        },
       },
       // モバイル最適化
       touchAction: "manipulation",
@@ -80,18 +95,18 @@ export const buttonStyles = {
           },
         },
         _active: {
-          transform: "scale(0.95)",
-          transition: "transform 0.1s ease-out",
+          transform: "scale(0.94) translateY(1px)",
+          transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
           "& > div": {
             background: `
-              linear-gradient(135deg, rgba(255, 247, 237, 0.9), rgba(255, 237, 213, 0.8)),
-              radial-gradient(circle at 50% 50%, ${tokens.colors.primary[500]}25, transparent 70%)
+              linear-gradient(135deg, rgba(248, 246, 243, 0.9), rgba(245, 243, 240, 0.8)),
+              radial-gradient(circle at 50% 50%, ${tokens.colors.primary[500]}20, transparent 70%)
             `,
-            transform: "scale(0.9)",
+            transform: "scale(0.92)",
             borderColor: tokens.colors.primary[600],
             boxShadow: `
-              0 2px 8px ${tokens.colors.primary[500]}20,
-              inset 0 2px 4px rgba(0, 0, 0, 0.1)
+              0 2px 8px ${tokens.colors.primary[500]}15,
+              inset 0 1px 2px rgba(0, 0, 0, 0.08)
             `,
           },
           "& svg": {
@@ -152,7 +167,10 @@ export const buttonStyles = {
         bg: `linear-gradient(135deg, ${tokens.colors.primary[400]}, ${tokens.colors.primary[500]})`,
       },
       _active: {
-        transform: "translateY(0) scale(0.99)",
+        transform: "scale(0.97) translateY(1px)",
+        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.08s ease-out",
+        boxShadow: `0 2px 8px ${tokens.colors.primary[500]}20`,
+        bg: `linear-gradient(135deg, ${tokens.colors.primary[600]}, ${tokens.colors.primary[700]})`,
       },
       transition: `all ${tokens.animations.durations.fast} ${tokens.animations.easings.emphasized}`,
     },
@@ -174,7 +192,11 @@ export const buttonStyles = {
         borderColor: `${tokens.colors.primary[300]}40`,
       },
       _active: {
-        transform: "scale(0.98)",
+        transform: "scale(0.97) translateY(1px)",
+        transition: "transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.08s ease-out, background 0.08s ease-out",
+        bg: "rgba(248, 246, 243, 0.95)",
+        boxShadow: "0 2px 6px rgba(0, 0, 0, 0.08)",
+        borderColor: `${tokens.colors.primary[400]}60`,
       },
       _focus: {
         outline: "2px solid",

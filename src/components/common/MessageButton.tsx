@@ -50,15 +50,15 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
     // マウス右クリックなどは無視
     if (e.button && e.button !== 0) return;
     setPressed(true);
-    
+
     // アイコン色変化の段階的アニメーション
     setIconColorStage('pressed'); // 即座に押下色に
     setTimeout(() => setIconColorStage('delayed'), 100); // 100ms後に遅延色に
-    
+
     // リップル効果を開始
     setShowRipple(true);
     setTimeout(() => setShowRipple(false), 600);
-    
+
     // 遅延オレンジボーダーを表示（150ms後）
     setTimeout(() => setShowDelayedBorder(true), 150);
   };
@@ -90,14 +90,14 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
     if (e.key === " " || e.key === "Enter") {
       e.preventDefault();
       setPressed(true);
-      
+
       // キーボード操作でもリッチエフェクトを適用（アイコン色変化含む）
       setIconColorStage('pressed');
       setTimeout(() => setIconColorStage('delayed'), 100);
       setShowRipple(true);
       setTimeout(() => setShowRipple(false), 600);
       setTimeout(() => setShowDelayedBorder(true), 150);
-      
+
       onClick();
     }
   };
@@ -184,18 +184,18 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
         }}
         {...(!disabled
           ? {
-              whileHover: {
-                scale: 1.03,
-                y: -6,
-                transition: { stiffness: 500, damping: 30 },
-              },
-            }
+            whileHover: {
+              scale: 1.03,
+              y: -6,
+              transition: { stiffness: 500, damping: 30 },
+            },
+          }
           : {})}
-        // 押下時の縮小量を強め、タッチに素早く反応
-        animate={pressed ? { scale: 0.92, y: 0 } : { scale: 1, y: 0 }}
+        // 一流デザイナー基準の押下アニメーション
+        animate={pressed ? { scale: 0.94, y: 1 } : { scale: 1, y: 0 }}
         transition={pressed
-          ? { type: "spring", stiffness: 900, damping: 40, mass: 0.4 }
-          : { type: "spring", stiffness: 500, damping: 28, mass: 0.6 }}
+          ? { type: "tween", duration: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
+          : { type: "tween", duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
         // 全デバイス対応のタッチ設定（Pointerイベント）
         style={{
           WebkitTapHighlightColor: "transparent",
@@ -207,11 +207,11 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
         onPointerLeave={handlePointerLeave}
-        // 押下中の見た目（コンテナ側）
+        // 押下中の見た目（コンテナ側）- 一流デザイナー基準
         {...(pressed
           ? {
-              transform: "scale(0.95)",
-            }
+            transform: "scale(0.94) translateY(1px)",
+          }
           : {})}
       >
         <MotionIconBox
@@ -222,24 +222,24 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
           // 押下中の見た目（アイコン円）- より洗練されたスタイル
           {...(pressed
             ? {
-                background: `rgba(255, 248, 240, 0.9)`,
-                transform: "scale(0.92)",
-                borderColor: tokens.colors.primary[300],
-                boxShadow: `0 1px 4px ${tokens.colors.primary[200]}40, inset 0 1px 2px rgba(0, 0, 0, 0.05)`,
-              }
+              background: `rgba(255, 248, 240, 0.9)`,
+              transform: "scale(0.92)",
+              borderColor: tokens.colors.primary[300],
+              boxShadow: `0 1px 4px ${tokens.colors.primary[200]}40, inset 0 1px 2px rgba(0, 0, 0, 0.05)`,
+            }
             : {})}
           // 遅延サブトルボーダーのスタイル
           {...(showDelayedBorder
             ? {
-                borderColor: tokens.colors.primary[400],
-                borderWidth: "1px",
-                boxShadow: `0 0 0 1px ${tokens.colors.primary[300]}60, 0 2px 8px ${tokens.colors.primary[200]}30`,
-              }
+              borderColor: tokens.colors.primary[400],
+              borderWidth: "1px",
+              boxShadow: `0 0 0 1px ${tokens.colors.primary[300]}60, 0 2px 8px ${tokens.colors.primary[200]}30`,
+            }
             : {})}
           animate={pressed ? { scale: 0.92, rotate: 1 } : { scale: 1, rotate: 0 }}
           transition={pressed
-            ? { type: "spring", stiffness: 800, damping: 40, mass: 0.4 }
-            : { type: "spring", stiffness: 500, damping: 30, mass: 0.6 }}
+            ? { type: "tween", duration: 0.08, ease: [0.25, 0.46, 0.45, 0.94] }
+            : { type: "tween", duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* サブトルリップル効果 */}
           {showRipple && (
@@ -261,13 +261,13 @@ export function MessageButton({ onClick, label, delay = 0.6, disabled = false, i
               }}
             />
           )}
-          
+
           <motion.div
             animate={
-              iconColorStage === 'delayed' 
+              iconColorStage === 'delayed'
                 ? { scale: 1.05, rotate: -1 } // 遅延色時に少し大きく
-                : pressed 
-                  ? { scale: 0.95, rotate: -1 } 
+                : pressed
+                  ? { scale: 0.95, rotate: -1 }
                   : { scale: 1, rotate: 0 }
             }
             transition={
