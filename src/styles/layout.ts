@@ -64,7 +64,7 @@ export const unifiedLayout = {
     minHeight: "100dvh",
     position: "relative" as const,
     background: "linear-gradient(135deg, #fefcf9 0%, #faf8f5 100%)",
-    
+
     // 統一パディング（黄金比ベース）
     py: {
       base: `${modularScale.lg}px`,
@@ -81,7 +81,7 @@ export const unifiedLayout = {
       md: `${modularScale['2xl']}px`,
       lg: `${modularScale['3xl']}px`,
     },
-    
+
     // 微細なテクスチャ（統一）
     _before: {
       content: '""',
@@ -99,7 +99,7 @@ export const unifiedLayout = {
   headerSection: {
     height: {
       base: `${headerHeights.mobile}px`,
-      md: `${headerHeights.tablet}px`, 
+      md: `${headerHeights.tablet}px`,
       lg: `${headerHeights.desktop}px`,
     },
     display: "flex",
@@ -109,23 +109,23 @@ export const unifiedLayout = {
     mb: {
       base: `${transitionSpaces.mobile}px`,
       md: `${transitionSpaces.tablet}px`,
-      lg: `${transitionSpaces.desktop}px`, 
+      lg: `${transitionSpaces.desktop}px`,
     },
   },
 
   // メインコンテンツ領域（手紙に最適な幅）
   contentSection: {
-    maxW: { 
-      base: "100%", 
-      sm: "400px", 
-      md: "520px", // 手紙らしい読みやすい幅に調整
-      lg: "600px", // 以前の設定に近づける
-      xl: "680px" // 広すぎないように調整
+    maxW: {
+      base: "100%",
+      sm: "420px", // 少し広げて読みやすく
+      md: "540px", // 手紙らしい読みやすい幅に調整
+      lg: "620px", // バランスの良い幅
+      xl: "700px" // デスクトップでの最適な読み幅
     },
     mx: "auto",
     px: {
-      base: `${modularScale.sm}px`,
-      md: `${modularScale.md}px`,
+      base: `${modularScale.md}px`, // モバイルの左右余白を少し増加
+      md: `${modularScale.lg}px`, // タブレット以上でより余裕を
     },
   },
 
@@ -136,25 +136,26 @@ export const unifiedLayout = {
       base: `${modularScale.lg}px`,
       md: `${modularScale.xl}px`,
     },
-    
+
     // 内側パディング（完全統一）
     p: {
       base: `${modularScale.lg}px`,
       md: `${modularScale.xl}px`,
       lg: `${modularScale['2xl']}px`,
     },
-    
+
     // ボーダーラディウス（黄金比）
     borderRadius: `${modularScale.md}px`,
-    
-    // 背景とシャドウ（統一）
-    background: "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.94))",
-    backdropFilter: "blur(12px)",
-    border: "1px solid rgba(255,255,255,0.2)",
+
+    // 背景とシャドウ（統一・強化版）
+    background: "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95))",
+    backdropFilter: "blur(16px)",
+    border: "1px solid rgba(255,255,255,0.3)",
     boxShadow: `
-      0 ${modularScale.xs}px ${modularScale.md}px rgba(0,0,0,0.04),
       0 ${modularScale.sm}px ${modularScale.lg}px rgba(0,0,0,0.06),
-      inset 0 1px 0 rgba(255,255,255,0.7)
+      0 ${modularScale.md}px ${modularScale.xl}px rgba(0,0,0,0.08),
+      0 1px 0 rgba(255,255,255,0.8),
+      inset 0 1px 0 rgba(255,255,255,0.9)
     `,
   },
 
@@ -174,20 +175,20 @@ export const unifiedLayout = {
         md: `${modularScale.lg}px`,
       },
     },
-    
+
     body: {
       fontSize: {
         base: `${optimizedFontSizes.body.base}px`,
         md: `${optimizedFontSizes.body.md}px`,
       },
-      lineHeight: 1.8, // 手紙らしいゆったりした読みやすさ
-      letterSpacing: "0.025em", // 日本語の美しさを強化
+      lineHeight: { base: 1.75, md: 1.8 }, // モバイルでは少しタイトに、デスクトップでゆったり
+      letterSpacing: "0.02em", // 日本語の美しさを保ちつつ読みやすく
       mb: {
-        base: `${modularScale.sm}px`,
-        md: `${modularScale.md}px`,
+        base: `${modularScale.md}px`, // 段落間の余白を少し増加
+        md: `${modularScale.lg}px`,
       },
     },
-    
+
     caption: {
       fontSize: `${optimizedFontSizes.caption}px`,
       lineHeight: 1.5,
@@ -211,7 +212,7 @@ export const unifiedLayout = {
       borderTop: "1px solid rgba(0,0,0,0.05)",
     },
   },
-  
+
   // フッター（内容がある場合のみborder表示）
   footerWithContent: {
     mt: {
@@ -232,15 +233,16 @@ export const unifiedLayout = {
   animations: {
     // CSS用の滑らかな遷移（黄金比による時間設定）
     cssTransition: `all ${0.618}s cubic-bezier(0.16, 1, 0.3, 1)`,
-    // ホバーエフェクト
+    // ホバーエフェクト（より自然な動き）
     hover: {
-      transform: "translateY(-2px) scale(1.01)",
-      transition: "all 0.25s ease-out",
+      transform: "translateY(-3px) scale(1.015)",
+      transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
     },
-    // タップエフェクト  
+    // タップエフェクト（一流デザイナー基準）
     tap: {
-      scale: 0.98,
-      transition: "all 0.15s ease-out",
+      scale: 0.97,
+      transform: "scale(0.97) translateY(1px)",
+      transition: "transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.1s ease-out",
     },
   },
 } as const;
@@ -277,7 +279,7 @@ export const gridSystem = {
  */
 export const validateGoldenRatio = (value: number, reference: number): boolean => {
   const ratio = value / reference;
-  return Math.abs(ratio - PHI) < 0.1 || Math.abs(ratio - (1/PHI)) < 0.1;
+  return Math.abs(ratio - PHI) < 0.1 || Math.abs(ratio - (1 / PHI)) < 0.1;
 };
 
 /**
@@ -289,7 +291,7 @@ export const mobileUXRules = {
   safeArea: {
     top: "env(safe-area-inset-top)",
     bottom: "env(safe-area-inset-bottom)",
-    left: "env(safe-area-inset-left)", 
+    left: "env(safe-area-inset-left)",
     right: "env(safe-area-inset-right)",
   },
 } as const;

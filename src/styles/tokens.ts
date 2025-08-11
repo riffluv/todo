@@ -42,12 +42,12 @@ export const tokens = {
     },
     semantic: {
       background: "#fefcf9",
-      surface: "rgba(255, 255, 255, 0.8)",
-      border: "rgba(229, 231, 235, 0.6)",
+      surface: "rgba(255, 255, 255, 0.85)", // 少し不透明度を上げて読みやすく
+      border: "rgba(229, 231, 235, 0.4)", // ボーダーを少し薄く
       text: {
-        primary: "#1a1a1a",
-        secondary: "#4a4a4a",
-        muted: "#6a6a6a",
+        primary: "#2d2d2d", // 少し柔らかい黒
+        secondary: "#525252", // より読みやすいグレー
+        muted: "#737373", // 適度なコントラスト
       },
       fg: "#1f2937",
       muted: "#6b7280",
@@ -113,7 +113,7 @@ export const tokens = {
 
   // モバイル最適化サイズ
   mobile: {
-    touchTarget: "48px",
+    touchTarget: "52px", // より大きなタッチターゲット
     characterSize: {
       sm: "120px",
       md: "140px",
@@ -123,20 +123,25 @@ export const tokens = {
       top: "44px",
       bottom: "34px",
     },
+    // 手紙らしい余白
+    letterSpacing: {
+      comfortable: "0.02em",
+      relaxed: "0.03em",
+    },
   },
 
   // フォーカス状態の強化
   focus: {
     ring: {
-      color: "#FB923C", // primary[400] の固定値を使用
-      width: "3px",
+      color: "#f97316", // primary[500] でより明確に
+      width: "2px",
       offset: "3px",
       style: "solid",
-      shadow: "0 0 0 3px rgba(251, 146, 60, 0.3)",
+      shadow: "0 0 0 4px rgba(249, 115, 22, 0.25)",
     },
     background: {
-      light: "rgba(251, 146, 60, 0.1)",
-      medium: "rgba(251, 146, 60, 0.15)",
+      light: "rgba(249, 115, 22, 0.08)",
+      medium: "rgba(249, 115, 22, 0.12)",
     },
   },
 

@@ -13,7 +13,6 @@ import { MessageButton } from "@/components/common/MessageButton";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";
-import { unifiedLayout } from "@/styles/layout";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig, ViewType } from "@/types/message";
@@ -34,8 +33,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
   const tapEffectProps = useTapEffectProps();
   useScrollEnhancement();
   return (
-    <Box 
-      {...componentStyles.page.container} 
+    <Box
+      {...componentStyles.page.container}
       {...themes.home.background}
       {...tapEffectProps}
     >
@@ -79,11 +78,13 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                   scale: 1.01,
                 }}
                 whileTap={{
-                  scale: 0.98,
+                  scale: 0.97,
+                  y: 1,
                 }}
                 transition={{
-                  duration: 0.25,
-                  ease: "easeOut",
+                  type: "tween",
+                  duration: 0.1,
+                  ease: [0.25, 0.46, 0.45, 0.94],
                 }}
               >
                 {/* 装飾的な熊さんアイコン群 */}
@@ -141,11 +142,23 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 </VStack>
               </MotionBox>
 
-              {/* 手紙ボタンエリア（重要度向上） */}
-              <Box 
-                w="100%" 
-                pt={{ base: "28px", md: "34px" }} // 黄金比ベースで適度な間隔
-                pb={{ base: "21px", md: "28px" }}
+              {/* 手紙ボタンエリア（重要度向上・視覚的分離強化） */}
+              <Box
+                w="100%"
+                pt={{ base: "32px", md: "40px" }} // 上部の余白を増加して分離感を強化
+                pb={{ base: "24px", md: "32px" }}
+                position="relative"
+                _before={{
+                  content: '""',
+                  position: "absolute",
+                  top: "16px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "60px",
+                  height: "1px",
+                  background: "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.3), transparent)",
+                  display: { base: "none", md: "block" }, // デスクトップのみ表示
+                }}
               >
                 <VStack
                   gap={{
@@ -163,14 +176,14 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                     align="center"
                     flexWrap="wrap"
                   >
-                  {messages.map((person, index) => (
-                    <MessageButton
-                      key={person.id}
-                      onClick={() => onNavigate(person.id)}
-                      label={person.buttonLabel}
-                      delay={0.6 + index * 0.2}
-                    />
-                   ))}
+                    {messages.map((person, index) => (
+                      <MessageButton
+                        key={person.id}
+                        onClick={() => onNavigate(person.id)}
+                        label={person.buttonLabel}
+                        delay={0.6 + index * 0.2}
+                      />
+                    ))}
                   </HStack>
                 </VStack>
               </Box>
@@ -189,9 +202,9 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               ease: cubicBezier(0.16, 1, 0.3, 1),
             }}
           >
-            <Text 
-              fontSize="xs" 
-              color={tokens.colors.gray[500]} 
+            <Text
+              fontSize="xs"
+              color={tokens.colors.gray[500]}
               fontWeight={tokens.typography.fontWeights.medium}
               letterSpacing="0.2px"
               style={{ opacity: 0.7 }}

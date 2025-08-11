@@ -13,13 +13,11 @@ import { TypewriterTitle } from "@/components/common/TypewriterTitle";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";
-import { unifiedLayout } from "@/styles/layout";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
 import { Box, Container, Text, VStack, chakra } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
-import type React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
@@ -37,28 +35,28 @@ export function MessageView({ person, onBack }: MessageViewProps) {
   useScrollEnhancement();
 
   return (
-    <Box 
-      {...componentStyles.page.container} 
+    <Box
+      {...componentStyles.page.container}
       {...theme.background}
       {...tapEffectProps}
     >
       <Container {...componentStyles.page.content}>
         {/* 統一ヘッダーセクション */}
         <Box {...componentStyles.page.header}>
-          <CharacterHeader 
+          <CharacterHeader
             delay={0.1}
             characterSrc={
-              person.id === "sakuda" ? "/sakuda.webp" : 
-              person.id === "saito" ? "/saito.webp" : 
-              "/manaby-jump2.webp"
+              person.id === "sakuda" ? "/sakuda.webp" :
+                person.id === "saito" ? "/saito.webp" :
+                  "/manaby-jump2.webp"
             }
             characterAlt={
-              person.id === "sakuda" ? "作田さんのキャラクター" : 
-              person.id === "saito" ? "斎藤さんのキャラクター" : 
-              "manaby character"
+              person.id === "sakuda" ? "作田さんのキャラクター" :
+                person.id === "saito" ? "斎藤さんのキャラクター" :
+                  "manaby character"
             }
           >
-            <TypewriterTitle 
+            <TypewriterTitle
               text={`Dear ${person.id === "saito" ? "Saito-san" : "Sakuda-san"}`}
               delay={0.3}
               fontSize={{ base: "2xl", md: "3xl" }}
@@ -80,7 +78,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
-            <VStack 
+            <VStack
               {...componentStyles.messageCard.content}
               gap={{
                 base: "21px", // 黄金比ベース
@@ -98,11 +96,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   scale: 1.01,
                 }}
                 whileTap={{
-                  scale: 0.98,
+                  scale: 0.97,
+                  y: 1,
                 }}
                 transition={{
-                  duration: 0.25,
-                  ease: [0.16, 1, 0.3, 1],
+                  type: "tween",
+                  duration: 0.1,
+                  ease: [0.25, 0.46, 0.45, 0.94],
                 }}
               >
                 {/* 熊さんアイコン群（装飾用） */}
@@ -208,16 +208,16 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                         >
                           {person.message.closing}
                         </Text>
-                        <Text 
-                          fontSize="md" 
-                          color={tokens.colors.gray[700]} 
+                        <Text
+                          fontSize="md"
+                          color={tokens.colors.gray[700]}
                           textAlign="center"
                           fontWeight={tokens.typography.fontWeights.medium}
                         >
                           {person.message.signature}
                         </Text>
                       </VStack>
-                      
+
                       {/* 控えめな日付 */}
                       <chakra.time
                         dateTime={new Date().toISOString()}
@@ -225,9 +225,9 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                         style={{ display: "block" }}
                         mt={2}
                       >
-                        <Text 
-                          fontSize="xs" 
-                          color={tokens.colors.gray[400]} 
+                        <Text
+                          fontSize="xs"
+                          color={tokens.colors.gray[400]}
                           textAlign="center"
                           opacity={0.7}
                           fontWeight={tokens.typography.fontWeights.normal}
@@ -243,7 +243,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             </VStack>
           </MotionBox>
 
-          {/* 戻るボタン（MessageButtonで統一） */}
+          {/* 戻るボタン（MessageButtonで統一・視覚的分離強化） */}
           <MotionBox
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -252,24 +252,37 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               delay: 0.4,
               ease: [0.16, 1, 0.3, 1],
             }}
+            pt={{ base: "24px", md: "32px" }} // 上部余白を追加して分離感を強化
+            position="relative"
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: "12px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "40px",
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",
+              display: { base: "none", md: "block" },
+            }}
           >
-            <MessageButton 
-              onClick={onBack} 
-              label="戻る" 
+            <MessageButton
+              onClick={onBack}
+              label="戻る"
               icon={FaArrowLeft}
               aria-label="ホーム画面に戻る"
             />
           </MotionBox>
 
           {/* フッター */}
-          <MotionBox 
-            {...componentStyles.animations.fadeIn} 
-            textAlign="center" 
+          <MotionBox
+            {...componentStyles.animations.fadeIn}
+            textAlign="center"
             mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
           >
-            <Text 
-              fontSize="xs" 
-              color={tokens.colors.gray[500]} 
+            <Text
+              fontSize="xs"
+              color={tokens.colors.gray[500]}
               fontWeight={tokens.typography.fontWeights.medium}
               letterSpacing="0.2px"
               style={{ opacity: 0.7 }}
