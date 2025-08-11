@@ -81,8 +81,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             <VStack
               {...componentStyles.messageCard.content}
               gap={{
-                base: "21px", // 黄金比ベース
-                md: "34px", // 黄金比ベース
+                base: "24px", // 心地よいリズムの間隔
+                md: "38px", // より自然で余裕のある間隔
               }}
             >
               <MotionBox
@@ -261,7 +261,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               delay: 0.4,
               ease: [0.16, 1, 0.3, 1],
             }}
-            pt={{ base: "24px", md: "32px" }} // 上部余白を追加して分離感を強化
+            pt={{ base: "28px", md: "36px" }} // 上部余白を自然な数値に調整
             position="relative"
             _before={{
               content: '""',

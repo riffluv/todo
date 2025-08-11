@@ -1,115 +1,113 @@
 /**
- * Unified Layout System - 黄金比による美しいデザイン
- * 
- * @description 一流UI/UXデザイナーによる数学的に美しいレイアウトシステム
- * - 黄金比(1.618)とモジュラースケールによる調和の取れた比例関係
- * - 8ptグリッドシステムとの完全統合
- * - 全画面での完璧な位置統一
+ * 統一レイアウトシステム - 手紙らしい心地よい空間設計
+ *
+ * @description 人の手で丁寧に調整した、読みやすく温かみのあるレイアウト
+ * - 日本語の手紙に適したゆとりのある余白
+ * - 自然で規則的すぎない、心地よいリズム
+ * - 読み手の目に優しい空間配置
  */
 
-import { tokens } from './tokens';
+import { tokens } from "./tokens";
 
-// 黄金比定数
-const GOLDEN_RATIO = 1.618;
-const PHI = GOLDEN_RATIO;
-
-// モジュラースケール（黄金比ベース + 日本語最適化）
-const modularScale = {
-  xs: 8 / (PHI * PHI), // ~3.056px
-  sm: 8 / PHI,         // ~4.944px  
-  base: 8,             // 8px (基準)
-  md: 8 * PHI,         // ~12.944px
-  lg: 8 * PHI * PHI,   // ~20.944px
-  xl: 8 * (PHI ** 3),  // ~33.888px
-  '2xl': 8 * (PHI ** 4), // ~54.832px
-  '3xl': 8 * (PHI ** 5), // ~88.72px
-  '4xl': 8 * (PHI ** 6), // ~143.552px
+// 手紙らしいスペーシング（人間らしい不規則な美しさ）
+const letterSpacing = {
+  xs: 6, // 細やかな調整用
+  sm: 12, // 小さな区切り
+  base: 20, // 基本の余白
+  md: 32, // 程よい区切り
+  lg: 48, // ゆとりのある区切り
+  xl: 68, // 大きな区切り
+  "2xl": 92, // とても大きな区切り
+  "3xl": 124, // セクション区切り
+  "4xl": 164, // 印象的な区切り
 } as const;
 
-// 日本語読みやすさ最適化フォントサイズ
-const optimizedFontSizes = {
+// 手紙に最適化したフォントサイズ
+const readableFontSizes = {
   body: {
-    base: 16, // 日本語に最適な基準サイズ
-    md: 18,   // タブレット用
+    base: 16, // 読みやすい基本サイズ
+    md: 18, // タブレットではもう少し大きく
+    lg: 19, // デスクトップでは余裕をもって
   },
   title: {
-    base: 24, // 見出し用
-    md: 28,   // タブレット用
-    lg: 32,   // デスクトップ用
+    base: 24, // 見出し
+    md: 28, // タブレット用見出し
+    lg: 32, // デスクトップ用見出し
   },
-  caption: 14, // キャプション用
+  small: 13, // 小さな文字
+  caption: 12, // キャプション
 } as const;
 
-// 統一ヘッダー高さ（黄金比による美しい比例）
+// 自然なヘッダー高さ（読みやすさを重視）
 const headerHeights = {
-  mobile: Math.round(modularScale['4xl'] * 1.5), // ~215px
-  tablet: Math.round(modularScale['4xl'] * PHI), // ~232px  
-  desktop: Math.round(modularScale['4xl'] * PHI * 1.2), // ~278px
+  mobile: 180, // スマートフォンで心地よい高さ
+  tablet: 200, // タブレットで少し余裕を
+  desktop: 220, // デスクトップでゆったりと
 } as const;
 
-// 遷移スペース（ヘッダーからコンテンツまでの統一間隔）
+// ヘッダーからコンテンツまでの自然な間隔
 const transitionSpaces = {
-  mobile: Math.round(modularScale.xl * 1.5), // ~51px
-  tablet: Math.round(modularScale.xl * PHI), // ~55px
-  desktop: Math.round(modularScale.xl * PHI * 1.2), // ~66px
+  mobile: 32, // スマートフォンで適度な間隔
+  tablet: 44, // タブレットで少しゆとりを
+  desktop: 56, // デスクトップでより余裕を
 } as const;
 
 /**
  * 統一レイアウトシステム
- * 全画面で数学的に一致するレイアウト構造
+ * 手紙らしい温かみのあるレイアウト構造
  */
 export const unifiedLayout = {
   // ページコンテナ（全画面共通）
   pageContainer: {
     minHeight: "100dvh",
     position: "relative" as const,
-    background: "linear-gradient(135deg, #fefcf9 0%, #faf8f5 100%)",
+    background: "linear-gradient(135deg, #fefcf8 0%, #fbf9f6 100%)",
 
-    // 統一パディング（黄金比ベース）
+    // 手紙らしい余白設定
     py: {
-      base: `${modularScale.lg}px`,
-      md: `${modularScale.xl}px`,
-      lg: `${modularScale['2xl']}px`,
+      base: `${letterSpacing.lg}px`, // 48px - スマートフォンでゆとりを
+      md: `${letterSpacing.xl}px`, // 68px - タブレットで上品に
+      lg: `${letterSpacing["2xl"]}px`, // 92px - デスクトップで贅沢に
     },
     px: {
-      base: `${modularScale.md}px`,
-      md: `${modularScale.lg}px`,
-      lg: `${modularScale.xl}px`,
+      base: `${letterSpacing.base}px`, // 20px - スマートフォンで読みやすく
+      md: `${letterSpacing.md}px`, // 32px - タブレットで余裕を
+      lg: `${letterSpacing.lg}px`, // 48px - デスクトップでゆったりと
     },
     pb: {
-      base: `${modularScale.xl}px`,
-      md: `${modularScale['2xl']}px`,
-      lg: `${modularScale['3xl']}px`,
+      base: `${letterSpacing.xl}px`, // 68px - 下部にしっかりと余白
+      md: `${letterSpacing["2xl"]}px`, // 92px - より余裕を
+      lg: `${letterSpacing["3xl"]}px`, // 124px - 印象的な余白
     },
 
-    // 微細なテクスチャ（統一）
+    // やわらかなテクスチャ（控えめに）
     _before: {
       content: '""',
       position: "absolute",
       inset: 0,
-      opacity: 0.02,
-      backgroundImage: `radial-gradient(circle at 22% 28%, ${tokens.colors.primary[500]} 1px, transparent 1px),
-                        radial-gradient(circle at 78% 72%, ${tokens.colors.primary[600]} 1px, transparent 1px)`,
-      backgroundSize: "56px 56px, 44px 44px",
+      opacity: 0.015,
+      backgroundImage: `radial-gradient(circle at 25% 32%, ${tokens.colors.primary[500]} 1px, transparent 1px),
+                        radial-gradient(circle at 75% 68%, ${tokens.colors.primary[600]} 1px, transparent 1px)`,
+      backgroundSize: "64px 64px, 52px 52px",
       pointerEvents: "none",
     },
   },
 
-  // ヘッダー領域（固定高さ）
+  // ヘッダー領域（自然な高さ）
   headerSection: {
     height: {
-      base: `${headerHeights.mobile}px`,
-      md: `${headerHeights.tablet}px`,
-      lg: `${headerHeights.desktop}px`,
+      base: `${headerHeights.mobile}px`, // 180px - スマートフォンで心地よく
+      md: `${headerHeights.tablet}px`, // 200px - タブレットでバランス良く
+      lg: `${headerHeights.desktop}px`, // 220px - デスクトップで余裕を
     },
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     position: "relative" as const,
     mb: {
-      base: `${transitionSpaces.mobile}px`,
-      md: `${transitionSpaces.tablet}px`,
-      lg: `${transitionSpaces.desktop}px`,
+      base: `${transitionSpaces.mobile}px`, // 32px - 適度な間隔
+      md: `${transitionSpaces.tablet}px`, // 44px - ゆとりのある間隔
+      lg: `${transitionSpaces.desktop}px`, // 56px - 贅沢な間隔
     },
   },
 
@@ -117,177 +115,170 @@ export const unifiedLayout = {
   contentSection: {
     maxW: {
       base: "100%",
-      sm: "420px", // 少し広げて読みやすく
-      md: "540px", // 手紙らしい読みやすい幅に調整
-      lg: "620px", // バランスの良い幅
-      xl: "700px" // デスクトップでの最適な読み幅
+      sm: "440px", // スマートフォンで読みやすく（少し広げました）
+      md: "580px", // タブレットで手紙らしい幅
+      lg: "680px", // デスクトップでゆとりを持って
+      xl: "740px", // 大画面でも読みやすい最適幅
     },
     mx: "auto",
     px: {
-      base: `${modularScale.md}px`, // モバイルの左右余白を少し増加
-      md: `${modularScale.lg}px`, // タブレット以上でより余裕を
+      base: `${letterSpacing.base}px`, // 20px - スマートフォンで適度な余白
+      md: `${letterSpacing.md}px`, // 32px - タブレット以上でゆとりを
     },
   },
 
   // メッセージカード統一スペーシング
   messageCard: {
-    // 外側マージン（黄金比による美しい間隔）
+    // 外側マージン（自然な間隔）
     mb: {
-      base: `${modularScale.lg}px`,
-      md: `${modularScale.xl}px`,
+      base: `${letterSpacing.lg}px`, // 48px - 心地よい間隔
+      md: `${letterSpacing.xl}px`, // 68px - より余裕のある間隔
     },
 
-    // 内側パディング（完全統一）
+    // 内側パディング（手紙らしい豊かさ）
     p: {
-      base: `${modularScale.lg}px`,
-      md: `${modularScale.xl}px`,
-      lg: `${modularScale['2xl']}px`,
+      base: `${letterSpacing.md}px`, // 32px - スマートフォンで読みやすく
+      md: `${letterSpacing.lg}px`, // 48px - タブレットで余裕を
+      lg: `${letterSpacing.xl}px`, // 68px - デスクトップで贅沢に
     },
 
-    // ボーダーラディウス（黄金比）
-    borderRadius: `${modularScale.md}px`,
+    // やわらかな角丸
+    borderRadius: `${letterSpacing.sm}px`, // 12px - やさしい印象
 
-    // 背景とシャドウ（統一・強化版）
-    background: "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95))",
-    backdropFilter: "blur(16px)",
-    border: "1px solid rgba(255,255,255,0.3)",
+    // 温かみのある背景とシャドウ
+    background: "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(253,252,250,0.94))",
+    backdropFilter: "blur(20px)",
+    border: "1px solid rgba(244, 162, 97, 0.08)",
     boxShadow: `
-      0 ${modularScale.sm}px ${modularScale.lg}px rgba(0,0,0,0.06),
-      0 ${modularScale.md}px ${modularScale.xl}px rgba(0,0,0,0.08),
-      0 1px 0 rgba(255,255,255,0.8),
-      inset 0 1px 0 rgba(255,255,255,0.9)
+      0 2px 8px rgba(244, 162, 97, 0.08),
+      0 8px 24px rgba(244, 162, 97, 0.12),
+      0 1px 0 rgba(255,255,255,0.9),
+      inset 0 1px 0 rgba(255,255,255,0.95)
     `,
   },
 
-  // タイポグラフィ統一（日本語読みやすさ最適化）
+  // タイポグラフィ統一（手紙らしい読みやすさ）
   typography: {
     title: {
       fontSize: {
-        base: `${optimizedFontSizes.title.base}px`,
-        md: `${optimizedFontSizes.title.md}px`,
-        lg: `${optimizedFontSizes.title.lg}px`,
+        base: `${readableFontSizes.title.base}px`, // 24px - 見出し
+        md: `${readableFontSizes.title.md}px`, // 28px - タブレット用見出し
+        lg: `${readableFontSizes.title.lg}px`, // 32px - デスクトップ用見出し
       },
-      lineHeight: 1.5, // 日本語に最適化
-      letterSpacing: "-0.01em", // 日本語に適した字間
+      lineHeight: 1.4, // 見出しらしい行間
+      letterSpacing: "-0.01em", // 見出しに適した字間
       fontWeight: 600,
       mb: {
-        base: `${modularScale.md}px`,
-        md: `${modularScale.lg}px`,
+        base: `${letterSpacing.sm}px`, // 12px - 適度な間隔
+        md: `${letterSpacing.base}px`, // 20px - ゆとりのある間隔
       },
     },
 
     body: {
       fontSize: {
-        base: `${optimizedFontSizes.body.base}px`,
-        md: `${optimizedFontSizes.body.md}px`,
+        base: `${readableFontSizes.body.base}px`, // 16px - 読みやすい基本サイズ
+        md: `${readableFontSizes.body.md}px`, // 18px - タブレット用
+        lg: `${readableFontSizes.body.lg}px`, // 19px - デスクトップ用
       },
-      lineHeight: { base: 1.75, md: 1.8 }, // モバイルでは少しタイトに、デスクトップでゆったり
-      letterSpacing: "0.02em", // 日本語の美しさを保ちつつ読みやすく
+      lineHeight: { base: 1.75, md: 1.8 }, // 手紙らしいゆったりした行間
+      letterSpacing: "0.018em", // 日本語に適した優しい字間
       mb: {
-        base: `${modularScale.md}px`, // 段落間の余白を少し増加
-        md: `${modularScale.lg}px`,
+        base: `${letterSpacing.sm}px`, // 12px - 段落間の適度な余白
+        md: `${letterSpacing.base}px`, // 20px - より余裕のある段落間隔
       },
     },
 
     caption: {
-      fontSize: `${optimizedFontSizes.caption}px`,
+      fontSize: `${readableFontSizes.caption}px`, // 12px - キャプション
       lineHeight: 1.5,
       letterSpacing: "0.02em",
       opacity: 0.7,
     },
   },
 
-  // フッター/アクション領域（条件付きborder）
+  // フッター/アクション領域（自然な余白）
   footerSection: {
     mt: {
-      base: `${modularScale.xl}px`,
-      md: `${modularScale['2xl']}px`,
+      base: `${letterSpacing.xl}px`, // 68px - 適度な区切り
+      md: `${letterSpacing["2xl"]}px`, // 92px - より大きな区切り
     },
     pt: {
-      base: `${modularScale.lg}px`,
-      md: `${modularScale.xl}px`,
+      base: `${letterSpacing.lg}px`, // 48px - 内側の余白
+      md: `${letterSpacing.xl}px`, // 68px - より余裕のある内側余白
     },
-    // borderは内容がある場合のみ適用（CSSで制御）
+    // borderは内容がある場合のみ適用
     _notEmpty: {
-      borderTop: "1px solid rgba(0,0,0,0.05)",
+      borderTop: "1px solid rgba(244, 162, 97, 0.1)", // 温かみのあるボーダー
     },
   },
 
   // フッター（内容がある場合のみborder表示）
   footerWithContent: {
     mt: {
-      base: `${modularScale.xl}px`,
-      md: `${modularScale['2xl']}px`,
+      base: `${letterSpacing.xl}px`, // 68px - 適度な区切り
+      md: `${letterSpacing["2xl"]}px`, // 92px - より大きな区切り
     },
     pt: {
-      base: `${modularScale.lg}px`,
-      md: `${modularScale.xl}px`,
+      base: `${letterSpacing.lg}px`, // 48px - 内側の余白
+      md: `${letterSpacing.xl}px`, // 68px - より余裕のある内側余白
     },
-    borderTop: "1px solid rgba(0,0,0,0.05)",
+    borderTop: "1px solid rgba(244, 162, 97, 0.1)",
     w: "100%",
     display: "flex",
     justifyContent: "center",
   },
 
-  // アニメーション統一
+  // アニメーション統一（自然で有機的な動き）
   animations: {
-    // CSS用の滑らかな遷移（黄金比による時間設定）
-    cssTransition: `all ${0.618}s cubic-bezier(0.16, 1, 0.3, 1)`,
-    // ホバーエフェクト（より自然な動き）
+    // 心地よい遷移時間
+    cssTransition: `all 0.48s cubic-bezier(0.19, 1, 0.32, 1)`,
+    // やわらかなホバーエフェクト
     hover: {
-      transform: "translateY(-3px) scale(1.015)",
-      transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+      transform: "translateY(-2px) scale(1.012)", // 少し控えめに
+      transition: "all 0.32s cubic-bezier(0.18, 0.98, 0.28, 1)",
     },
-    // タップエフェクト（一流デザイナー基準）
+    // 自然なタップエフェクト
     tap: {
-      scale: 0.97,
-      transform: "scale(0.97) translateY(1px)",
-      transition: "transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.1s ease-out",
+      scale: 0.98, // より自然な縮小
+      transform: "scale(0.98) translateY(1px)",
+      transition: "transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.12s ease-out",
     },
   },
 } as const;
 
 /**
- * レスポンシブブレークポイント（黄金比ベース）
+ * レスポンシブブレークポイント（自然な値）
  */
 export const breakpoints = {
-  sm: Math.round(480 * PHI), // ~777px
-  md: Math.round(768 * PHI), // ~1242px  
-  lg: Math.round(1024 * PHI), // ~1657px
-  xl: Math.round(1280 * PHI), // ~2071px
+  sm: 480, // 小さなスマートフォン
+  md: 768, // タブレット
+  lg: 1024, // 小さなPC
+  xl: 1280, // 標準的なPC
 } as const;
 
 /**
- * グリッドシステム（8pt + 黄金比）
+ * グリッドシステム（手紙らしい余白）
  */
 export const gridSystem = {
   columns: 12,
   gutter: {
-    base: `${modularScale.md}px`,
-    md: `${modularScale.lg}px`,
-    lg: `${modularScale.xl}px`,
+    base: `${letterSpacing.base}px`, // 20px - 基本の余白
+    md: `${letterSpacing.md}px`, // 32px - タブレット用
+    lg: `${letterSpacing.lg}px`, // 48px - デスクトップ用
   },
   margin: {
-    base: `${modularScale.lg}px`,
-    md: `${modularScale.xl}px`,
-    lg: `${modularScale['2xl']}px`,
+    base: `${letterSpacing.md}px`, // 32px - 外側余白
+    md: `${letterSpacing.lg}px`, // 48px - タブレット外側余白
+    lg: `${letterSpacing.xl}px`, // 68px - デスクトップ外側余白
   },
 } as const;
 
 /**
- * 数学的美しさの検証関数
- */
-export const validateGoldenRatio = (value: number, reference: number): boolean => {
-  const ratio = value / reference;
-  return Math.abs(ratio - PHI) < 0.1 || Math.abs(ratio - (1 / PHI)) < 0.1;
-};
-
-/**
- * モバイルUX 50%ルール対応
+ * モバイルUX配慮
  */
 export const mobileUXRules = {
   maxContentHeight: "50vh", // ビューポートの50%以下
-  minTouchTarget: "44px",   // タッチターゲット最小サイズ
+  minTouchTarget: "56px", // より押しやすいタッチサイズ
   safeArea: {
     top: "env(safe-area-inset-top)",
     bottom: "env(safe-area-inset-bottom)",

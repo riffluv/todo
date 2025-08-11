@@ -1,79 +1,76 @@
 /**
- * Design Tokens System - 2025年ベストプラクティス準拠
+ * Design Tokens - 手紙アプリのための心温まるデザインシステム
  *
- * W3C Design Tokens Community Group仕様に基づく
- * 一元管理されたデザイン定数システム
- *
- * @see https://design-tokens.github.io/community-group/format/
+ * 感謝の気持ちを大切にしながら、読みやすさとアクセシビリティを
+ * バランス良く組み合わせた、人の心に寄り添うデザインを目指しています。
  */
 export const tokens = {
   /**
-   * Color System - WCAG 2.2 AA準拠
+   * カラーパレット - 手紙に込めた想いを表現する色たち
    *
-   * 2025年アクセシビリティ基準に完全対応
-   * - コントラスト比4.5:1以上確保
-   * - カラーブラインドネス対応
-   * - ダークモード対応準備
+   * WCAG AA準拠を保ちながら、温かみのある色合いを選びました。
+   * 感謝の気持ちが自然に伝わるような、やわらかな印象を大切にしています。
    */
   colors: {
     primary: {
-      50: "#FFF5E6",
-      100: "#FFE4B5",
-      200: "#FFCC80",
-      300: "#FFB74D",
-      400: "#FFA726",
-      500: "#f97316", // メインオレンジ
-      600: "#ea580c",
-      700: "#F28C00",
-      800: "#E65100",
-      900: "#BF360C",
+      50: "#fff8f1", // やさしい手紙用紙のような白
+      100: "#ffecda", // ほんのり温かみのあるクリーム
+      200: "#ffd8b6", // 午後のやわらかな陽だまり
+      300: "#ffc18a", // 心地よい秋の夕暮れ
+      400: "#ffaa5e", // やさしい感謝の色合い
+      500: "#f97316", // メインのしっかりとしたオレンジ色（元に戻す）
+      600: "#ea580c", // 深みのある感謝の色
+      700: "#c2410c", // 落ち着いた温かみ
+      800: "#b8623a", // しっとりとした茶色
+      900: "#9e4f2e", // 深い感謝の念
     },
     gray: {
-      50: "#fafafa",
-      100: "#f5f5f5",
-      200: "#e5e5e5",
-      300: "#d4d4d4",
-      400: "#a3a3a3",
-      500: "#737373",
-      600: "#525252",
-      700: "#404040",
-      800: "#262626",
-      900: "#171717",
+      50: "#fdfcfb", // 手紙用紙のような温かい白
+      100: "#f8f6f4", // やわらかなベージュがかった白
+      200: "#efebe7", // 上質な便箋のような色
+      300: "#d9d5d1", // やさしいグレー
+      400: "#a8a4a0", // 読みやすい中間色
+      500: "#6d6a66", // 落ち着いた文字色
+      600: "#524f4c", // しっかりとした文字色
+      700: "#3a3834", // 深みのある文字色
+      800: "#2a2824", // より深い文字色
+      900: "#1c1a18", // 最も濃い文字色
     },
     semantic: {
-      background: "#fefcf9",
-      surface: "rgba(255, 255, 255, 0.85)", // 少し不透明度を上げて読みやすく
-      border: "rgba(229, 231, 235, 0.4)", // ボーダーを少し薄く
+      background: "#fefcf8", // 手紙全体の背景（より温かく）
+      surface: "rgba(255, 255, 255, 0.92)", // カード背景（少し温かみを加えて）
+      border: "rgba(209, 120, 66, 0.12)", // ボーダー（温かみのある色に）
       text: {
-        primary: "#2d2d2d", // 少し柔らかい黒
-        secondary: "#525252", // より読みやすいグレー
-        muted: "#737373", // 適度なコントラスト
+        primary: "#2a2824", // メイン文字（やわらかい黒に）
+        secondary: "#524f4c", // セカンダリ文字（読みやすく）
+        muted: "#6d6a66", // 控えめな文字色
       },
-      fg: "#1f2937",
-      muted: "#6b7280",
-      subtle: "#9ca3af",
-      emphasized: "#111827",
+      fg: "#1c1a18",
+      muted: "#6d6a66",
+      subtle: "#a8a4a0",
+      emphasized: "#2a2824",
       focusRing: "#f97316",
     },
   },
 
-  // タイポグラフィ
+  // 文字まわりの設定 - 手紙らしい読みやすさを追求
   typography: {
     fontFamilies: {
-      // 感謝メッセージに適した温かみのあるフォント
-      heading: '"Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Meiryo", sans-serif',
+      // 日本語の手紙にぴったりの、温かみのあるフォント設定
+      heading:
+        '"Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Meiryo", sans-serif',
       body: '"Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Meiryo", sans-serif',
-      // 特別な場面用の手書き風フォント（オプション）
+      // 特別な場面で使う、手書きのような親しみやすさ
       handwritten: '"Klee One", "Hiragino Kaku Gothic ProN", cursive, sans-serif',
     },
     fontSizes: {
-      xs: "12px",
-      sm: "14px",
-      md: "16px",
-      lg: "18px",
-      xl: "24px",
-      "2xl": "32px",
-      "3xl": "40px",
+      xs: "11px", // 小さな注記用（少し読みやすくしました）
+      sm: "13px", // 日付などの補助情報
+      md: "16px", // 基本の文字サイズ
+      lg: "18px", // 少し大きめの本文（手紙らしく）
+      xl: "22px", // 小見出しサイズ（優しい印象に）
+      "2xl": "28px", // 大きな見出し
+      "3xl": "36px", // 特別な場面用
     },
     fontWeights: {
       normal: 400,
@@ -82,147 +79,142 @@ export const tokens = {
       bold: 700,
     },
     lineHeights: {
-      tight: 1.2,
-      normal: 1.6,
-      relaxed: 1.7,
-      loose: 1.75,
+      tight: 1.25, // 見出し用（少しゆとりを）
+      normal: 1.65, // 基本（読みやすく）
+      relaxed: 1.8, // 手紙本文用（ゆったりと）
+      loose: 1.9, // とてもゆったりとした行間
     },
     letterSpacings: {
-      tight: "-0.025em",
-      normal: "0",
-      wide: "0.01em",
-      wider: "0.02em",
-      widest: "0.05em",
+      tight: "-0.02em", // 見出し用
+      normal: "0", // 標準
+      wide: "0.015em", // 日本語に適した微調整
+      wider: "0.025em", // より開放的な印象
+      widest: "0.04em", // 特別な強調用
     },
   },
 
-  // スペーシング（8ptグリッドシステム準拠）
+  // 空間の使い方 - 心地よいリズムを意識した余白
   spacing: {
-    xs: "4px",
-    sm: "8px",
-    md: "16px",
-    lg: "24px",
-    xl: "32px",
-    "2xl": "40px",
-    "3xl": "48px",
-    "4xl": "64px",
-    "5xl": "80px",
-    "6xl": "96px",
-    "7xl": "128px",
+    xs: "6px", // 少し大きめに（優しい印象に）
+    sm: "10px", // 規則的でない、人間らしい数値
+    md: "18px", // 基本の余白（読みやすさを重視）
+    lg: "28px", // ゆとりのある余白
+    xl: "38px", // 大きめの余白（手紙らしい贅沢さ）
+    "2xl": "52px", // とても大きな余白
+    "3xl": "68px", // セクション区切り用
+    "4xl": "88px", // 大きな区切り
+    "5xl": "112px", // 特別な場面用
+    "6xl": "148px", // より印象的な空間
+    "7xl": "192px", // 最大の余白
   },
 
-  // モバイル最適化サイズ
+  // モバイルでの使いやすさ - 指でタッチしやすいサイズ感
   mobile: {
-    touchTarget: "52px", // より大きなタッチターゲット
+    touchTarget: "56px", // より押しやすく（Apple推奨に近く）
     characterSize: {
-      sm: "120px",
-      md: "140px",
-      lg: "160px",
+      sm: "128px", // キャラクター画像（少し大きく）
+      md: "148px", // 中サイズ
+      lg: "168px", // 大きなサイズ
     },
     safeArea: {
-      top: "44px",
-      bottom: "34px",
+      top: "48px", // セーフエリア（余裕をもって）
+      bottom: "38px",
     },
-    // 手紙らしい余白
+    // 手紙らしい文字間隔
     letterSpacing: {
-      comfortable: "0.02em",
-      relaxed: "0.03em",
+      comfortable: "0.018em", // 心地よい間隔
+      relaxed: "0.028em", // よりゆったりと
     },
   },
 
-  // フォーカス状態の強化
+  // フォーカス表示 - アクセシビリティを大切に
   focus: {
     ring: {
-      color: "#f97316", // primary[500] でより明確に
+      color: "#f4a261", // 温かみのある色
       width: "2px",
       offset: "3px",
       style: "solid",
-      shadow: "0 0 0 4px rgba(249, 115, 22, 0.25)",
+      shadow: "0 0 0 4px rgba(244, 162, 97, 0.28)", // 少し優しく
     },
     background: {
-      light: "rgba(249, 115, 22, 0.08)",
-      medium: "rgba(249, 115, 22, 0.12)",
+      light: "rgba(244, 162, 97, 0.08)",
+      medium: "rgba(244, 162, 97, 0.14)",
     },
   },
 
-  // ボーダーラディウス
+  // 角の丸み - やわらかな印象を大切に
   radii: {
-    sm: "4px",
-    md: "8px",
-    lg: "12px",
-    xl: "16px",
+    sm: "5px", // 少し丸く（優しい印象）
+    md: "9px", // 基本の丸み
+    lg: "14px", // やわらかな印象
+    xl: "19px", // とても丸い
     full: "9999px",
   },
 
-  // シャドウ（2025年ニューモーフィズム対応）
+  // 影の表現 - 奥行きと立体感を自然に
   shadows: {
-    sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
-    md: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    lg: "0 8px 25px rgba(234, 88, 12, 0.15)",
-    xl: "0 20px 25px rgba(0, 0, 0, 0.1)",
-    bear: "drop-shadow(0 0 1px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))",
-    // ニューモーフィズム
+    sm: "0 1px 3px rgba(28, 26, 24, 0.08)", // やさしい影
+    md: "0 4px 12px rgba(28, 26, 24, 0.12)", // 基本の影
+    lg: "0 8px 24px rgba(244, 162, 97, 0.18)", // 温かみのある影
+    xl: "0 16px 32px rgba(28, 26, 24, 0.15)", // 大きな影
+    bear: "drop-shadow(0 1px 2px rgba(28, 26, 24, 0.25)) drop-shadow(0 1px 4px rgba(244, 162, 97, 0.15))",
+
+    // 特別な表現技法
     neumorphism: {
-      raised: "8px 8px 16px rgba(163, 177, 198, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.5)",
+      raised: "6px 6px 12px rgba(163, 177, 198, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.7)",
       pressed:
-        "inset 8px 8px 16px rgba(163, 177, 198, 0.6), inset -8px -8px 16px rgba(255, 255, 255, 0.5)",
-      floating: "0 8px 32px rgba(31, 38, 135, 0.37)",
+        "inset 4px 4px 8px rgba(163, 177, 198, 0.4), inset -2px -2px 4px rgba(255, 255, 255, 0.7)",
+      floating: "0 8px 28px rgba(244, 162, 97, 0.25)",
     },
-    // グラスモーフィズム
-    glass: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+    glass: "0 8px 28px rgba(244, 162, 97, 0.2)",
   },
 
   /**
-   * Animation System - 2025年UXベストプラクティス
+   * アニメーション設定 - 自然で心地よい動きを
    *
-   * - Reduced Motion対応
-   * - 60fps保証のGPU加速
-   * - 自然な物理ベースアニメーション
-   * - アクセシビリティ配慮
-   * - View Transitions API対応
+   * 手紙を読む時のような、ゆったりとした時間の流れを
+   * アニメーションでも表現したいと思います。
    */
   animations: {
     durations: {
-      instant: "0.1s",
-      fast: "0.15s",
-      normal: "0.25s",
-      slow: "0.4s",
-      slower: "0.6s",
-      slowest: "0.8s",
+      instant: "0.02s", // 瞬時の反応
+      fastest: "0.08s", // 最速フィードバック
+      fast: "0.12s", // 素早い動き（一流基準）
+      normal: "0.2s", // 基本の速度（Apple/Google標準）
+      slow: "0.3s", // ゆったりとした動き
+      slower: "0.4s", // より穏やかな動き
+      slowest: "0.5s", // 最も穏やかな動き
     },
     easings: {
-      // Material Design 3.0準拠
-      easeOut: "cubic-bezier(0.4, 0, 0.2, 1)",
-      easeIn: "cubic-bezier(0.4, 0, 1, 1)",
-      easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
-      // Apple Human Interface準拠
-      bounce: "cubic-bezier(0.16, 1, 0.3, 1)",
-      spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-      // 2025年新標準
-      emphasized: "cubic-bezier(0.2, 0, 0, 1)",
-      decelerated: "cubic-bezier(0, 0, 0.2, 1)",
-      accelerated: "cubic-bezier(0.4, 0, 1, 1)",
+      // 一流デザイン基準（オーバーシュート完全排除）
+      easeOut: "cubic-bezier(0.25, 0.8, 0.25, 1)", // Material Design ease-out
+      easeIn: "cubic-bezier(0.55, 0.055, 0.675, 0.19)", // Material Design ease-in
+      easeInOut: "cubic-bezier(0.645, 0.045, 0.355, 1)", // Material Design ease-in-out
+      // Apple HIG & Google準拠
+      emphasized: "cubic-bezier(0.4, 0, 0.2, 1)", // Material emphasized motion
+      standard: "cubic-bezier(0.4, 0.0, 0.2, 1)", // Google標準
+      decelerated: "cubic-bezier(0.0, 0.0, 0.2, 1)", // 減速重視
+      accelerated: "cubic-bezier(0.4, 0.0, 1, 1)", // 加速重視
+      // 安定した自然な動き
+      gentle: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", // 穏やかで確実
+      warm: "cubic-bezier(0.25, 0.46, 0.45, 0.94)", // 温かみがあり安定
+      crisp: "cubic-bezier(0.4, 0, 0.6, 1)", // きれのある動き
     },
-    // Reduced Motion対応
+    // アクセシビリティ対応
     reducedMotion: {
-      duration: "0.01s",
+      duration: "0.02s",
       easing: "linear",
-    },
-    // View Transitions API対応
-    viewTransitions: {
-      duration: "0.3s",
-      easing: "cubic-bezier(0.4, 0, 0.2, 1)",
     },
   },
 
-  // ブレークポイント（2025年デバイス対応）
+  // 画面サイズ対応 - どの端末でも読みやすく
   breakpoints: {
     base: "0px",
-    sm: "480px",
-    md: "768px",
-    lg: "992px",
-    xl: "1280px",
-    "2xl": "1536px",
+    sm: "480px", // 小さなスマートフォン
+    md: "768px", // タブレット
+    lg: "1024px", // 小さなPC（少し調整）
+    xl: "1280px", // 標準的なPC
+    "2xl": "1536px", // 大きなディスプレイ
   },
 
   /**

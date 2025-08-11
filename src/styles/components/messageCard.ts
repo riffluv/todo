@@ -30,7 +30,8 @@ export const messageCardStyles = {
 
     _active: {
       transform: "scale(0.97) translateY(1px)",
-      transition: "transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.1s ease-out, background 0.1s ease-out",
+      transition:
+        "transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.1s ease-out, background 0.1s ease-out",
       boxShadow: `
         0 2px 6px rgba(0,0,0,0.08),
         0 4px 12px rgba(0,0,0,0.06),
@@ -52,7 +53,7 @@ export const messageCardStyles = {
     },
   },
   content: {
-    gap: { base: "13px", md: "21px" }, // 黄金比ベース
+    gap: { base: "16px", md: "24px" }, // 心地よい自然な間隔
     textAlign: "center" as const,
     w: "100%",
     display: "flex",
@@ -72,12 +73,12 @@ export const messageCardStyles = {
     // ラベルテキスト（統一タイポグラフィ）
     label: {
       fontFamily: tokens.typography.fontFamilies.body,
-      fontSize: "12px", // 黄金比ベース
+      fontSize: "12px", // 読みやすいサイズ
       color: tokens.colors.primary[600],
       fontWeight: tokens.typography.fontWeights.semibold,
       textTransform: "none" as const,
-      letterSpacing: "0.01em",
-      mb: "8px", // 黄金比ベース
+      letterSpacing: "0.015em", // 少し開放的に
+      mb: "10px", // 自然な余白
       textAlign: "center" as const,
       pb: 0,
       display: "inline-block",

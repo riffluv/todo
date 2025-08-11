@@ -60,8 +60,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
           >
             <VStack
               gap={{
-                base: "21px", // 黄金比ベース
-                md: "34px", // 黄金比ベース
+                base: "24px", // 心地よいリズムの間隔
+                md: "38px", // より自然で余裕のある間隔
               }}
             >
               {/* グラスモーフィズムメッセージカード */}
@@ -149,36 +149,36 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 </VStack>
               </MotionBox>
 
-              {/* 手紙ボタンエリア（重要度向上・視覚的分離強化） */}
+              {/* 手紙ボタンエリア（自然な余白で視覚的分離） */}
               <Box
                 w="100%"
-                pt={{ base: "32px", md: "40px" }} // 上部の余白を増加して分離感を強化
-                pb={{ base: "24px", md: "32px" }}
+                pt={{ base: "36px", md: "48px" }} // 上部の余白を自然な数値に
+                pb={{ base: "28px", md: "36px" }}
                 position="relative"
                 _before={{
                   content: '""',
                   position: "absolute",
-                  top: "16px",
+                  top: "18px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  width: "60px",
+                  width: "64px",
                   height: "1px",
                   background:
-                    "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.3), transparent)",
+                    "linear-gradient(90deg, transparent, rgba(244, 162, 97, 0.28), transparent)",
                   display: { base: "none", md: "block" }, // デスクトップのみ表示
                 }}
               >
                 <VStack
                   gap={{
-                    base: "18px", // ボタン間の適度な間隔
-                    md: "24px",
+                    base: "20px", // ボタン間の心地よい間隔
+                    md: "28px", // より余裕のある間隔
                   }}
                   align="center"
                 >
                   <HStack
                     gap={{
-                      base: "16px", // ボタン間の適度な間隔
-                      md: "20px",
+                      base: "18px", // ボタン間の自然な間隔
+                      md: "24px", // デスクトップで少し余裕を
                     }}
                     justify="center"
                     align="center"
