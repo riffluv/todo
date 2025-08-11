@@ -84,30 +84,24 @@ export function MessageButton({
         ease: [0.25, 0.8, 0.25, 1], // Material Design ease-out
       }}
       // 押下アニメーション（単一、競合なし）
-      whileTap={
-        disabled
-          ? undefined
-          : {
-              scale: 0.95,
-              y: 2,
-              transition: {
-                duration: parseFloat(tokens.animations.durations.fast),
-                ease: [0.4, 0, 0.2, 1], // Material emphasized
-              },
-            }
-      }
-      whileHover={
-        disabled
-          ? undefined
-          : {
-              scale: 1.03,
-              y: -4,
-              transition: {
-                duration: parseFloat(tokens.animations.durations.fast),
-                ease: [0.25, 0.8, 0.25, 1], // Material Design ease-out
-              },
-            }
-      }
+      {...(!disabled && {
+        whileTap: {
+          scale: 0.95,
+          y: 2,
+          transition: {
+            duration: parseFloat(tokens.animations.durations.fast),
+            ease: [0.4, 0, 0.2, 1], // Material emphasized
+          },
+        },
+        whileHover: {
+          scale: 1.03,
+          y: -4,
+          transition: {
+            duration: parseFloat(tokens.animations.durations.fast),
+            ease: [0.25, 0.8, 0.25, 1], // Material Design ease-out
+          },
+        },
+      })}
       // ボタン基本設定
       as="button"
       onClick={handleClick}
