@@ -62,13 +62,20 @@ export function MessageButton({
     onClick();
   }, [disabled, onClick]);
 
-  // グローバル押下解除（安全性）
+  // グローバル押下解除（モバイル対応強化）
   React.useEffect(() => {
     const cleanup = () => setPressed(false);
-    window.addEventListener("pointerup", cleanup, { capture: true });
+    // デスクトップ・モバイル両対応のイベントリスナー
+    window.addEventListener("pointerup", cleanup, { capture: true, passive: true });
+    window.addEventListener("pointercancel", cleanup, { capture: true, passive: true });
+    window.addEventListener("touchend", cleanup, { capture: true, passive: true });
+    window.addEventListener("touchcancel", cleanup, { capture: true, passive: true });
     document.addEventListener("visibilitychange", cleanup);
     return () => {
       window.removeEventListener("pointerup", cleanup, { capture: true });
+      window.removeEventListener("pointercancel", cleanup, { capture: true });
+      window.removeEventListener("touchend", cleanup, { capture: true });
+      window.removeEventListener("touchcancel", cleanup, { capture: true });
       document.removeEventListener("visibilitychange", cleanup);
     };
   }, []);
@@ -83,22 +90,13 @@ export function MessageButton({
         delay: prefersReducedMotion ? 0 : delay,
         ease: [0.25, 0.8, 0.25, 1], // Material Design ease-out
       }}
-      // 押下アニメーション（単一、競合なし）
+      // 押下アニメーション（モバイル最適化 - y軸移動を削除）
       {...(!disabled && {
         whileTap: {
-          scale: 0.95,
-          y: 2,
+          scale: 0.96,
           transition: {
             duration: parseFloat(tokens.animations.durations.fast),
             ease: [0.4, 0, 0.2, 1], // Material emphasized
-          },
-        },
-        whileHover: {
-          scale: 1.03,
-          y: -4,
-          transition: {
-            duration: parseFloat(tokens.animations.durations.fast),
-            ease: [0.25, 0.8, 0.25, 1], // Material Design ease-out
           },
         },
       })}
@@ -129,11 +127,14 @@ export function MessageButton({
         outline: `2px solid ${tokens.colors.primary[500]}`,
         outlineOffset: "2px",
       }}
-      // タッチ最適化
+      // タッチ最適化（モバイル強化）
       style={{
         WebkitTapHighlightColor: "transparent",
-        touchAction: "manipulation",
+        touchAction: "manipulation", // スマホでのピンチズームやダブルタップズームを無効化
         userSelect: "none",
+        WebkitUserSelect: "none", // iOS Safari対応
+        WebkitTouchCallout: "none", // iOS長押しコンテキストメニュー無効
+        WebkitUserDrag: "none", // ドラッグ無効
       }}
     >
       {/* アイコン部分 - 高級感のあるオレンジ立体デザイン */}
