@@ -128,14 +128,15 @@ export function MessageButton({
         outlineOffset: "2px",
       }}
       // タッチ最適化（モバイル強化）
-      style={{
-        WebkitTapHighlightColor: "transparent",
-        touchAction: "manipulation", // スマホでのピンチズームやダブルタップズームを無効化
-        userSelect: "none",
-        WebkitUserSelect: "none", // iOS Safari対応
-        WebkitTouchCallout: "none", // iOS長押しコンテキストメニュー無効
-        WebkitUserDrag: "none", // ドラッグ無効
-      }}
+      style={
+        {
+          WebkitTapHighlightColor: "transparent",
+          touchAction: "manipulation", // スマホでのピンチズームやダブルタップズームを無効化
+          userSelect: "none",
+          WebkitUserSelect: "none", // iOS Safari対応
+          WebkitTouchCallout: "none", // iOS長押しコンテキストメニュー無効
+        } as React.CSSProperties
+      }
     >
       {/* アイコン部分 - 高級感のあるオレンジ立体デザイン */}
       <VStack
