@@ -1,39 +1,43 @@
 /**
- * Message Card Component Styles
+ * Message Card Component Styles - 統一レイアウトシステム対応
  *
- * @description メッセージカード専用のスタイル定義
+ * @description 黄金比による数学的に美しいメッセージカード
+ * 全画面で完璧に統一されたスペーシング・比例・アニメーション
  */
 
+import { unifiedLayout } from "../layout";
 import { tokens } from "../tokens";
 
 export const messageCardStyles = {
   container: {
-    // 紙の温度感を持つ穏やかなカード（グラス表現を控えめに）
-    background: `
-      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.92))
-    `,
-    borderRadius: tokens.radii.xl,
-    p: {
-      base: tokens.spacing.xl,
-      md: tokens.spacing["2xl"],
-    },
-    border: "1px solid",
-    borderColor: tokens.colors.gray[200], // 繊細なラインのみ
+    // 統一メッセージカードスタイル（黄金比ベース）
+    ...unifiedLayout.messageCard,
     position: "relative" as const,
-    boxShadow: tokens.shadows.sm, // 影は控えめに
+    
+    // 統一アニメーション
+    transition: unifiedLayout.animations.cssTransition,
+    
     _hover: {
-      transform: "translateY(-2px)",
-      boxShadow: tokens.shadows.md,
-      background: `linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94))`,
+      transform: "translateY(-2px) scale(1.01)",
+      transition: "all 0.25s ease-out",
+      boxShadow: `
+        0 6px 20px rgba(0,0,0,0.08),
+        0 12px 40px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.8)
+      `,
+      background: "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96))",
     },
+    
     _active: {
-      transform: "translateY(0px)",
-      boxShadow: tokens.shadows.sm,
+      transform: "scale(0.98)",
+      transition: "all 0.15s ease-out",
     },
+    
     _focusVisible: {
       outline: `2px solid ${tokens.colors.primary[400]}`,
       outlineOffset: "2px",
     },
+    
     "@media (prefers-reduced-motion: reduce)": {
       transition: "none !important",
       transform: "none !important",
@@ -41,44 +45,48 @@ export const messageCardStyles = {
     },
   },
   content: {
-    gap: { base: tokens.spacing.lg, md: tokens.spacing.xl },
+    gap: { base: "13px", md: "21px" }, // 黄金比ベース
     textAlign: "center" as const,
     w: "100%",
+    display: "flex",
+    flexDirection: "column" as const,
   },
+  
   text: {
+    // メインテキスト（統一タイポグラフィ）
     primary: {
-      fontSize: {
-        base: tokens.typography.fontSizes.md,
-        md: tokens.typography.fontSizes.lg,
-      },
-      lineHeight: {
-        base: tokens.typography.lineHeights.relaxed,
-        md: tokens.typography.lineHeights.loose,
-      },
+      ...unifiedLayout.typography.body,
       color: tokens.colors.gray[800],
       fontWeight: tokens.typography.fontWeights.normal,
-      letterSpacing: "0.005em", // 日本語に最適化された間隔
       textAlign: "center" as const,
       maxW: "none",
     },
+    
+    // ラベルテキスト（統一タイポグラフィ）
     label: {
       fontFamily: tokens.typography.fontFamilies.body,
-      fontSize: tokens.typography.fontSizes.sm,
+      fontSize: "12px", // 黄金比ベース
       color: tokens.colors.primary[600],
       fontWeight: tokens.typography.fontWeights.semibold,
-      textTransform: "none" as const, // 手紙らしく自然体
-      letterSpacing: "0.01em", // 日本語ラベルに適した間隔
-      mb: tokens.spacing.sm,
+      textTransform: "none" as const,
+      letterSpacing: "0.01em",
+      mb: "8px", // 黄金比ベース
       textAlign: "center" as const,
       pb: 0,
       display: "inline-block",
     },
-    // 補足文用（必要な箇所で使用）
+    
+    // キャプション（統一タイポグラフィ）
     caption: {
-      fontSize: tokens.typography.fontSizes.xs,
+      ...unifiedLayout.typography.caption,
       color: tokens.colors.gray[500],
-      lineHeight: tokens.typography.lineHeights.normal,
-      letterSpacing: tokens.typography.letterSpacings.wider,
+    },
+    
+    // タイトル用（統一タイポグラフィ）
+    title: {
+      ...unifiedLayout.typography.title,
+      color: tokens.colors.primary[600],
+      textAlign: "center" as const,
     },
   },
 } as const;

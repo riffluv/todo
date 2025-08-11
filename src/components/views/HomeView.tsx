@@ -13,6 +13,7 @@ import { MessageButton } from "@/components/common/MessageButton";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";
+import { unifiedLayout } from "@/styles/layout";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig, ViewType } from "@/types/message";
@@ -39,20 +40,16 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
       {...tapEffectProps}
     >
       <Container {...componentStyles.page.content}>
-        <VStack
-          gap={{
-            base: tokens.spacing["2xl"],
-            md: tokens.spacing["3xl"],
-          }}
-          align="center"
-          w="100%"
-        >
-          {/* 現代的キャラクターヘッダー */}
+        {/* 統一ヘッダーセクション */}
+        <Box {...componentStyles.page.header}>
           <CharacterHeader>
             <AnimatedTitle text="Thanks!" delay={0.4} />
           </CharacterHeader>
+        </Box>
 
-          {/* 改良されたメッセージコンテナ */}
+        {/* 統一メインコンテンツセクション */}
+        <VStack {...componentStyles.page.main}>
+          {/* メッセージコンテナ（統一レイアウト） */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
             transition={{
@@ -68,8 +65,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
           >
             <VStack
               gap={{
-                base: tokens.spacing.xl,
-                md: tokens.spacing["2xl"],
+                base: "21px", // 黄金比ベース
+                md: "34px",   // 黄金比ベース
               }}
             >
               {/* グラスモーフィズムメッセージカード */}
@@ -80,14 +77,13 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 whileHover={{
                   y: -2,
                   scale: 1.01,
-                  transition: {
-                    duration: 0.25,
-                    ease: cubicBezier(0.16, 1, 0.3, 1),
-                  },
                 }}
                 whileTap={{
                   scale: 0.98,
-                  transition: { duration: 0.1 },
+                }}
+                transition={{
+                  duration: 0.25,
+                  ease: "easeOut",
                 }}
               >
                 {/* 装飾的な熊さんアイコン群 */}
@@ -145,21 +141,28 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 </VStack>
               </MotionBox>
 
-              {/* 平等な横並びアクションエリア */}
+              {/* 手紙ボタンエリア（重要度向上） */}
               <Box 
                 w="100%" 
-                pt={{ base: tokens.spacing["2xl"], md: tokens.spacing["3xl"] }}
-                pb={{ base: tokens.spacing.md, md: tokens.spacing.lg }}
+                pt={{ base: "28px", md: "34px" }} // 黄金比ベースで適度な間隔
+                pb={{ base: "21px", md: "28px" }}
               >
-                <HStack
+                <VStack
                   gap={{
-                    base: tokens.spacing.lg,
-                    md: tokens.spacing.xl,
+                    base: "18px", // ボタン間の適度な間隔
+                    md: "24px",
                   }}
-                  justify="center"
                   align="center"
-                  flexWrap="wrap"
                 >
+                  <HStack
+                    gap={{
+                      base: "16px", // ボタン間の適度な間隔
+                      md: "20px",
+                    }}
+                    justify="center"
+                    align="center"
+                    flexWrap="wrap"
+                  >
                   {messages.map((person, index) => (
                     <MessageButton
                       key={person.id}
@@ -167,8 +170,9 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                       label={person.buttonLabel}
                       delay={0.6 + index * 0.2}
                     />
-                  ))}
-                </HStack>
+                   ))}
+                  </HStack>
+                </VStack>
               </Box>
             </VStack>
           </MotionBox>

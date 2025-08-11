@@ -71,6 +71,7 @@ export function TypewriterTitle({
       color={color}
       textAlign="center"
       letterSpacing={tokens.typography.letterSpacings.wide}
+      lineHeight={tokens.typography.lineHeights.tight}
       position="relative"
       initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
       animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}

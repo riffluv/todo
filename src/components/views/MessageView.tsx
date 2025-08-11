@@ -13,6 +13,7 @@ import { TypewriterTitle } from "@/components/common/TypewriterTitle";
 import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
 import { useTapEffectProps } from "@/hooks/useTapEffect";
 import { componentStyles } from "@/styles/components";
+import { unifiedLayout } from "@/styles/layout";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { PersonConfig } from "@/types/message";
@@ -42,8 +43,8 @@ export function MessageView({ person, onBack }: MessageViewProps) {
       {...tapEffectProps}
     >
       <Container {...componentStyles.page.content}>
-        <VStack gap={{ base: tokens.spacing["2xl"], md: tokens.spacing["3xl"] }} align="center">
-          {/* 英語タイトルヘッダー */}
+        {/* 統一ヘッダーセクション */}
+        <Box {...componentStyles.page.header}>
           <CharacterHeader 
             delay={0.1}
             characterSrc={
@@ -64,8 +65,11 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               color={tokens.colors.primary[600]}
             />
           </CharacterHeader>
+        </Box>
 
-          {/* メッセージカード */}
+        {/* 統一メインコンテンツセクション */}
+        <VStack {...componentStyles.page.main}>
+          {/* メッセージカード（統一レイアウト） */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
             transition={{
@@ -76,7 +80,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
-            <VStack {...componentStyles.messageCard.content}>
+            <VStack 
+              {...componentStyles.messageCard.content}
+              gap={{
+                base: "21px", // 黄金比ベース
+                md: "34px",   // 黄金比ベース
+              }}
+            >
               <MotionBox
                 {...componentStyles.messageCard.container}
                 position="relative"
@@ -86,14 +96,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                 whileHover={{
                   y: -2,
                   scale: 1.01,
-                  transition: {
-                    duration: 0.25,
-                    ease: cubicBezier(0.16, 1, 0.3, 1),
-                  },
                 }}
                 whileTap={{
                   scale: 0.98,
-                  transition: { duration: 0.1 },
+                }}
+                transition={{
+                  duration: 0.25,
+                  ease: [0.16, 1, 0.3, 1],
                 }}
               >
                 {/* 熊さんアイコン群（装飾用） */}
@@ -187,33 +196,46 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                       ease: cubicBezier(0.16, 1, 0.3, 1),
                     }}
                   >
-                    <VStack gap={3} mt={{ base: 5, md: 6 }}>
+                    <VStack gap={4} mt={{ base: 6, md: 8 }}>
+                      {/* 手紙らしい署名部分 */}
+                      <VStack gap={2} align="center">
+                        <Text
+                          fontSize="lg"
+                          color={tokens.colors.primary[600]}
+                          fontWeight={tokens.typography.fontWeights.medium}
+                          textAlign="center"
+                          mb={1}
+                        >
+                          {person.message.closing}
+                        </Text>
+                        <Text 
+                          fontSize="md" 
+                          color={tokens.colors.gray[700]} 
+                          textAlign="center"
+                          fontWeight={tokens.typography.fontWeights.medium}
+                        >
+                          {person.message.signature}
+                        </Text>
+                      </VStack>
+                      
+                      {/* 控えめな日付 */}
                       <chakra.time
                         dateTime={new Date().toISOString()}
                         aria-label="作成日時"
                         style={{ display: "block" }}
+                        mt={2}
                       >
                         <Text 
                           fontSize="xs" 
                           color={tokens.colors.gray[400]} 
                           textAlign="center"
-                          opacity={0.8}
+                          opacity={0.7}
                           fontWeight={tokens.typography.fontWeights.normal}
+                          letterSpacing="0.05em"
                         >
                           {new Date().toLocaleDateString()}
                         </Text>
                       </chakra.time>
-                      <Text
-                        fontSize="md"
-                        color={tokens.colors.primary[700]}
-                        fontWeight={tokens.typography.fontWeights.semibold}
-                        textAlign="center"
-                      >
-                        {person.message.closing}
-                      </Text>
-                      <Text fontSize="sm" color={tokens.colors.gray[600]} textAlign="center">
-                        {person.message.signature}
-                      </Text>
                     </VStack>
                   </MotionBox>
                 </VStack>

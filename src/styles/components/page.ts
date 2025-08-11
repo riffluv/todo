@@ -1,47 +1,58 @@
 /**
- * Page Layout Component Styles
+ * Page Layout Component Styles - 統一レイアウトシステム対応
  *
- * @description ページレイアウト関連のスタイル定義
+ * @description 黄金比による数学的に美しいページレイアウト
+ * 全画面で完璧に統一されたスペーシングと比例関係
  */
 
+import { unifiedLayout } from "../layout";
 import { tokens } from "../tokens";
 
 export const pageStyles = {
+  // 統一ページコンテナ（全画面共通）
   container: {
-    minHeight: "100dvh",
-    position: "relative" as const,
-    py: {
-      base: tokens.spacing.xl,
-      md: tokens.spacing["3xl"],
-    },
-    px: {
-      base: tokens.spacing.lg,
-      md: tokens.spacing.xl,
-    },
-    pb: {
-      base: tokens.spacing["2xl"],
-      md: tokens.spacing["3xl"],
-    },
-    // 微細なテクスチャ背景
-    _before: {
-      content: '""',
-      position: "absolute",
-      inset: 0,
-      opacity: 0.025,
-      backgroundImage: `radial-gradient(circle at 22% 28%, ${tokens.colors.primary[500]} 1px, transparent 1px),
-                        radial-gradient(circle at 78% 72%, ${tokens.colors.primary[600]} 1px, transparent 1px)`,
-      backgroundSize: "56px 56px, 44px 44px",
-      pointerEvents: "none",
-    },
+    ...unifiedLayout.pageContainer,
   },
+  
+  // コンテンツ領域（統一サイズ制限）
   content: {
-    maxW: { base: "100%", sm: "400px", md: "600px", lg: "800px", xl: "1000px" },
+    ...unifiedLayout.contentSection,
+    display: "flex",
+    flexDirection: "column" as const,
     gap: {
-      base: tokens.spacing["2xl"],
-      md: tokens.spacing["3xl"],
+      base: "16px", // より親しみやすい間隔
+      md: "24px",   // 手紙らしい温かみのある間隔
+      lg: "32px",   // 適度な余白で読みやすさを保持
     },
     align: "center" as const,
     w: "100%",
-    mx: "auto",
+  },
+  
+  // ヘッダーセクション（固定高さ）
+  header: {
+    ...unifiedLayout.headerSection,
+  },
+  
+  // メインコンテンツセクション
+  main: {
+    flex: 1,
+    w: "100%",
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    gap: {
+      base: "21px",
+      md: "34px",
+    },
+  },
+  
+  // フッターセクション（空の場合はborderなし）
+  footer: {
+    ...unifiedLayout.footerSection,
+  },
+  
+  // フッター（コンテンツありの場合はborderあり）
+  footerWithContent: {
+    ...unifiedLayout.footerWithContent,
   },
 } as const;
