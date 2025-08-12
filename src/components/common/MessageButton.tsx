@@ -48,7 +48,6 @@ export function MessageButton({
       // 軽い触覚フィードバック（対応端末のみ）
       try {
         if (e.pointerType !== "mouse" && "vibrate" in navigator) {
-          // @ts-expect-error: vibrate は一部ブラウザで未定義
           navigator.vibrate?.(10);
         }
       } catch {}
