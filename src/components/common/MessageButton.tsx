@@ -7,7 +7,7 @@
 "use client";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { springs } from "@/styles/motion";
+import { easing } from "@/styles/motion";
 import { tokens } from "@/styles/tokens";
 import { Icon, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -17,6 +17,7 @@ import { FaEnvelope } from "react-icons/fa";
 const MotionButton = motion.create(VStack);
 const MotionCircle = motion.create(VStack);
 const MotionText = motion.create(Text);
+const MotionIcon = motion.create(Icon);
 
 export interface MessageButtonProps {
   /** クリック時のハンドラー */
@@ -129,6 +130,7 @@ export function MessageButton({
       }}
       // タッチ最適化（モバイル強化） - グローバルCSSクラスで適用し型競合回避
       className="touch-optimized"
+      aria-pressed={pressed}
     >
       {/* アイコン部分 - 高級感のあるオレンジ立体デザイン */}
       <MotionCircle
@@ -151,10 +153,24 @@ export function MessageButton({
         }
         justify="center"
         align="center"
-        variants={{ idle: { scale: 1, y: 0 }, pressed: { scale: 0.94, y: 2 } }}
+        initial={false}
+        variants={{
+          // 離した時に軽いオーバーシュートで戻る（温かい紙の弾み感）
+          idle: {
+            scaleX: [1.015, 0.995, 1],
+            scaleY: [0.94, 1.01, 1],
+            y: [2, -0.5, 0],
+            transition: { duration: 0.2, ease: easing.easeOut, times: [0, 0.6, 1] },
+          },
+          // 押下時は素早く、深すぎず沈み込む
+          pressed: {
+            scaleX: 1.015,
+            scaleY: 0.94,
+            y: 2,
+            transition: { type: "tween", duration: 0.07, ease: easing.emphasized },
+          },
+        }}
         animate={pressed ? "pressed" : "idle"}
-        // しっかりしたスプリングで戻す
-        transition={springs.uiPress}
         // ホバー時の立体感強化
         _groupHover={{
           bg: `linear-gradient(135deg, #fefcf8, #fdfcfb)`, // ホバー時：手紙全体の背景色に近い温かさ
@@ -162,7 +178,7 @@ export function MessageButton({
           boxShadow: `0 12px 28px ${tokens.colors.primary[500]}26, 0 6px 16px ${tokens.colors.primary[500]}18, inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -1px 0 ${tokens.colors.primary[500]}22`,
         }}
       >
-        <Icon
+        <MotionIcon
           as={icon}
           boxSize={{ base: 5, md: 6 }}
           color={pressed ? tokens.colors.primary[600] : tokens.colors.primary[500]}
@@ -171,7 +187,20 @@ export function MessageButton({
               ? `drop-shadow(0 1px 2px rgba(0,0,0,0.15))`
               : `drop-shadow(0 2px 4px ${tokens.colors.primary[500]}30) drop-shadow(0 1px 2px rgba(0,0,0,0.08))`
           }
-          transition={`all ${tokens.animations.durations.fast} cubic-bezier(0.4, 0, 0.2, 1)`}
+          initial={false}
+          variants={{
+            idle: {
+              scale: [0.985, 1.015, 1],
+              y: [0.8, -0.4, 0],
+              transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.6, 1] },
+            },
+            pressed: {
+              scale: 0.985,
+              y: 0.8,
+              transition: { type: "tween", duration: 0.07, ease: easing.emphasized },
+            },
+          }}
+          animate={pressed ? "pressed" : "idle"}
         />
       </MotionCircle>
 
@@ -186,12 +215,22 @@ export function MessageButton({
         color={tokens.colors.primary[600]}
         letterSpacing="0.01em"
         textAlign="center"
+        initial={false}
         variants={{
-          idle: { y: 0, scale: 1, opacity: 1 },
-          pressed: { y: 1, scale: 0.98, opacity: 0.95 },
+          idle: {
+            y: [0.8, -0.4, 0],
+            scale: [0.985, 1.008, 1],
+            opacity: [0.96, 1, 1],
+            transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.6, 1] },
+          },
+          pressed: {
+            y: 0.8,
+            scale: 0.985,
+            opacity: 0.96,
+            transition: { type: "tween", duration: 0.07, ease: easing.emphasized },
+          },
         }}
         animate={pressed ? "pressed" : "idle"}
-        transition={springs.uiPress}
       >
         {label}
       </MotionText>
