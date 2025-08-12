@@ -15,6 +15,18 @@ import { motion } from "framer-motion";
 
 const MotionBox = motion.create(Box);
 
+// Local responsive type to avoid relying on Chakra's internal types
+type Responsive<T> =
+  | T
+  | {
+      base?: T;
+      sm?: T;
+      md?: T;
+      lg?: T;
+      xl?: T;
+      "2xl"?: T;
+    };
+
 export interface AnimatedTitleProps {
   /** 表示するテキスト */
   text?: string;
@@ -23,13 +35,13 @@ export interface AnimatedTitleProps {
   /** 端末のReduced Motion設定に関わらずアニメーションを強制 */
   forceMotion?: boolean;
   /** タイトルのフォントサイズ（レスポンシブ対応可） */
-  fontSize?: any;
+  fontSize?: Responsive<string | number>;
   /** タイトルの文字色 */
   color?: string;
   /** タイトル行間（レスポンシブ対応可） */
-  lineHeight?: any;
+  lineHeight?: Responsive<string | number>;
   /** 文字間（例: "0.01em"） */
-  letterSpacing?: string | number;
+  letterSpacing?: Responsive<string | number>;
 }
 
 export function AnimatedTitle({
