@@ -14,8 +14,7 @@ const BEAR_COUNT = 3;
 
 const SIZES = {
   logo: {
-    width: { base: "260px", md: "400px", lg: "560px", xl: "640px" }, // デスクトップでより大きく
-    height: { base: "71px", md: "109px", lg: "153px", xl: "175px" }, // 比例して高さも調整
+    width: { base: "260px", md: "400px", lg: "560px", xl: "640px" }, // 画像は幅基準でスケール（高さは自動）
   },
   bear: {
     size: { base: "40px", md: "52px", lg: "56px" }, // デスクトップで少し大きく
@@ -107,14 +106,17 @@ export const LoadingScreen = React.memo(function LoadingScreen({ onComplete, dur
             >
               {/* Manaby Logo */}
               <MotionBox {...ANIMATIONS.logo} w="100%" display="flex" justifyContent="center">
-                <Box position="relative" width={SIZES.logo.width} height={SIZES.logo.height}>
+                <Box width={SIZES.logo.width}>
                   <Image
                     src="/manabylogo.webp"
                     alt="Manaby"
-                    fill
-                    style={{ objectFit: "contain" }}
+                    width={1000}
+                    height={251}
+                    style={{ width: "100%", height: "auto", objectFit: "contain" }}
                     sizes="(max-width: 768px) 260px, (max-width: 992px) 400px, (max-width: 1280px) 560px, 640px"
                     priority
+                    quality={100}
+                    unoptimized
                   />
                 </Box>
               </MotionBox>

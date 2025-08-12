@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#F5F0E6" },
     { media: "(prefers-color-scheme: dark)", color: "#111111" },
@@ -39,6 +41,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/sakuda.webp" />
         <link rel="preload" as="image" href="/saito.webp" />
         <link rel="preload" as="image" href="/manabyicon.webp" />
+        <link rel="preload" as="image" href="/manabylogo.webp" />
       </head>
       <body suppressHydrationWarning className={`${inter.variable} antialiased`}>
         <Provider>
