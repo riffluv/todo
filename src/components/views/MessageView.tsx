@@ -249,15 +249,16 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               delay: 0.4,
               ease: [0.16, 1, 0.3, 1],
             }}
-            pt={{ base: "28px", md: "36px" }} // 上部余白を自然な数値に調整
+            pt={{ base: "36px", md: "48px" }} // HomeView と整合
+            pb={{ base: "28px", md: "36px" }}
             position="relative"
             _before={{
               content: '""',
               position: "absolute",
-              top: "12px",
+              top: "16px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "40px",
+              width: "56px",
               height: "1px",
               background:
                 "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",

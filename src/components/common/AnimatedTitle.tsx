@@ -22,12 +22,18 @@ export interface AnimatedTitleProps {
   delay?: number;
   /** 端末のReduced Motion設定に関わらずアニメーションを強制 */
   forceMotion?: boolean;
+  /** タイトルのフォントサイズ（レスポンシブ対応可） */
+  fontSize?: any;
+  /** タイトルの文字色 */
+  color?: string;
 }
 
 export function AnimatedTitle({
   text = "Thanks!",
   delay = 0.4,
   forceMotion = false,
+  fontSize,
+  color,
 }: AnimatedTitleProps) {
   const allowMotion = useAllowMotion(forceMotion);
   const letters = text.split("");
@@ -35,7 +41,7 @@ export function AnimatedTitle({
   const fallback = (
     <Box {...themes.home.textAnimation.container}>
       {letters.map((letter, index) => (
-        <Text key={`${letter}-${index}`} {...themes.home.textAnimation.letter}>
+        <Text key={`${letter}-${index}`} {...themes.home.textAnimation.letter} fontSize={fontSize} color={color}>
           {letter}
         </Text>
       ))}
@@ -90,7 +96,9 @@ export function AnimatedTitle({
                 : {}
             }
           >
-            <Text {...themes.home.textAnimation.letter}>{letter}</Text>
+            <Text {...themes.home.textAnimation.letter} fontSize={fontSize} color={color}>
+              {letter}
+            </Text>
           </MotionBox>
         ))}
       </MotionBox>

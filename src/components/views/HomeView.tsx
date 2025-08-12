@@ -34,7 +34,13 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
         <Box {...componentStyles.page.header}>
           <CharacterHeader>
             <Box role="heading" aria-level={1}>
-              <AnimatedTitle text="Thanks!" delay={0.4} forceMotion />
+              <AnimatedTitle
+                text="Thanks!"
+                delay={0.4}
+                fontSize={{ base: "2xl", md: "3xl" }}
+                color={tokens.colors.primary[600]}
+                forceMotion
+              />
             </Box>
           </CharacterHeader>
         </Box>
@@ -145,13 +151,13 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 _before={{
                   content: '""',
                   position: "absolute",
-                  top: "18px",
+                  top: "16px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  width: "64px",
+                  width: "56px",
                   height: "1px",
                   background:
-                    "linear-gradient(90deg, transparent, rgba(244, 162, 97, 0.28), transparent)",
+                    "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",
                   display: { base: "none", md: "block" }, // デスクトップのみ表示
                 }}
               >
