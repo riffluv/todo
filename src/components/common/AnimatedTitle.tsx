@@ -49,8 +49,8 @@ export function AnimatedTitle({
           hidden: { opacity: 0, y: 16 },
           visible: { opacity: 1, y: 0 },
         }}
-        initial={allowMotion ? "hidden" : false}
-        animate={allowMotion ? "visible" : undefined}
+        initial={allowMotion ? "hidden" : "visible"}
+        animate="visible"
         transition={allowMotionTransition(allowMotion, {
           duration: 1,
           delay,
