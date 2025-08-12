@@ -26,6 +26,10 @@ export interface AnimatedTitleProps {
   fontSize?: any;
   /** タイトルの文字色 */
   color?: string;
+  /** タイトル行間（レスポンシブ対応可） */
+  lineHeight?: any;
+  /** 文字間（例: "0.01em"） */
+  letterSpacing?: string | number;
 }
 
 export function AnimatedTitle({
@@ -34,6 +38,8 @@ export function AnimatedTitle({
   forceMotion = false,
   fontSize,
   color,
+  lineHeight,
+  letterSpacing,
 }: AnimatedTitleProps) {
   const allowMotion = useAllowMotion(forceMotion);
   const letters = text.split("");
@@ -41,7 +47,14 @@ export function AnimatedTitle({
   const fallback = (
     <Box {...themes.home.textAnimation.container}>
       {letters.map((letter, index) => (
-        <Text key={`${letter}-${index}`} {...themes.home.textAnimation.letter} fontSize={fontSize} color={color}>
+        <Text
+          key={`${letter}-${index}`}
+          {...themes.home.textAnimation.letter}
+          fontSize={fontSize}
+          color={color}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
+        >
           {letter}
         </Text>
       ))}
@@ -96,7 +109,13 @@ export function AnimatedTitle({
                 : {}
             }
           >
-            <Text {...themes.home.textAnimation.letter} fontSize={fontSize} color={color}>
+            <Text
+              {...themes.home.textAnimation.letter}
+              fontSize={fontSize}
+              color={color}
+              lineHeight={lineHeight}
+              letterSpacing={letterSpacing}
+            >
               {letter}
             </Text>
           </MotionBox>

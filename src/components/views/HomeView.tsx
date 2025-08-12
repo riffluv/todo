@@ -39,6 +39,8 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 delay={0.4}
                 fontSize={{ base: "2xl", md: "3xl" }}
                 color={tokens.colors.primary[600]}
+                lineHeight={{ base: "1.2", md: "1.25" }}
+                letterSpacing="0.01em"
                 forceMotion
               />
             </Box>
