@@ -51,12 +51,12 @@ export function AnimatedTitle({
         }}
         initial={allowMotion ? "hidden" : "visible"}
         animate="visible"
-        transition={allowMotionTransition(allowMotion, {
-          duration: 1,
-          delay,
+        transition={{
+          duration: allowMotion ? 1 : 0,
+          delay: allowMotion ? delay : 0,
           ease: easing.standard,
-          staggerChildren: 0.2,
-        })}
+          staggerChildren: allowMotion ? 0.2 : 0,
+        }}
         {...themes.home.textAnimation.container}
         position="relative"
       >
