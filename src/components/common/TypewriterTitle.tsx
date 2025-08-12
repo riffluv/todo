@@ -3,11 +3,12 @@
  */
 "use client";
 
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useAllowMotion } from "@/hooks/useMotion";
+import { useTypewriter } from "@/hooks/useTypewriter";
+import { allowMotionTransition, easing, makeFadeInUp } from "@/styles/motion";
 import { tokens } from "@/styles/tokens";
 import { Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 const MotionHeading = motion.create(Heading);
 
@@ -27,45 +28,15 @@ export function TypewriterTitle({
   color = tokens.colors.primary[600],
   forceMotion = false,
 }: TypewriterTitleProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const allowMotion = forceMotion || !prefersReducedMotion;
-  const [displayText, setDisplayText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-  const [showExclamation, setShowExclamation] = useState(false);
-
-  useEffect(() => {
-    if (!allowMotion) {
-      setDisplayText(text + "!");
-      setShowCursor(false);
-      setShowExclamation(false);
-      return;
-    }
-
-    let currentIndex = 0;
-    const timer = setTimeout(() => {
-      const typeInterval = setInterval(() => {
-        if (currentIndex <= text.length) {
-          setDisplayText(text.slice(0, currentIndex));
-          currentIndex++;
-        } else {
-          clearInterval(typeInterval);
-          // カーソルを点滅させる
-          const cursorInterval = setInterval(() => {
-            setShowCursor((prev) => !prev);
-          }, 530);
-
-          // 3秒後にカーソルを非表示にして感嘆符を表示
-          setTimeout(() => {
-            clearInterval(cursorInterval);
-            setShowCursor(false);
-            setShowExclamation(true);
-          }, 3000);
-        }
-      }, 80);
-    }, delay * 1000);
-
-    return () => clearTimeout(timer);
-  }, [text, delay, allowMotion]);
+  const allowMotion = useAllowMotion(forceMotion);
+  const { displayText, showCursor, showExclamation } = useTypewriter({
+    text,
+    delaySeconds: delay,
+    allowMotion,
+    charIntervalMs: 80,
+    cursorBlinkMs: 530,
+    cursorHideAfterMs: 3000,
+  });
 
   return (
     <MotionHeading
@@ -77,13 +48,7 @@ export function TypewriterTitle({
       letterSpacing={tokens.typography.letterSpacings.wide}
       lineHeight={tokens.typography.lineHeights.tight}
       position="relative"
-      initial={allowMotion ? { opacity: 0, y: 20 } : { opacity: 1 }}
-      animate={allowMotion ? { opacity: 1, y: 0 } : { opacity: 1 }}
-      transition={{
-        duration: allowMotion ? 0.6 : 0,
-        delay: allowMotion ? delay : 0,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      {...makeFadeInUp({ allowMotion, delay, distance: 20, duration: 0.6 })}
       _after={{
         content: '""',
         position: "absolute",
@@ -100,11 +65,11 @@ export function TypewriterTitle({
       {showCursor && (
         <motion.span
           animate={{ opacity: [1, 0] }}
-          transition={{
+          transition={allowMotionTransition(allowMotion, {
             duration: 0.5,
             repeat: Infinity,
             repeatType: "reverse",
-          }}
+          })}
           style={{
             color: tokens.colors.primary[500],
             marginLeft: "2px",
@@ -117,10 +82,10 @@ export function TypewriterTitle({
         <motion.span
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{
+          transition={allowMotionTransition(allowMotion, {
             duration: 0.4,
-            ease: [0.16, 1, 0.3, 1],
-          }}
+            ease: easing.standard,
+          })}
           style={{
             color: tokens.colors.primary[600],
             marginLeft: "2px",

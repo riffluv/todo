@@ -7,6 +7,7 @@
 "use client";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { springs } from "@/styles/motion";
 import { tokens } from "@/styles/tokens";
 import { Icon, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -150,9 +151,10 @@ export function MessageButton({
         }
         justify="center"
         align="center"
-        animate={pressed ? { scale: 0.94, y: 2 } : { scale: 1, y: 0 }}
+        variants={{ idle: { scale: 1, y: 0 }, pressed: { scale: 0.94, y: 2 } }}
+        animate={pressed ? "pressed" : "idle"}
         // しっかりしたスプリングで戻す
-        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.7 }}
+        transition={springs.uiPress}
         // ホバー時の立体感強化
         _groupHover={{
           bg: `linear-gradient(135deg, #fefcf8, #fdfcfb)`, // ホバー時：手紙全体の背景色に近い温かさ
@@ -184,8 +186,12 @@ export function MessageButton({
         color={tokens.colors.primary[600]}
         letterSpacing="0.01em"
         textAlign="center"
-        animate={pressed ? { y: 1, scale: 0.98, opacity: 0.95 } : { y: 0, scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.7 }}
+        variants={{
+          idle: { y: 0, scale: 1, opacity: 1 },
+          pressed: { y: 1, scale: 0.98, opacity: 0.95 },
+        }}
+        animate={pressed ? "pressed" : "idle"}
+        transition={springs.uiPress}
       >
         {label}
       </MotionText>

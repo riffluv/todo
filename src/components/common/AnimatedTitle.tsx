@@ -6,7 +6,8 @@
 "use client";
 
 import { ClientOnly } from "@/components/ui/ClientOnly";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useAllowMotion } from "@/hooks/useMotion";
+import { allowMotionTransition, easing } from "@/styles/motion";
 import { themes } from "@/styles/themes";
 import { tokens } from "@/styles/tokens";
 import { Box, Text } from "@chakra-ui/react";
@@ -28,8 +29,7 @@ export function AnimatedTitle({
   delay = 0.4,
   forceMotion = false,
 }: AnimatedTitleProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const allowMotion = forceMotion || !prefersReducedMotion;
+  const allowMotion = useAllowMotion(forceMotion);
   const letters = text.split("");
 
   const fallback = (
@@ -45,13 +45,18 @@ export function AnimatedTitle({
   return (
     <ClientOnly fallback={fallback}>
       <MotionBox
-        initial={allowMotion ? { opacity: 0, y: 16 } : { opacity: 1 }}
-        animate={allowMotion ? { opacity: 1, y: 0 } : { opacity: 1 }}
-        transition={{
-          duration: allowMotion ? 1 : 0,
-          delay: allowMotion ? delay : 0,
-          ease: [0.16, 1, 0.3, 1],
+        variants={{
+          hidden: { opacity: 0, y: 16 },
+          visible: { opacity: 1, y: 0 },
         }}
+        initial={allowMotion ? "hidden" : false}
+        animate={allowMotion ? "visible" : undefined}
+        transition={allowMotionTransition(allowMotion, {
+          duration: 1,
+          delay,
+          ease: easing.standard,
+          staggerChildren: 0.2,
+        })}
         {...themes.home.textAnimation.container}
         position="relative"
       >
@@ -59,28 +64,21 @@ export function AnimatedTitle({
           <MotionBox
             key={`${letter}-${index}`}
             display="inline-block"
-            initial={allowMotion ? { opacity: 0, scale: 0.8, y: 8 } : { opacity: 1 }}
-            animate={
-              allowMotion
-                ? {
-                    opacity: [0, 0, 1, 1, 0.9, 1],
-                    scale: [0.8, 0.8, 1.1, 1, 1.03, 1],
-                    y: [8, 8, -4, 0, 2, 0],
-                  }
-                : { opacity: 1 }
-            }
-            transition={
-              allowMotion
-                ? {
-                    duration: 3.8,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    delay: index * 0.2,
-                    ease: [0.16, 1, 0.3, 1],
-                    times: [0, 0.12, 0.3, 0.45, 0.75, 1],
-                  }
-                : { duration: 0 }
-            }
+            variants={{
+              hidden: { opacity: 0, scale: 0.8, y: 8 },
+              visible: {
+                opacity: [0, 0, 1, 1, 0.9, 1],
+                scale: [0.8, 0.8, 1.1, 1, 1.03, 1],
+                y: [8, 8, -4, 0, 2, 0],
+              },
+            }}
+            transition={allowMotionTransition(allowMotion, {
+              duration: 3.8,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: easing.standard,
+              times: [0, 0.12, 0.3, 0.45, 0.75, 1],
+            })}
             whileHover={
               allowMotion
                 ? {
