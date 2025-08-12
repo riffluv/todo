@@ -6,13 +6,13 @@
  * - Reduced Motion を安全に扱うための helper
  */
 
-import type { Transition, Variant } from "framer-motion";
+import type { Easing, Transition, Variant } from "framer-motion";
 
 // Easing
 export const easing = {
-  easeOut: [0.25, 0.8, 0.25, 1] as Transition["ease"],
-  emphasized: [0.4, 0, 0.2, 1] as Transition["ease"],
-  standard: [0.16, 1, 0.3, 1] as Transition["ease"],
+  easeOut: [0.25, 0.8, 0.25, 1] as Easing,
+  emphasized: [0.4, 0, 0.2, 1] as Easing,
+  standard: [0.16, 1, 0.3, 1] as Easing,
 };
 
 // Springs for UI
