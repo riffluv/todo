@@ -16,21 +16,25 @@ interface TypewriterTitleProps {
   delay?: number;
   fontSize?: { base: string; md: string };
   color?: string;
+  /** 端末のReduced Motion設定に関わらずアニメーションを強制 */
+  forceMotion?: boolean;
 }
 
-export function TypewriterTitle({ 
-  text, 
-  delay = 0.2, 
+export function TypewriterTitle({
+  text,
+  delay = 0.2,
   fontSize = { base: "2xl", md: "3xl" },
-  color = tokens.colors.primary[600]
+  color = tokens.colors.primary[600],
+  forceMotion = false,
 }: TypewriterTitleProps) {
   const prefersReducedMotion = useReducedMotion();
+  const allowMotion = forceMotion || !prefersReducedMotion;
   const [displayText, setDisplayText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
   const [showExclamation, setShowExclamation] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (!allowMotion) {
       setDisplayText(text + "!");
       setShowCursor(false);
       setShowExclamation(false);
@@ -47,9 +51,9 @@ export function TypewriterTitle({
           clearInterval(typeInterval);
           // カーソルを点滅させる
           const cursorInterval = setInterval(() => {
-            setShowCursor(prev => !prev);
+            setShowCursor((prev) => !prev);
           }, 530);
-          
+
           // 3秒後にカーソルを非表示にして感嘆符を表示
           setTimeout(() => {
             clearInterval(cursorInterval);
@@ -61,7 +65,7 @@ export function TypewriterTitle({
     }, delay * 1000);
 
     return () => clearTimeout(timer);
-  }, [text, delay, prefersReducedMotion]);
+  }, [text, delay, allowMotion]);
 
   return (
     <MotionHeading
@@ -73,11 +77,11 @@ export function TypewriterTitle({
       letterSpacing={tokens.typography.letterSpacings.wide}
       lineHeight={tokens.typography.lineHeights.tight}
       position="relative"
-      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-      animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      initial={allowMotion ? { opacity: 0, y: 20 } : { opacity: 1 }}
+      animate={allowMotion ? { opacity: 1, y: 0 } : { opacity: 1 }}
       transition={{
-        duration: prefersReducedMotion ? 0 : 0.6,
-        delay: prefersReducedMotion ? 0 : delay,
+        duration: allowMotion ? 0.6 : 0,
+        delay: allowMotion ? delay : 0,
         ease: [0.16, 1, 0.3, 1],
       }}
       _after={{
@@ -101,9 +105,9 @@ export function TypewriterTitle({
             repeat: Infinity,
             repeatType: "reverse",
           }}
-          style={{ 
+          style={{
             color: tokens.colors.primary[500],
-            marginLeft: "2px"
+            marginLeft: "2px",
           }}
         >
           |
@@ -117,10 +121,10 @@ export function TypewriterTitle({
             duration: 0.4,
             ease: [0.16, 1, 0.3, 1],
           }}
-          style={{ 
+          style={{
             color: tokens.colors.primary[600],
             marginLeft: "2px",
-            fontWeight: tokens.typography.fontWeights.bold
+            fontWeight: tokens.typography.fontWeights.bold,
           }}
         >
           !

@@ -61,6 +61,7 @@ export function MessageView({ person, onBack }: MessageViewProps) {
               delay={0.3}
               fontSize={{ base: "2xl", md: "3xl" }}
               color={tokens.colors.primary[600]}
+              forceMotion
             />
           </CharacterHeader>
         </Box>

@@ -38,7 +38,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
         {/* 統一ヘッダーセクション */}
         <Box {...componentStyles.page.header}>
           <CharacterHeader>
-            <AnimatedTitle text="Thanks!" delay={0.4} />
+            <AnimatedTitle text="Thanks!" delay={0.4} forceMotion />
           </CharacterHeader>
         </Box>
 
