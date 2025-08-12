@@ -30,6 +30,8 @@ export interface MessageButtonProps {
   disabled?: boolean;
   /** アイコン（省略時は封筒） */
   icon?: React.ElementType;
+  /** 遷移のディレイ（ms） バウンスを目視させる用途。Reduced Motion時は0msに強制 */
+  navigateDelayMs?: number;
 }
 
 export function MessageButton({
@@ -38,9 +40,11 @@ export function MessageButton({
   delay = 0.6,
   disabled = false,
   icon = FaEnvelope,
+  navigateDelayMs = 100,
 }: MessageButtonProps) {
   const prefersReducedMotion = useReducedMotion();
   const [pressed, setPressed] = React.useState(false);
+  const clickTimeoutRef = React.useRef<number | null>(null);
 
   // シンプルな押下状態管理（競合なし）
   const handlePointerDown = React.useCallback(
@@ -69,8 +73,16 @@ export function MessageButton({
       document.activeElement.blur();
     }
     setPressed(false);
-    onClick();
-  }, [disabled, onClick]);
+    const delayMs = prefersReducedMotion ? 0 : navigateDelayMs;
+    if (delayMs > 0) {
+      // 遷移を少し遅らせ、リリース後のバウンスを見せる
+      clickTimeoutRef.current = window.setTimeout(() => {
+        onClick();
+      }, delayMs);
+    } else {
+      onClick();
+    }
+  }, [disabled, onClick, prefersReducedMotion, navigateDelayMs]);
 
   // グローバル押下解除（モバイル対応強化）
   React.useEffect(() => {
@@ -87,6 +99,10 @@ export function MessageButton({
       window.removeEventListener("touchend", cleanup, { capture: true });
       window.removeEventListener("touchcancel", cleanup, { capture: true });
       document.removeEventListener("visibilitychange", cleanup);
+      if (clickTimeoutRef.current != null) {
+        window.clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -157,15 +173,16 @@ export function MessageButton({
         variants={{
           // 離した時に軽いオーバーシュートで戻る（温かい紙の弾み感）
           idle: {
-            scaleX: [1.015, 0.995, 1],
-            scaleY: [0.94, 1.01, 1],
-            y: [2, -0.5, 0],
-            transition: { duration: 0.2, ease: easing.easeOut, times: [0, 0.6, 1] },
+            scaleX: [1.02, 0.995, 1],
+            // 最初のキーを pressed より少し戻すことで“途中”が見えるようにする
+            scaleY: [0.96, 1.01, 1],
+            y: [2, -0.6, 0],
+            transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.35, 1] },
           },
           // 押下時は素早く、深すぎず沈み込む
           pressed: {
-            scaleX: 1.015,
-            scaleY: 0.94,
+            scaleX: 1.012,
+            scaleY: 0.945,
             y: 2,
             transition: { type: "tween", duration: 0.07, ease: easing.emphasized },
           },
@@ -190,9 +207,9 @@ export function MessageButton({
           initial={false}
           variants={{
             idle: {
-              scale: [0.985, 1.015, 1],
-              y: [0.8, -0.4, 0],
-              transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.6, 1] },
+              scale: [0.99, 1.015, 1],
+              y: [0.8, -0.5, 0],
+              transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.35, 1] },
             },
             pressed: {
               scale: 0.985,
@@ -218,10 +235,10 @@ export function MessageButton({
         initial={false}
         variants={{
           idle: {
-            y: [0.8, -0.4, 0],
-            scale: [0.985, 1.008, 1],
+            y: [0.8, -0.5, 0],
+            scale: [0.99, 1.006, 1],
             opacity: [0.96, 1, 1],
-            transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.6, 1] },
+            transition: { duration: 0.18, ease: easing.easeOut, times: [0, 0.35, 1] },
           },
           pressed: {
             y: 0.8,
