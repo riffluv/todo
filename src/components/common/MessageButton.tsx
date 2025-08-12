@@ -32,22 +32,30 @@ export interface MessageButtonProps {
   icon?: React.ElementType;
   /** 遷移のディレイ（ms） バウンスを目視させる用途。Reduced Motion時は0msに強制 */
   navigateDelayMs?: number;
+  /** アクセシビリティ: スクリーンリーダー向けのラベル（省略時はlabelを使用） */
+  ariaLabel?: string;
 }
 
-export function MessageButton({
-  onClick,
-  label,
-  delay = 0.6,
-  disabled = false,
-  icon = FaEnvelope,
-  navigateDelayMs = 100,
-}: MessageButtonProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const [pressed, setPressed] = React.useState(false);
-  const clickTimeoutRef = React.useRef<number | null>(null);
+export const MessageButton = React.memo(
+  React.forwardRef<HTMLDivElement, MessageButtonProps>(
+    (
+      {
+        onClick,
+        label,
+        delay = 0.6,
+        disabled = false,
+        icon = FaEnvelope,
+        navigateDelayMs = 100,
+        ariaLabel,
+      },
+      ref,
+    ) => {
+      const prefersReducedMotion = useReducedMotion();
+      const [pressed, setPressed] = React.useState(false);
+      const clickTimeoutRef = React.useRef<number | null>(null);
 
   // シンプルな押下状態管理（競合なし）
-  const handlePointerDown = React.useCallback(
+      const handlePointerDown = React.useCallback(
     (e: React.PointerEvent) => {
       if (disabled || e.button !== 0) return;
       setPressed(true);
@@ -58,15 +66,15 @@ export function MessageButton({
         }
       } catch {}
     },
-    [disabled],
-  );
+        [disabled],
+      );
 
-  const handlePointerUp = React.useCallback(() => {
+      const handlePointerUp = React.useCallback(() => {
     if (disabled) return;
     setPressed(false);
   }, [disabled]);
 
-  const handleClick = React.useCallback(() => {
+      const handleClick = React.useCallback(() => {
     if (disabled) return;
     // フォーカスが当たっていれば外す（型安全）
     if (document.activeElement instanceof HTMLElement) {
@@ -85,7 +93,7 @@ export function MessageButton({
   }, [disabled, onClick, prefersReducedMotion, navigateDelayMs]);
 
   // グローバル押下解除（モバイル対応強化）
-  React.useEffect(() => {
+      React.useEffect(() => {
     const cleanup = () => setPressed(false);
     // デスクトップ・モバイル両対応のイベントリスナー
     window.addEventListener("pointerup", cleanup, { capture: true, passive: true });
@@ -106,8 +114,8 @@ export function MessageButton({
     };
   }, []);
 
-  return (
-    <MotionButton
+      return (
+        <MotionButton
       // 初期表示アニメーション
       initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20, scale: 0.9 }}
       animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
@@ -119,6 +127,7 @@ export function MessageButton({
       // 押下アニメーションは内側要素で制御（ゲーム風の押し込み感）
       // ボタン基本設定
       as="button"
+      ref={ref}
       onClick={handleClick}
       // マウス操作時はフォーカスを発生させない（キーボードは focus-visible で表示）
       onMouseDown={(e) => e.preventDefault()}
@@ -147,6 +156,8 @@ export function MessageButton({
       // タッチ最適化（モバイル強化） - グローバルCSSクラスで適用し型競合回避
       className="touch-optimized"
       aria-pressed={pressed}
+      aria-label={ariaLabel ?? label}
+      aria-disabled={disabled || undefined}
     >
       {/* アイコン部分 - 高級感のあるオレンジ立体デザイン */}
       <MotionCircle
@@ -205,6 +216,8 @@ export function MessageButton({
               : `drop-shadow(0 2px 4px ${tokens.colors.primary[500]}30) drop-shadow(0 1px 2px rgba(0,0,0,0.08))`
           }
           initial={false}
+          aria-hidden
+          focusable={false}
           variants={{
             idle: {
               scale: [0.99, 1.015, 1],
@@ -251,6 +264,10 @@ export function MessageButton({
       >
         {label}
       </MotionText>
-    </MotionButton>
-  );
-}
+        </MotionButton>
+      );
+    },
+  ),
+);
+
+MessageButton.displayName = "MessageButton";

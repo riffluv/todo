@@ -3,7 +3,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { AnimatePresence, easeInOut, easeOut, motion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 // Motion components
 const MotionBox = motion.create(Box);
@@ -63,7 +63,7 @@ interface LoadingScreenProps {
   duration?: number;
 }
 
-export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProps) {
+export const LoadingScreen = React.memo(function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -155,4 +155,4 @@ export function LoadingScreen({ onComplete, duration = 3500 }: LoadingScreenProp
       )}
     </AnimatePresence>
   );
-}
+});

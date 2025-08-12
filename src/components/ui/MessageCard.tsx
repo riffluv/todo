@@ -1,13 +1,13 @@
 import { tokens } from "@/styles/tokens";
 import { Box, BoxProps, Button, Heading, Text, VStack } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export interface MessageCardProps extends BoxProps {
   icon: ReactNode;
   title: string;
   message: string;
   buttonText?: string;
-  buttonIcon?: ReactNode;
+  buttonIcon?: ReactElement;
   onClick?: () => void;
   color?: string;
   subText?: string;
@@ -18,6 +18,7 @@ export const MessageCard = ({
   title,
   message,
   buttonText = "手紙を読む",
+  buttonIcon,
   onClick,
   subText,
   ...boxProps
@@ -28,19 +29,13 @@ export const MessageCard = ({
     border="1px solid"
     borderColor="gray.200"
     borderRadius="xl"
-    {...(onClick
-      ? {
-          cursor: "pointer" as const,
-          _hover: {
-            transform: "translateY(-3px)",
-            borderColor: "gray.300",
-            boxShadow: tokens.shadows.md,
-          },
-        }
-      : {})}
+    _hover={{
+      transform: "translateY(-3px)",
+      borderColor: "gray.300",
+      boxShadow: tokens.shadows.md,
+    }}
     transition={`all ${tokens.animations.durations.fast} ${tokens.animations.easings.emphasized}`}
     p={{ base: 7, md: 8 }}
-    {...(onClick ? { onClick } : {})}
     {...boxProps}
   >
     <VStack gap={{ base: 5, md: 6 }} textAlign="center">
@@ -100,6 +95,9 @@ export const MessageCard = ({
         borderRadius="full"
         px={5}
         py={2}
+        type="button"
+        {...(onClick ? { onClick } : {})}
+        {...(buttonIcon ? { leftIcon: buttonIcon } : {})}
       >
         {buttonText}
       </Button>

@@ -6,15 +6,9 @@
  */
 "use client";
 
-import { BearIcon } from "@/components/common/BearIcon";
-import { CharacterHeader } from "@/components/common/CharacterHeader";
-import { MessageButton } from "@/components/common/MessageButton";
-import { TypewriterTitle } from "@/components/common/TypewriterTitle";
-import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
-import { useTapEffectProps } from "@/hooks/useTapEffect";
-import { componentStyles } from "@/styles/components";
-import { themes } from "@/styles/themes";
-import { tokens } from "@/styles/tokens";
+import { BearIcon, CharacterHeader, MessageButton, TypewriterTitle } from "@/components/common";
+import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
+import { componentStyles, themes, tokens } from "@/styles";
 import { PersonConfig } from "@/types/message";
 import { Box, Container, Text, VStack, chakra } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
@@ -32,6 +26,7 @@ export interface MessageViewProps {
 export function MessageView({ person, onBack }: MessageViewProps) {
   const theme = themes[person.themeKey];
   const tapEffectProps = useTapEffectProps();
+  const prefersReducedMotion = useReducedMotion();
   useScrollEnhancement();
 
   return (
@@ -56,26 +51,24 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                   : "manaby character"
             }
           >
-            <TypewriterTitle
-              text={`Dear ${person.id === "saito" ? "Saito-san" : "Sakuda-san"}`}
-              delay={0.3}
-              fontSize={{ base: "2xl", md: "3xl" }}
-              color={tokens.colors.primary[600]}
-              forceMotion
-            />
+            <Box role="heading" aria-level={1}>
+              <TypewriterTitle
+                text={`Dear ${person.id === "saito" ? "Saito-san" : "Sakuda-san"}`}
+                delay={0.3}
+                fontSize={{ base: "2xl", md: "3xl" }}
+                color={tokens.colors.primary[600]}
+                forceMotion
+              />
+            </Box>
           </CharacterHeader>
         </Box>
 
         {/* 統一メインコンテンツセクション */}
-        <VStack {...componentStyles.page.main}>
+        <VStack as="main" role="main" {...componentStyles.page.main}>
           {/* メッセージカード（統一レイアウト） */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
-            transition={{
-              duration: 0.8,
-              delay: 0.3,
-              ease: cubicBezier(0.16, 1, 0.3, 1),
-            }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.3, ease: cubicBezier(0.16, 1, 0.3, 1) }}
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
           >
@@ -103,19 +96,13 @@ export function MessageView({ person, onBack }: MessageViewProps) {
                 transform="translateZ(0)"
                 willChange="transform"
                 {...tapEffectProps}
-                whileHover={{
-                  y: -2,
-                  scale: 1.01,
-                }}
-                whileTap={{
-                  scale: 0.97,
-                  y: 1,
-                }}
-                transition={{
-                  type: "tween",
-                  duration: 0.1,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
+                {...(prefersReducedMotion
+                  ? {}
+                  : {
+                      whileHover: { y: -2, scale: 1.01 },
+                      whileTap: { scale: 0.97, y: 1 },
+                      transition: { type: "tween", duration: 0.1, ease: [0.25, 0.46, 0.45, 0.94] },
+                    })}
               >
                 {/* 熊さんアイコン群（装飾用） */}
                 <BearIcon

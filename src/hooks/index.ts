@@ -452,5 +452,6 @@ export function useFetch<T>(
 export { useAppState } from './useAppState';
 export { useKeyboardNavigation } from './useKeyboardNavigation';
 export { useReducedMotion } from './useReducedMotion';
-export { usePerformanceOptimization } from './usePerformanceOptimization';
 export { useScrollEnhancement } from './useScrollEnhancement';
+export { useTapEffect, useTapEffectProps } from './useTapEffect';
+export { usePerformanceOptimization } from './usePerformanceOptimization';

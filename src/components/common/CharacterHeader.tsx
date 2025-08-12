@@ -10,6 +10,7 @@ import { tokens } from "@/styles/tokens";
 import { Box, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import React from "react";
 
 const MotionBox = motion.create(Box);
 
@@ -24,11 +25,11 @@ export interface CharacterHeaderProps {
   characterAlt?: string;
 }
 
-export function CharacterHeader({
+export const CharacterHeader = React.memo(function CharacterHeader({
   children,
   delay = 0,
   characterSrc = "/manaby-jump2.webp",
-  characterAlt = "manaby character"
+  characterAlt = "manaby character",
 }: CharacterHeaderProps) {
   return (
     <MotionBox
@@ -78,4 +79,6 @@ export function CharacterHeader({
       </VStack>
     </MotionBox>
   );
-}
+});
+
+CharacterHeader.displayName = "CharacterHeader";

@@ -6,15 +6,9 @@ import { cubicBezier } from "framer-motion";
  * @description メインのホームページコンポーネント
  */
 
-import { AnimatedTitle } from "@/components/common/AnimatedTitle";
-import { BearIcon } from "@/components/common/BearIcon";
-import { CharacterHeader } from "@/components/common/CharacterHeader";
-import { MessageButton } from "@/components/common/MessageButton";
-import { useScrollEnhancement } from "@/hooks/useScrollEnhancement";
-import { useTapEffectProps } from "@/hooks/useTapEffect";
-import { componentStyles } from "@/styles/components";
-import { themes } from "@/styles/themes";
-import { tokens } from "@/styles/tokens";
+import { AnimatedTitle, BearIcon, CharacterHeader, MessageButton } from "@/components/common";
+import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
+import { componentStyles, themes, tokens } from "@/styles";
 import { PersonConfig, ViewType } from "@/types/message";
 import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -31,6 +25,7 @@ export interface HomeViewProps {
 export function HomeView({ messages, onNavigate }: HomeViewProps) {
   const containerProps = componentStyles.messageCard.container;
   const tapEffectProps = useTapEffectProps();
+  const prefersReducedMotion = useReducedMotion();
   useScrollEnhancement();
   return (
     <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
@@ -38,20 +33,18 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
         {/* 統一ヘッダーセクション */}
         <Box {...componentStyles.page.header}>
           <CharacterHeader>
-            <AnimatedTitle text="Thanks!" delay={0.4} forceMotion />
+            <Box role="heading" aria-level={1}>
+              <AnimatedTitle text="Thanks!" delay={0.4} forceMotion />
+            </Box>
           </CharacterHeader>
         </Box>
 
         {/* 統一メインコンテンツセクション */}
-        <VStack {...componentStyles.page.main}>
+        <VStack as="main" role="main" {...componentStyles.page.main}>
           {/* メッセージコンテナ（統一レイアウト） */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
-            transition={{
-              duration: 0.8,
-              delay: 0.3,
-              ease: cubicBezier(0.16, 1, 0.3, 1),
-            }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.3, ease: cubicBezier(0.16, 1, 0.3, 1) }}
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
             role="log"
@@ -80,19 +73,13 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
                 })()}
                 transform="translateZ(0)"
                 willChange="transform"
-                whileHover={{
-                  y: -2,
-                  scale: 1.01,
-                }}
-                whileTap={{
-                  scale: 0.97,
-                  y: 1,
-                }}
-                transition={{
-                  type: "tween",
-                  duration: 0.1,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
+                {...(prefersReducedMotion
+                  ? {}
+                  : {
+                      whileHover: { y: -2, scale: 1.01 },
+                      whileTap: { scale: 0.97, y: 1 },
+                      transition: { type: "tween", duration: 0.1, ease: [0.25, 0.46, 0.45, 0.94] },
+                    })}
               >
                 {/* 装飾的な熊さんアイコン群 */}
                 <BearIcon
