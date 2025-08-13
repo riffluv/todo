@@ -1,17 +1,17 @@
 /**
- * useAppState Hook - アプリケーション状態管理
+ * useAppState Hook - Todoアプリケーション状態管理
  *
- * @description アプリケーション全体の状態を管理するカスタムフック
+ * @description Todoアプリケーション全体の状態を管理するカスタムフック
  * ブラウザの戻るボタン・スワイプバック対応
  */
 "use client";
 
-import { ViewType } from "@/types/message";
+import { TodoViewType } from "@/types/todo";
 import { useEffect, useState } from "react";
 
 export function useAppState() {
   const [showLoading, setShowLoading] = useState(true);
-  const [currentView, setCurrentView] = useState<ViewType>("home");
+  const [currentView, setCurrentView] = useState<TodoViewType>("home");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function useAppState() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [showLoading]);
 
-  const handleNavigate = (view: ViewType) => {
+  const handleNavigate = (view: TodoViewType) => {
     setCurrentView(view);
     // ブラウザ履歴に状態を追加
     window.history.pushState({ view }, "", window.location.pathname);

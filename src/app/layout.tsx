@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "感謝のメッセージアプリ",
-  description: "大切な人に感謝の気持ちを伝えるアプリケーション",
+  title: "manaby-todo",
+  description: "大切なタスクを管理するTodoアプリケーション",
   robots: {
     index: false,
     follow: false,
@@ -38,8 +38,6 @@ export default function RootLayout({
       <head>
         {/* Preload key images for faster first and subsequent views */}
         <link rel="preload" as="image" href="/manaby-jump2.webp" />
-        <link rel="preload" as="image" href="/sakuda.webp" />
-        <link rel="preload" as="image" href="/saito.webp" />
         <link rel="preload" as="image" href="/manabyicon.webp" />
         <link rel="preload" as="image" href="/manabylogo.webp" />
       </head>

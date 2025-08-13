@@ -1,32 +1,46 @@
-"use client";
-import { cubicBezier } from "framer-motion";
 /**
- * HomeView Component - ホームページビュー
+ * HomeView Component - Todoリストビュー
  *
- * @description メインのホームページコンポーネント
+ * @description メインのTodoリストページコンポーネント
  */
 
 import { AnimatedTitle, BearIcon, CharacterHeader, MessageButton } from "@/components/common";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
+import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
-import { PersonConfig, ViewType } from "@/types/message";
-import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { TodoViewType } from "@/types/todo";
+import { Badge, Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import { cubicBezier, motion } from "framer-motion";
+import { FaCheck, FaClock, FaPlus } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
 export interface HomeViewProps {
-  /** メッセージデータ */
-  messages: PersonConfig[];
   /** ナビゲーションハンドラー */
-  onNavigate: (view: ViewType) => void;
+  onNavigate: (view: TodoViewType) => void;
 }
 
-export function HomeView({ messages, onNavigate }: HomeViewProps) {
+export function HomeView({ onNavigate }: HomeViewProps) {
   const containerProps = componentStyles.messageCard.container;
   const tapEffectProps = useTapEffectProps();
   const prefersReducedMotion = useReducedMotion();
+  const { todos, loading, pendingCount, completedCount, toggleTodo } = useTodos();
+
   useScrollEnhancement();
+
+  // ローディング中
+  if (loading) {
+    return (
+      <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
+        <Container {...componentStyles.page.content}>
+          <VStack justify="center" align="center" minH="50vh">
+            <Text color={tokens.colors.gray[500]}>読み込み中...</Text>
+          </VStack>
+        </Container>
+      </Box>
+    );
+  }
+
   return (
     <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
       <Container {...componentStyles.page.content}>
@@ -35,7 +49,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
           <CharacterHeader>
             <Box role="heading" aria-level={1}>
               <AnimatedTitle
-                text="Thanks!"
+                text="manabyTodos"
                 delay={0.4}
                 fontSize={{ base: "2xl", md: "3xl" }}
                 color={tokens.colors.primary[600]}
@@ -49,148 +63,276 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
 
         {/* 統一メインコンテンツセクション */}
         <VStack as="main" role="main" {...componentStyles.page.main}>
-          {/* メッセージコンテナ（統一レイアウト） */}
+          {/* サマリーカード */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.3, ease: cubicBezier(0.16, 1, 0.3, 1) }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.8, delay: 0.2, ease: cubicBezier(0.16, 1, 0.3, 1) }
+            }
             w="100%"
             maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
-            role="log"
-            aria-live="polite"
-            aria-relevant="additions"
           >
-            <VStack
-              gap={{
-                base: "24px", // 心地よいリズムの間隔
-                md: "38px", // より自然で余裕のある間隔
-              }}
+            <MotionBox
+              {...(() => {
+                const {
+                  transition: __,
+                  _active: ___,
+                  _hover: ____,
+                  ...containerBase
+                } = containerProps as unknown as Record<string, unknown>;
+                void __;
+                void ___;
+                void ____;
+                return containerBase;
+              })()}
+              transform="translateZ(0)"
+              willChange="transform"
+              mb={{ base: "24px", md: "32px" }}
             >
-              {/* グラスモーフィズムメッセージカード */}
-              <MotionBox
-                {...(() => {
-                  const {
-                    transition: __,
-                    _active: ___,
-                    _hover: ____,
-                    ...containerBase
-                  } = containerProps as unknown as Record<string, unknown>;
-                  void __;
-                  void ___;
-                  void ____;
-                  return containerBase;
-                })()}
-                transform="translateZ(0)"
-                willChange="transform"
-                {...(prefersReducedMotion
-                  ? {}
-                  : {
-                      whileHover: { y: -2, scale: 1.01 },
-                      whileTap: { scale: 0.97, y: 1 },
-                      transition: { type: "tween", duration: 0.1, ease: [0.25, 0.46, 0.45, 0.94] },
-                    })}
-              >
-                {/* 装飾的な熊さんアイコン群 */}
-                <BearIcon
-                  position={{
-                    top: "-16px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                  }}
-                  opacity={0.9}
-                  size={28}
-                  imageSize={20}
-                />
-                <BearIcon
-                  position={{
-                    top: "-12px",
-                    left: "50%",
-                    transform: "translateX(-250%)",
-                  }}
-                  opacity={0.6}
-                  size={20}
-                  imageSize={14}
-                  display={{ base: "none", md: "flex" }}
-                />
-                <BearIcon
-                  position={{
-                    top: "-12px",
-                    left: "50%",
-                    transform: "translateX(150%)",
-                  }}
-                  opacity={0.6}
-                  size={20}
-                  imageSize={14}
-                  display={{ base: "none", md: "flex" }}
-                />
-
-                <VStack
-                  gap={{
-                    base: tokens.spacing.lg,
-                    md: tokens.spacing.xl,
-                  }}
-                >
-                  <Text {...componentStyles.messageCard.text.label}>お二人へ</Text>
-
-                  <Text
-                    {...componentStyles.messageCard.text.primary}
-                    textAlign="center"
-                    maxW="none"
-                  >
-                    manaby大宮事業所で一緒に学んだ日々は、私にとってとても貴重な時間でした。
-                    お二人がいてくれたおかげで、Web制作の勉強も楽しく続けることができました。
-                    いつも支えてくれて、本当にありがとうございました。
-                    これからもお二人の活躍を心から応援しています。
-                  </Text>
-                </VStack>
-              </MotionBox>
-
-              {/* 手紙ボタンエリア（自然な余白で視覚的分離） */}
-              <Box
-                w="100%"
-                pt={{ base: "36px", md: "48px" }} // 上部の余白を自然な数値に
-                pb={{ base: "28px", md: "36px" }}
-                position="relative"
-                _before={{
-                  content: '""',
-                  position: "absolute",
-                  top: "16px",
+              {/* 装飾的な熊さんアイコン群 */}
+              <BearIcon
+                position={{
+                  top: "-16px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  width: "56px",
-                  height: "1px",
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",
-                  display: { base: "none", md: "block" }, // デスクトップのみ表示
                 }}
-              >
-                <VStack
-                  gap={{
-                    base: "20px", // ボタン間の心地よい間隔
-                    md: "28px", // より余裕のある間隔
-                  }}
-                  align="center"
-                >
-                  <HStack
-                    gap={{
-                      base: "18px", // ボタン間の自然な間隔
-                      md: "24px", // デスクトップで少し余裕を
-                    }}
-                    justify="center"
-                    align="center"
-                    flexWrap="wrap"
+                opacity={0.9}
+                size={28}
+                imageSize={20}
+              />
+
+              <VStack gap={{ base: tokens.spacing.md, md: tokens.spacing.lg }}>
+                <HStack gap={4} justify="center" wrap="wrap">
+                  <Badge
+                    colorScheme="orange"
+                    px={3}
+                    py={1}
+                    borderRadius="full"
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
                   >
-                    {messages.map((person, index) => (
-                      <MessageButton
-                        key={person.id}
-                        onClick={() => onNavigate(person.id)}
-                        label={person.buttonLabel}
-                        delay={0.6 + index * 0.2}
-                      />
-                    ))}
-                  </HStack>
-                </VStack>
-              </Box>
+                    <FaClock size={12} />
+                    {pendingCount}件 進行中
+                  </Badge>
+                  <Badge
+                    colorScheme="green"
+                    px={3}
+                    py={1}
+                    borderRadius="full"
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <FaCheck size={12} />
+                    {completedCount}件 完了
+                  </Badge>
+                </HStack>
+
+                <Text {...componentStyles.messageCard.text.primary} textAlign="center" maxW="none">
+                  今日も一歩ずつ、大切なタスクを進めていきましょう。
+                  あなたの成長をmanabyが応援しています！
+                </Text>
+              </VStack>
+            </MotionBox>
+          </MotionBox>
+
+          {/* Todoリスト */}
+          <MotionBox
+            {...componentStyles.animations.fadeInUp}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.8, delay: 0.3, ease: cubicBezier(0.16, 1, 0.3, 1) }
+            }
+            w="100%"
+            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
+          >
+            <VStack gap={{ base: "16px", md: "20px" }}>
+              {todos.length === 0 ? (
+                <MotionBox
+                  {...(() => {
+                    const {
+                      transition: __,
+                      _active: ___,
+                      _hover: ____,
+                      ...containerBase
+                    } = containerProps as unknown as Record<string, unknown>;
+                    void __;
+                    void ___;
+                    void ____;
+                    return containerBase;
+                  })()}
+                  py={8}
+                >
+                  <VStack gap={4}>
+                    <Text {...componentStyles.messageCard.text.primary} textAlign="center">
+                      まだタスクがありません
+                    </Text>
+                    <Text fontSize="sm" color={tokens.colors.gray[500]} textAlign="center">
+                      新しいタスクを追加して始めましょう！
+                    </Text>
+                  </VStack>
+                </MotionBox>
+              ) : (
+                todos.map((todo, index) => (
+                  <MotionBox
+                    key={todo.id}
+                    {...(() => {
+                      const {
+                        transition: __,
+                        _active: ___,
+                        _hover: ____,
+                        ...containerBase
+                      } = containerProps as unknown as Record<string, unknown>;
+                      void __;
+                      void ___;
+                      void ____;
+                      return containerBase;
+                    })()}
+                    cursor="pointer"
+                    transform="translateZ(0)"
+                    willChange="transform"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: 0.4 + index * 0.1,
+                      ease: cubicBezier(0.16, 1, 0.3, 1),
+                    }}
+                    {...(prefersReducedMotion
+                      ? {}
+                      : {
+                          whileHover: { y: -2, scale: 1.01 },
+                          whileTap: { scale: 0.97, y: 1 },
+                          transition: {
+                            type: "tween",
+                            duration: 0.1,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          },
+                        })}
+                    onClick={() => onNavigate(todo.id)}
+                  >
+                    <HStack gap={4} align="flex-start">
+                      <Box
+                        w="20px"
+                        h="20px"
+                        borderRadius="4px"
+                        border="2px solid"
+                        borderColor={
+                          todo.completed ? tokens.colors.primary[500] : tokens.colors.gray[400]
+                        }
+                        bg={todo.completed ? tokens.colors.primary[500] : "transparent"}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontSize="12px"
+                        color="white"
+                        cursor="pointer"
+                        mt={1}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleTodo(todo.id);
+                        }}
+                        _hover={{
+                          borderColor: tokens.colors.primary[600],
+                          bg: todo.completed
+                            ? tokens.colors.primary[600]
+                            : tokens.colors.primary[50],
+                        }}
+                      >
+                        {todo.completed && "✓"}
+                      </Box>
+                      <VStack align="stretch" flex={1} gap={2}>
+                        <Text
+                          {...componentStyles.messageCard.text.primary}
+                          textDecoration={todo.completed ? "line-through" : "none"}
+                          opacity={todo.completed ? 0.6 : 1}
+                          fontWeight={todo.completed ? "normal" : "medium"}
+                        >
+                          {todo.title}
+                        </Text>
+                        {todo.description && (
+                          <Text
+                            fontSize="sm"
+                            color={tokens.colors.gray[600]}
+                            textDecoration={todo.completed ? "line-through" : "none"}
+                            opacity={todo.completed ? 0.5 : 0.8}
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            display="-webkit-box"
+                            css={{
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                            }}
+                          >
+                            {todo.description}
+                          </Text>
+                        )}
+                        <HStack gap={2}>
+                          {todo.priority && (
+                            <Badge
+                              size="sm"
+                              colorScheme={
+                                todo.priority === "high"
+                                  ? "red"
+                                  : todo.priority === "medium"
+                                    ? "orange"
+                                    : "gray"
+                              }
+                            >
+                              {todo.priority === "high"
+                                ? "高"
+                                : todo.priority === "medium"
+                                  ? "中"
+                                  : "低"}
+                            </Badge>
+                          )}
+                          <Text fontSize="xs" color={tokens.colors.gray[400]}>
+                            {todo.createdAt.toLocaleDateString()}
+                          </Text>
+                        </HStack>
+                      </VStack>
+                    </HStack>
+                  </MotionBox>
+                ))
+              )}
             </VStack>
+          </MotionBox>
+
+          {/* 新規追加ボタン */}
+          <MotionBox
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.6,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            pt={{ base: "36px", md: "48px" }}
+            pb={{ base: "28px", md: "36px" }}
+            position="relative"
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: "16px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "56px",
+              height: "1px",
+              background:
+                "linear-gradient(90deg, transparent, rgba(253, 127, 40, 0.2), transparent)",
+              display: { base: "none", md: "block" },
+            }}
+          >
+            <MessageButton
+              onClick={() => onNavigate("add")}
+              label="新しいタスク"
+              icon={FaPlus}
+              aria-label="新しいタスクを追加"
+            />
           </MotionBox>
 
           {/* 改良されたフッター */}
@@ -201,7 +343,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
             px={tokens.spacing.md}
             transition={{
               duration: 0.8,
-              delay: 0.6,
+              delay: 0.8,
               ease: cubicBezier(0.16, 1, 0.3, 1),
             }}
           >
@@ -212,7 +354,7 @@ export function HomeView({ messages, onNavigate }: HomeViewProps) {
               letterSpacing="0.2px"
               style={{ opacity: 0.7 }}
             >
-              ☕ かねこより
+              ☕ あなたの成長をサポート
             </Text>
           </MotionBox>
         </VStack>
