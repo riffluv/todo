@@ -22,6 +22,7 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaArrowLeft, FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
@@ -47,6 +48,7 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
 
   const tapEffectProps = useTapEffectProps();
   const prefersReducedMotion = useReducedMotion();
+  // use app-level toaster
 
   useScrollEnhancement();
 
@@ -66,7 +68,11 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
   // 保存処理
   const handleSave = async () => {
     if (!todo || !formData.title.trim()) {
-      alert("タイトルを入力してください");
+      toaster.create({
+        title: "タイトルが未入力です",
+        description: "タスクのタイトルを入力してください",
+        type: "info",
+      });
       return;
     }
 
@@ -80,10 +86,10 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
       if (updatedTodo) {
         setTodo(updatedTodo);
         setIsEditing(false);
-        alert("タスクを更新しました");
+        toaster.create({ title: "タスクを更新しました", type: "success" });
       }
     } catch {
-      alert("保存に失敗しました");
+      toaster.create({ title: "保存に失敗しました", type: "error" });
     }
   };
 
@@ -95,11 +101,11 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
       try {
         const success = removeTodo(todo.id);
         if (success) {
-          alert("タスクを削除しました");
+          toaster.create({ title: "タスクを削除しました", type: "success" });
           onBack();
         }
       } catch {
-        alert("削除に失敗しました");
+        toaster.create({ title: "削除に失敗しました", type: "error" });
       }
     }
   };
@@ -112,10 +118,13 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
       const updatedTodo = modifyTodo(todo.id, { completed: !todo.completed });
       if (updatedTodo) {
         setTodo(updatedTodo);
-        alert(updatedTodo.completed ? "完了しました！お疲れ様でした！" : "未完了に戻しました");
+        toaster.create({
+          title: updatedTodo.completed ? "完了しました！お疲れ様でした！" : "未完了に戻しました",
+          type: updatedTodo.completed ? "success" : "info",
+        });
       }
     } catch {
-      alert("更新に失敗しました");
+      toaster.create({ title: "更新に失敗しました", type: "error" });
     }
   };
 
@@ -199,8 +208,8 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
                   <HStack justify="space-between" w="100%" align="center">
                     <HStack gap={3}>
                       <Box
-                        w="20px"
-                        h="20px"
+                        w={{ base: "36px", md: "28px" }}
+                        h={{ base: "36px", md: "28px" }}
                         borderRadius="4px"
                         border="2px solid"
                         borderColor={
@@ -210,9 +219,10 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        fontSize="12px"
+                        fontSize="14px"
                         color="white"
                         cursor="pointer"
+                        aria-label={todo.completed ? "完了を解除" : "完了にする"}
                         onClick={handleToggleComplete}
                         _hover={{
                           borderColor: tokens.colors.primary[600],
@@ -220,6 +230,7 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
                             ? tokens.colors.primary[600]
                             : tokens.colors.primary[50],
                         }}
+                        {...tapEffectProps}
                       >
                         {todo.completed && "✓"}
                       </Box>

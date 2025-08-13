@@ -1,5 +1,6 @@
 import { PawEffectProvider } from "@/components/providers/PawEffectProvider";
 import { Provider } from "@/components/ui/provider";
+import { Toaster } from "@/components/ui";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -43,7 +44,10 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className={`${inter.variable} antialiased`}>
         <Provider>
-          <PawEffectProvider>{children}</PawEffectProvider>
+          <PawEffectProvider>
+            {children}
+            <Toaster />
+          </PawEffectProvider>
         </Provider>
       </body>
     </html>

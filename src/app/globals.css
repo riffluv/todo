@@ -2,18 +2,28 @@
 @import url("../styles/layers.css");
 
 :root {
-  --background: #fff;
-  --foreground: #171717;
+  /* Force light theme variables for this app */
+  --background: #fefcf8; /* matches tokens.colors.semantic.background */
+  --foreground: #1c1a18; /* matches tokens.colors.semantic.fg */
+  color-scheme: light;
 }
 
+/* Do not invert colors on system dark mode to avoid dark bands */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fefcf8;
+    --foreground: #1c1a18;
+    color-scheme: light;
   }
 }
 
 /* 感謝メッセージアプリ用の温かみのあるスタイル */
+html,
+body {
+  min-height: 100dvh;
+  background-color: var(--background);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -28,6 +38,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
+  margin: 0;
 }
 
 /* Professional scrollbar styling */

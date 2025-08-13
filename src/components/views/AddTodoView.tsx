@@ -11,6 +11,7 @@ import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { TodoFormData } from "@/types/todo";
 import { Box, Button, Container, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import { cubicBezier, motion } from "framer-motion";
 import { useState } from "react";
 import { FaArrowLeft, FaSave, FaTimes } from "react-icons/fa";
@@ -30,6 +31,7 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
     priority: "medium",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // use app-level toaster
 
   const tapEffectProps = useTapEffectProps();
   const prefersReducedMotion = useReducedMotion();
@@ -39,7 +41,11 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
   // 保存処理
   const handleSave = async () => {
     if (!formData.title.trim()) {
-      alert("タイトルを入力してください");
+      toaster.create({
+        title: "タイトルが未入力です",
+        description: "タスクのタイトルを入力してください",
+        type: "info",
+      });
       return;
     }
 
@@ -57,11 +63,11 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
       const newTodo = createTodo(todoData);
 
       if (newTodo) {
-        alert("新しいタスクを追加しました！");
+        toaster.create({ title: "タスクを追加しました", type: "success" });
         onBack();
       }
     } catch {
-      alert("保存に失敗しました");
+      toaster.create({ title: "保存に失敗しました", type: "error" });
     } finally {
       setIsSubmitting(false);
     }
@@ -157,7 +163,7 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
                       <Input
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        placeholder="例: プロジェクト資料を作成する"
+                        placeholder="例: コーヒーを辞めちゃう"
                         size="lg"
                         borderColor={tokens.colors.primary[300]}
                         _focus={{
