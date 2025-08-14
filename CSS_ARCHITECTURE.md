@@ -208,14 +208,6 @@ themes = {
   home: {
     background: { bg: tokens.colors.semantic.background },
     character: { /* キャラクター関連スタイル */ }
-  },
-  saito: {
-    background: { bg: tokens.colors.gray[50] },
-    card: { /* カード関連スタイル */ }
-  },
-  sakuda: {
-    background: { bg: 'linear-gradient(...)' },
-    card: { /* カード関連スタイル */ }
   }
 }
 ```

@@ -82,7 +82,7 @@ async function main() {
   }
   
   console.log('\n🎉 Manaby image optimization completed!');
-  console.log('📊 Expected file sizes: 10-15KB (similar to Saito-san & Sakuda-san)');
+  console.log('📊 Expected file sizes: 10-15KB (similar to compact avatar illustrations)');
   console.log('🚀 Performance improvement: ~90% file size reduction');
 }
 
