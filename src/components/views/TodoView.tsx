@@ -223,6 +223,8 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
                         color="white"
                         cursor="pointer"
                         aria-label={todo.completed ? "完了を解除" : "完了にする"}
+                        as="button"
+                        aria-pressed={todo.completed}
                         onClick={handleToggleComplete}
                         _hover={{
                           borderColor: tokens.colors.primary[600],

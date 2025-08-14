@@ -39,12 +39,11 @@ const buttonStyles = {
 
 ### 🎭 テーマシステム活用
 ```typescript
-// ✅ テーマベース設計
-const theme = themes[person.themeKey];
-<Box {...theme.background} />
+// ✅ テーマベース設計（Todoアプリでは home テーマを使用）
+<Box {...themes.home.background} />
 
-// ❌ 個別スタイル指定
-<Box bg={person.id === 'saito' ? 'gray.50' : 'orange.50'} />
+// ❌ 個別スタイル指定（条件分岐で個別名に依存しない）
+<Box bg="gray.50" />
 ```
 
 ## 🖼️ 2025年画像・メディア最適化

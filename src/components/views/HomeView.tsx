@@ -291,6 +291,8 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                         cursor="pointer"
                         mt={1}
                         aria-label={todo.completed ? "完了を解除" : "完了にする"}
+                        as="button"
+                        aria-pressed={todo.completed}
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleTodo(todo.id);
