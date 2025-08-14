@@ -105,10 +105,10 @@ export function TodoItem({
         </Box>
         <MotionBox
           flex={1}
-          drag={!prefersReducedMotion ? "x" : false}
+          drag="x"
           dragConstraints={{ left: -160, right: 160 }}
           dragElastic={0.2}
-          style={{ x }}
+          style={{ x, touchAction: "pan-y" as unknown as string }}
           onDragEnd={(_, info) => {
             if (info.offset.x < -threshold) {
               handleArchive();
