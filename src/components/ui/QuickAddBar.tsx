@@ -49,7 +49,7 @@ export const QuickAddBar = forwardRef<QuickAddBarHandle, QuickAddBarProps>(
             id="quick-add-input"
             ref={inputRef}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder={placeholder}
             aria-label="新しいタスクを入力"

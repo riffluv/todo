@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { performance, tokens } from "@/styles/tokens";
 import { Box, Image } from "@chakra-ui/react";
-import { tokens, performance } from "@/styles/tokens";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 export interface PawEffectItem {
@@ -17,7 +17,7 @@ interface PawEffectProps {
 }
 
 export function PawEffect({ effects, onEffectComplete }: PawEffectProps) {
-  const ICON_SIZE = 40; // tokens.spacing["2xl"] is "40px"
+  const ICON_SIZE = 40; // tokens.spacing["2xl"] 相当
   return (
     <Box
       position="fixed"
@@ -35,21 +35,19 @@ export function PawEffect({ effects, onEffectComplete }: PawEffectProps) {
             initial={{
               opacity: 0,
               scale: 0.3,
-              x: effect.x - ICON_SIZE / 2, // アイコンサイズの半分でセンタリング
+              x: effect.x - ICON_SIZE / 2,
               y: effect.y - ICON_SIZE / 2,
             }}
             animate={{
               opacity: [0, 1, 1, 0],
-              scale: [0.3, 1.2, 1.4, 0.8],
-              rotate: [0, -5, 5, 0],
+              scale: [0.3, 1.15, 1.0, 0.9],
+              rotate: [0, -6, 3, 0],
+              filter: ["blur(0.2px)", "blur(0px)", "blur(0px)", "blur(0.6px)"],
             }}
-            exit={{
-              opacity: 0,
-              scale: 0.5,
-            }}
+            exit={{ opacity: 0, scale: 0.5 }}
             transition={{
-              duration: 0.8,
-              ease: [0.25, 0.46, 0.45, 0.94], // easeOutQuart
+              duration: 0.9,
+              ease: [0.4, 0, 0.2, 1],
             }}
             onAnimationComplete={() => onEffectComplete(effect.id)}
             style={{
@@ -59,6 +57,18 @@ export function PawEffect({ effects, onEffectComplete }: PawEffectProps) {
               ...performance.gpuAcceleration, // GPU最適化
             }}
           >
+            {/* リップル */}
+            <motion.div
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                border: `2px solid ${tokens.colors.primary[500]}55`,
+              }}
+              initial={{ scale: 0.2, opacity: 0.35 }}
+              animate={{ scale: 1.6, opacity: 0 }}
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            />
             <Image
               src="/manabyicon.png"
               alt="肉球エフェクト"
@@ -85,7 +95,7 @@ export function usePawEffect() {
   const addPawEffect = (x: number, y: number) => {
     const id = `paw-${Date.now()}-${Math.random()}`;
     const newEffect: PawEffectItem = { id, x, y };
-    
+
     setEffects((prev) => {
       // パフォーマンス最適化: 最大10個まで同時表示制限
       const newEffects = [...prev, newEffect];
@@ -100,11 +110,11 @@ export function usePawEffect() {
   // メモリリーク防止: 古いエフェクトの自動クリーンアップ
   const cleanupOldEffects = () => {
     const now = Date.now();
-    setEffects((prev) => 
+    setEffects((prev) =>
       prev.filter((effect) => {
-        const effectTime = parseInt(effect.id.split('-')[1] || '0', 10);
+        const effectTime = parseInt(effect.id.split("-")[1] || "0", 10);
         return now - effectTime < 5000; // 5秒以上古いものは削除
-      })
+      }),
     );
   };
 

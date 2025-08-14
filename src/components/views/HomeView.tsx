@@ -238,7 +238,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             <QuickAddBar
               ref={quickAddRef}
               onAdd={(title) => void createTodo({ title })}
-              placeholder="すぐに追加: タイトルを入力してEnter"
+              placeholder="クイック追加: タイトルを入力してね。"
             />
           </MotionBox>
 

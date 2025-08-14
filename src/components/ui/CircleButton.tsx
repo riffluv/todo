@@ -40,12 +40,7 @@ export function CircleButton({ label, icon, onClick, disabled, ...rest }: Circle
       }
       {...rest}
     >
-      <button
-        type="button"
-        aria-label={label}
-        disabled={disabled}
-        {...(!disabled && onClick ? { onClick } : {})}
-      >
+      <button type="button" disabled={disabled} onClick={!disabled ? onClick : undefined}>
         <VStack
           w={{ base: "72px", md: "80px", lg: "88px" }}
           h={{ base: "72px", md: "80px", lg: "88px" }}
@@ -62,14 +57,12 @@ export function CircleButton({ label, icon, onClick, disabled, ...rest }: Circle
         </VStack>
         <Text
           fontFamily={tokens.typography.fontFamilies.body}
-          fontSize={{
-            base: tokens.typography.fontSizes.sm,
-            md: tokens.typography.fontSizes.md,
-          }}
+          fontSize={{ base: tokens.typography.fontSizes.sm, md: tokens.typography.fontSizes.md }}
           fontWeight={tokens.typography.fontWeights.semibold}
           color={tokens.colors.primary[600]}
           letterSpacing="0.01em"
           textAlign="center"
+          mt={tokens.spacing.xs}
         >
           {label}
         </Text>
