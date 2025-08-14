@@ -5,6 +5,7 @@
   /* Force light theme variables for this app */
   --background: #fefcf8; /* matches tokens.colors.semantic.background */
   --foreground: #1c1a18; /* matches tokens.colors.semantic.fg */
+
   color-scheme: light;
 }
 
@@ -13,6 +14,7 @@
   :root {
     --background: #fefcf8;
     --foreground: #1c1a18;
+
     color-scheme: light;
   }
 }
