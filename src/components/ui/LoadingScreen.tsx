@@ -62,7 +62,10 @@ interface LoadingScreenProps {
   duration?: number;
 }
 
-export const LoadingScreen = React.memo(function LoadingScreen({ onComplete, duration = 4000 }: LoadingScreenProps) {
+export const LoadingScreen = React.memo(function LoadingScreen({
+  onComplete,
+  duration = 4000,
+}: LoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
