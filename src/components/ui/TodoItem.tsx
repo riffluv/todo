@@ -24,7 +24,7 @@ export function TodoItem({
   onOpen,
   tapEffectProps,
 }: TodoItemProps) {
-  const containerProps = componentStyles.messageCard.container as unknown as Record<string, any>;
+  const containerProps = componentStyles.messageCard.container as unknown as Record<string, unknown>;
   const { transition: __, _active: ___, _hover: ____, ...containerBase } = containerProps;
   void __; void ___; void ____;
 
