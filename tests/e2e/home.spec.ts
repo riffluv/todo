@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
 
-test("home shows two message buttons", async ({ page }) => {
+test("home shows todo UI (no letter buttons)", async ({ page }) => {
   await page.goto("/");
-  const buttons = page.getByRole("button", { name: /さんへ/ });
-  await expect(buttons).toHaveCount(2);
-  await Promise.all([
-    expect(page.getByRole("button", { name: "斎藤さんへ" })).toBeVisible(),
-    expect(page.getByRole("button", { name: "作田さんへ" })).toBeVisible(),
-  ]);
+
+  // 手紙ボタンは存在しない
+  await expect(page.getByRole("button", { name: /さんへ/ })).toHaveCount(0);
+
+  // Todo用の主要ボタンが見える（新しいタスク）
+  await expect(page.getByRole("button", { name: "新しいタスク" })).toBeVisible();
 });
