@@ -4,7 +4,8 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { componentStyles, tokens } from "@/styles";
 import type { Todo } from "@/types/todo";
 import { Box, Checkbox, HStack, IconButton, Text, VStack } from "@chakra-ui/react";
-import { cubicBezier, motion, useMotionValue, useTransform } from "framer-motion";
+import { animate, cubicBezier, motion, useMotionValue, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { FaTrash } from "react-icons/fa";
 import { LuFlame, LuLeaf, LuSun } from "react-icons/lu";
 
@@ -36,10 +37,16 @@ export function TodoItem({
   void ___;
   void ____;
 
+  // 行全体のドラッグ用 MotionValue
   const x = useMotionValue(0);
+  // スワイプ方向に応じた背景のフェード
   const bgOpacityLeft = useTransform(x, [-120, -60, 0], [0.16, 0.08, 0]);
   const bgOpacityRight = useTransform(x, [0, 60, 120], [0, 0.08, 0.16]);
-  const threshold = 80;
+  // しきい値（距離/速度） - 体感に合わせてやや緩め
+  const distanceThreshold = 72; // px
+  const velocityThreshold = 600; // px/s（おおよそ）
+  // ドラッグ中の誤タップ防止用（再レンダーを跨いで維持）
+  const isDraggingRef = useRef(false);
 
   const handleArchive = () => {
     if (!onArchive) return;
@@ -50,7 +57,6 @@ export function TodoItem({
     <MotionBox
       key={todo.id}
       {...containerBase}
-      cursor="pointer"
       transform="translateZ(0)"
       willChange="transform"
       className="todoItem"
@@ -66,16 +72,8 @@ export function TodoItem({
       }}
       position="relative"
       overflow="hidden"
-      {...(prefersReducedMotion
-        ? {}
-        : {
-            whileHover: { y: -2, scale: 1.01 },
-            whileTap: { scale: 0.97, y: 1 },
-            transition: { type: "tween", duration: 0.1, ease: [0.25, 0.46, 0.45, 0.94] },
-          })}
-      onClick={() => onOpen(todo.id)}
     >
-      {/* Swipe background for delete */}
+      {/* 背景レイヤー（左右に色を敷き、前景の行がスライドして露出）*/}
       <MotionBox
         position="absolute"
         inset={0}
@@ -90,42 +88,80 @@ export function TodoItem({
         style={{ opacity: bgOpacityRight as unknown as number }}
         pointerEvents="none"
       />
-      <HStack gap={4} align="flex-start">
-        <Box onClick={(e) => e.stopPropagation()} mt={1}>
-          <Checkbox.Root
-            size="md"
-            checked={todo.completed}
-            onCheckedChange={() => onToggle(todo.id)}
-            colorPalette="orange"
-            aria-label={todo.completed ? "完了を解除" : "完了にする"}
-          >
-            <Checkbox.HiddenInput />
-            <Checkbox.Control />
-          </Checkbox.Root>
-        </Box>
-        <MotionBox
-          flex={1}
-          drag="x"
-          dragConstraints={{ left: -160, right: 160 }}
-          dragElastic={0.2}
-          style={{ x, touchAction: "pan-y" as unknown as string }}
-          onDragEnd={(_, info) => {
-            if (info.offset.x < -threshold) {
-              handleArchive();
-              x.set(0);
-            } else if (info.offset.x > threshold) {
-              onToggle(todo.id);
-              x.set(0);
-            }
-          }}
-          onClick={(e) => {
-            // avoid click through when dragging
-            if (Math.abs(x.get()) > 2) {
-              e.stopPropagation();
-              x.set(0);
-            }
-          }}
-        >
+
+      {/* 前景（行全体）: ドラッグ対象 */}
+      <MotionBox
+        style={{ x, touchAction: "pan-y" as unknown as string }}
+        drag="x"
+        dragConstraints={{ left: -200, right: 200 }}
+        dragElastic={0.2}
+        dragMomentum={false}
+        // 未達時は中央へスナップ
+        dragSnapToOrigin
+        onDragStart={() => {
+          isDraggingRef.current = true;
+        }}
+        onDragEnd={(_, info) => {
+          const offsetX = info.offset.x;
+          const velocityX = info.velocity.x ?? 0;
+          const swipeLeft = offsetX <= -distanceThreshold || velocityX <= -velocityThreshold;
+          const swipeRight = offsetX >= distanceThreshold || velocityX >= velocityThreshold;
+
+          if (swipeLeft && onArchive) {
+            // 左スワイプ: 退場アニメ後にゴミ箱へ
+            void animate(x, -320, { type: "spring", stiffness: 300, damping: 30 }).finished.then(
+              () => {
+                x.set(0);
+                handleArchive();
+              },
+            );
+          } else if (swipeRight) {
+            // 右スワイプ: 完了トグル
+            void animate(x, 320, { type: "spring", stiffness: 300, damping: 30 }).finished.then(
+              () => {
+                x.set(0);
+                onToggle(todo.id);
+              },
+            );
+          } else {
+            // 中央へスナップバック（保険）
+            void animate(x, 0, { type: "spring", stiffness: 500, damping: 38 });
+          }
+          // 少し待ってタップを許容
+          setTimeout(() => {
+            isDraggingRef.current = false;
+          }, 50);
+        }}
+        onClick={(e) => {
+          if (isDraggingRef.current) {
+            e.stopPropagation();
+            return;
+          }
+          onOpen(todo.id);
+        }}
+        cursor="pointer"
+        {...(prefersReducedMotion
+          ? {}
+          : {
+              whileHover: { y: -2, scale: 1.01 },
+              whileTap: { scale: 0.97, y: 1 },
+              transition: { type: "tween", duration: 0.1, ease: [0.25, 0.46, 0.45, 0.94] },
+            })}
+      >
+        <HStack gap={4} align="flex-start">
+          <Box onClick={(e) => e.stopPropagation()} mt={1}>
+            <Checkbox.Root
+              size="md"
+              checked={todo.completed}
+              onCheckedChange={() => onToggle(todo.id)}
+              colorPalette="orange"
+              aria-label={todo.completed ? "完了を解除" : "完了にする"}
+            >
+              <Checkbox.HiddenInput />
+              <Checkbox.Control />
+            </Checkbox.Root>
+          </Box>
+
           <VStack align="stretch" flex={1} gap={1}>
             <Text
               {...componentStyles.messageCard.text.primary}
@@ -166,30 +202,31 @@ export function TodoItem({
               </Text>
             </HStack>
           </VStack>
-        </MotionBox>
-        <Box onClick={(e) => e.stopPropagation()}>
-          <Tooltip
-            content="ゴミ箱へ移動"
-            portalled
-            positioning={{ placement: "top" }}
-            disabled={!onArchive}
-          >
-            <IconButton
-              aria-label="ゴミ箱へ移動"
-              variant="ghost"
-              colorPalette="red"
-              size="sm"
-              onClick={handleArchive}
-              className="todoItem__trash"
-              opacity={{ base: 1, md: 0 }}
-              transition="opacity 0.2s ease"
-              pointerEvents={onArchive ? "auto" : "none"}
+
+          <Box onClick={(e) => e.stopPropagation()}>
+            <Tooltip
+              content="ゴミ箱へ移動"
+              portalled
+              positioning={{ placement: "top" }}
+              disabled={!onArchive}
             >
-              <FaTrash />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </HStack>
+              <IconButton
+                aria-label="ゴミ箱へ移動"
+                variant="ghost"
+                colorPalette="red"
+                size="sm"
+                onClick={handleArchive}
+                className="todoItem__trash"
+                opacity={{ base: 1, md: 0 }}
+                transition="opacity 0.2s ease"
+                pointerEvents={onArchive ? "auto" : "none"}
+              >
+                <FaTrash />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </HStack>
+      </MotionBox>
     </MotionBox>
   );
 }
