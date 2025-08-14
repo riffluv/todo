@@ -10,7 +10,8 @@ import { TodoViewType } from "@/types/todo";
 import { useEffect, useState } from "react";
 
 export function useAppState() {
-  const [showLoading, setShowLoading] = useState(false);
+  // 初回マウント（ページ更新/初回アクセス）ではローディングを必ず表示
+  const [showLoading, setShowLoading] = useState(true);
   const [currentView, setCurrentView] = useState<TodoViewType>("home");
   const [isMounted, setIsMounted] = useState(false);
 
@@ -19,10 +20,10 @@ export function useAppState() {
 
     // E2E/自動テスト環境ではローディングをスキップ
     try {
-      if (
+      const isWebdriver =
         typeof navigator !== "undefined" &&
-        (navigator as unknown as { webdriver?: boolean }).webdriver
-      ) {
+        (navigator as unknown as { webdriver?: boolean }).webdriver;
+      if (isWebdriver) {
         setShowLoading(false);
       }
     } catch {

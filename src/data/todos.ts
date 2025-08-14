@@ -67,30 +67,8 @@ export function saveTodosToStorage(todos: Todo[]): void {
  * デフォルトのTodoデータを取得
  */
 function getDefaultTodos(): Todo[] {
-  const now = new Date();
-  return [
-    {
-      id: "welcome",
-      title: "manabyTodosへようこそ！",
-      description:
-        "このTodoアプリで日々のタスクを美しく管理しましょう。タスクをクリックして詳細を確認したり編集したりできます。",
-      completed: false,
-      archivedAt: null,
-      createdAt: now,
-      updatedAt: now,
-      priority: "medium",
-    },
-    {
-      id: "sample",
-      title: "サンプルタスク",
-      description: "完了したらチェックマークをつけてみてください。",
-      completed: false,
-      archivedAt: null,
-      createdAt: now,
-      updatedAt: now,
-      priority: "low",
-    },
-  ];
+  // デフォルトのサンプルタスクは廃止。初期は空のリストを返す。
+  return [];
 }
 
 /**
