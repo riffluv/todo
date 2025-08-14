@@ -5,14 +5,15 @@
  */
 "use client";
 
-import { BearIcon, CharacterHeader, MessageButton, TypewriterTitle } from "@/components/common";
+import { BearIcon, CharacterHeader, TypewriterTitle } from "@/components/common";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { TodoFormData } from "@/types/todo";
-import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { TodoForm } from "@/components/ui/TodoForm";
 import { toaster } from "@/components/ui/toaster";
+import { CircleButton } from "@/components/ui";
 import { cubicBezier, motion } from "framer-motion";
 import { useState } from "react";
 import { FaArrowLeft, FaSave, FaTimes } from "react-icons/fa";
@@ -171,20 +172,21 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
             pb={{ base: "28px", md: "36px" }}
           >
             <HStack gap={4} justify="center" wrap="wrap">
-              <MessageButton
+              <Button
                 onClick={handleSave}
-                label={isSubmitting ? "保存中..." : "保存"}
-                icon={FaSave}
                 disabled={isSubmitting || !formData.title.trim()}
                 aria-label="タスクを保存"
-              />
-              <MessageButton
-                onClick={handleReset}
-                label="リセット"
-                icon={FaTimes}
-                disabled={isSubmitting}
-                aria-label="フォームをリセット"
-              />
+                display="inline-flex"
+                alignItems="center"
+                gap={2}
+              >
+                <FaSave aria-hidden />
+                {isSubmitting ? "保存中..." : "保存"}
+              </Button>
+              <Button onClick={handleReset} disabled={isSubmitting} aria-label="フォームをリセット" display="inline-flex" alignItems="center" gap={2}>
+                <FaTimes aria-hidden />
+                リセット
+              </Button>
             </HStack>
           </MotionBox>
 
@@ -211,13 +213,7 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
               display: { base: "none", md: "block" },
             }}
           >
-            <MessageButton
-              onClick={onBack}
-              label="戻る"
-              icon={FaArrowLeft}
-              disabled={isSubmitting}
-              aria-label="リストに戻る"
-            />
+            <CircleButton icon={FaArrowLeft} label="戻る" onClick={onBack} disabled={isSubmitting} aria-label="リストに戻る" />
           </MotionBox>
 
           {/* フッター */}

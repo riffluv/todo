@@ -97,8 +97,11 @@ export const MessageCard = ({
         py={2}
         type="button"
         {...(onClick ? { onClick } : {})}
-        {...(buttonIcon ? { leftIcon: buttonIcon } : {})}
+        display="inline-flex"
+        alignItems="center"
+        gap={2}
       >
+        {buttonIcon}
         {buttonText}
       </Button>
     </VStack>

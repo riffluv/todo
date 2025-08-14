@@ -6,17 +6,18 @@
  */
 "use client";
 
-import { BearIcon, CharacterHeader, MessageButton, TypewriterTitle } from "@/components/common";
+import { BearIcon, CharacterHeader, TypewriterTitle } from "@/components/common";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { Todo, TodoFormData } from "@/types/todo";
-import { Badge, Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import { Badge, Box, Button, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { TodoForm } from "@/components/ui/TodoForm";
 import { toaster } from "@/components/ui/toaster";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaArrowLeft, FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
+import { CircleButton } from "@/components/ui";
 
 const MotionBox = motion.create(Box);
 
@@ -123,9 +124,9 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
     return (
       <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
         <Container {...componentStyles.page.content}>
-          <VStack justify="center" align="center" minH="50vh">
+          <VStack justify="center" align="center" minH="50vh" gap={4}>
             <Text color={tokens.colors.gray[500]}>タスクが見つかりません</Text>
-            <MessageButton onClick={onBack} label="戻る" icon={FaArrowLeft} />
+            <CircleButton icon={FaArrowLeft} label="戻る" onClick={onBack} aria-label="戻る" />
           </VStack>
         </Container>
       </Box>
@@ -313,13 +314,11 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
             <HStack gap={4} justify="center" wrap="wrap">
               {isEditing ? (
                 <>
-                  <MessageButton
-                    onClick={handleSave}
-                    label="保存"
-                    icon={FaSave}
-                    aria-label="変更を保存"
-                  />
-                  <MessageButton
+                  <Button onClick={handleSave} aria-label="変更を保存" display="inline-flex" alignItems="center" gap={2}>
+                    <FaSave aria-hidden />
+                    保存
+                  </Button>
+                  <Button
                     onClick={() => {
                       setIsEditing(false);
                       setFormData({
@@ -328,25 +327,25 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
                         priority: todo.priority || "medium",
                       });
                     }}
-                    label="キャンセル"
-                    icon={FaTimes}
                     aria-label="編集をキャンセル"
-                  />
+                    display="inline-flex"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <FaTimes aria-hidden />
+                    キャンセル
+                  </Button>
                 </>
               ) : (
                 <>
-                  <MessageButton
-                    onClick={() => setIsEditing(true)}
-                    label="編集"
-                    icon={FaEdit}
-                    aria-label="タスクを編集"
-                  />
-                  <MessageButton
-                    onClick={handleDelete}
-                    label="削除"
-                    icon={FaTrash}
-                    aria-label="タスクを削除"
-                  />
+                  <Button onClick={() => setIsEditing(true)} aria-label="タスクを編集" display="inline-flex" alignItems="center" gap={2}>
+                    <FaEdit aria-hidden />
+                    編集
+                  </Button>
+                  <Button onClick={handleDelete} aria-label="タスクを削除" display="inline-flex" alignItems="center" gap={2}>
+                    <FaTrash aria-hidden />
+                    削除
+                  </Button>
                 </>
               )}
             </HStack>
@@ -375,12 +374,7 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
               display: { base: "none", md: "block" },
             }}
           >
-            <MessageButton
-              onClick={onBack}
-              label="戻る"
-              icon={FaArrowLeft}
-              aria-label="リストに戻る"
-            />
+            <CircleButton icon={FaArrowLeft} label="戻る" onClick={onBack} aria-label="リストに戻る" />
           </MotionBox>
 
           {/* フッター */}

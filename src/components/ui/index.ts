@@ -7,3 +7,4 @@ export { Toaster } from "./toaster";
 export { Tooltip } from "./tooltip";
 export { TodoForm } from "./TodoForm";
 export { TodoItem } from "./TodoItem";
+export { QuickAddBar } from "./QuickAddBar";

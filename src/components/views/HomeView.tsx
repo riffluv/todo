@@ -4,15 +4,16 @@
  * @description メインのTodoリストページコンポーネント
  */
 
-import { AnimatedTitle, BearIcon, CharacterHeader, MessageButton } from "@/components/common";
+import { AnimatedTitle, BearIcon, CharacterHeader } from "@/components/common";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { TodoViewType } from "@/types/todo";
-import { Badge, Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
-import { TodoItem } from "@/components/ui/TodoItem";
+import { Badge, Box, Container, HStack, Text, VStack, List } from "@chakra-ui/react";
+import { TodoItem, CircleButton, QuickAddBar } from "@/components/ui";
 import { cubicBezier, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { QuickAddBarHandle } from "@/components/ui/QuickAddBar";
 import { FaCheck, FaClock, FaListUl, FaPlus } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
@@ -26,10 +27,23 @@ export function HomeView({ onNavigate }: HomeViewProps) {
   const containerProps = componentStyles.messageCard.container;
   const tapEffectProps = useTapEffectProps();
   const prefersReducedMotion = useReducedMotion();
-  const { todos, loading, pendingCount, completedCount, toggleTodo } = useTodos();
+  const { todos, loading, pendingCount, completedCount, toggleTodo, createTodo } = useTodos();
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all");
+  const quickAddRef = useRef<QuickAddBarHandle | null>(null);
 
   useScrollEnhancement();
+
+  // キーボードショートカット: nでQuickAddにフォーカス
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "n" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        quickAddRef.current?.focus();
+      }
+    };
+  window.addEventListener("keydown", onKeyDown, { capture: true });
+  return () => window.removeEventListener("keydown", onKeyDown, true);
+  }, []);
 
   // ローディング中
   if (loading) {
@@ -43,6 +57,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       </Box>
     );
   }
+
 
   return (
     <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
@@ -193,6 +208,25 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             </HStack>
           </MotionBox>
 
+          {/* クイック追加 */}
+          <MotionBox
+            {...componentStyles.animations.fadeInUp}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.6, delay: 0.25, ease: cubicBezier(0.16, 1, 0.3, 1) }
+            }
+            w="100%"
+            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
+            mb={{ base: 2, md: 3 }}
+          >
+            <QuickAddBar
+              ref={quickAddRef}
+              onAdd={(title) => void createTodo({ title })}
+              placeholder="すぐに追加: タイトルを入力してEnter"
+            />
+          </MotionBox>
+
           {/* Todoリスト */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
@@ -231,22 +265,25 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                   </VStack>
                 </MotionBox>
               ) : (
-                (filter === "all"
-                  ? todos
-                  : filter === "pending"
-                    ? todos.filter((t) => !t.completed)
-                    : todos.filter((t) => t.completed)
-                ).map((todo, index) => (
-                  <TodoItem
-                    key={todo.id}
-                    todo={todo}
-                    index={index}
-                    prefersReducedMotion={prefersReducedMotion}
-                    onToggle={toggleTodo}
-                    onOpen={(id) => onNavigate(id)}
-                    tapEffectProps={tapEffectProps as unknown as Record<string, unknown>}
-                  />
-                ))
+        <List.Root as="ul" role="list" m={0} p={0} w="100%" unstyled>
+                  {(filter === "all"
+                    ? todos
+                    : filter === "pending"
+                      ? todos.filter((t) => !t.completed)
+                      : todos.filter((t) => t.completed)
+                  ).map((todo, index) => (
+          <List.Item as="li" key={todo.id} role="listitem" m={0} p={0}>
+                      <TodoItem
+                        todo={todo}
+                        index={index}
+                        prefersReducedMotion={prefersReducedMotion}
+                        onToggle={toggleTodo}
+                        onOpen={(id) => onNavigate(id)}
+                        tapEffectProps={tapEffectProps as unknown as Record<string, unknown>}
+                      />
+          </List.Item>
+                  ))}
+        </List.Root>
               )}
             </VStack>
           </MotionBox>
@@ -267,7 +304,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             pb={{ base: 0, md: "36px" }}
             zIndex={1000}
           >
-            <MessageButton
+            <CircleButton
               onClick={() => onNavigate("add")}
               label="新しいタスク"
               icon={FaPlus}

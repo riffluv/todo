@@ -14,6 +14,7 @@ export function CircleButton({ label, icon, onClick, disabled, ...rest }: Circle
 
   return (
     <VStack
+      asChild
       gap={{ base: tokens.spacing.md, md: tokens.spacing.lg }}
       cursor={disabled ? "not-allowed" : "pointer"}
       p={{ base: tokens.spacing.md, md: tokens.spacing.lg }}
@@ -37,9 +38,9 @@ export function CircleButton({ label, icon, onClick, disabled, ...rest }: Circle
             }
           : {}
       }
-      {...(!disabled && onClick ? { onClick } : {})}
       {...rest}
     >
+      <button type="button" disabled={disabled} {...(!disabled && onClick ? { onClick } : {})}>
       <VStack
         w={{ base: "72px", md: "80px", lg: "88px" }}
         h={{ base: "72px", md: "80px", lg: "88px" }}
@@ -67,6 +68,7 @@ export function CircleButton({ label, icon, onClick, disabled, ...rest }: Circle
       >
         {label}
       </Text>
+      </button>
     </VStack>
   );
 }
