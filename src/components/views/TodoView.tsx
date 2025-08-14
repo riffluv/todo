@@ -14,10 +14,11 @@ import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hoo
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { Todo, TodoFormData } from "@/types/todo";
-import { Badge, Box, Button, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaArrowLeft, FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
+import { LuFlame, LuLeaf, LuSun } from "react-icons/lu";
 
 const MotionBox = motion.create(Box);
 
@@ -197,59 +198,37 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
 
                 <VStack gap={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}>
                   {/* 完了チェックボックスとステータス */}
-                  <HStack justify="space-between" w="100%" align="center">
-                    <HStack gap={3}>
-                      <Box
-                        w={{ base: "36px", md: "28px" }}
-                        h={{ base: "36px", md: "28px" }}
-                        borderRadius="4px"
-                        border="2px solid"
-                        borderColor={
-                          todo.completed ? tokens.colors.primary[500] : tokens.colors.gray[400]
-                        }
-                        bg={todo.completed ? tokens.colors.primary[500] : "transparent"}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontSize="14px"
-                        color="white"
-                        cursor="pointer"
+                  <HStack w="100%" align="center">
+                    <Box onClick={(e) => e.stopPropagation()}>
+                      <Checkbox.Root
+                        size="md"
+                        checked={todo.completed}
+                        onCheckedChange={handleToggleComplete}
+                        colorPalette="orange"
                         aria-label={todo.completed ? "完了を解除" : "完了にする"}
-                        as="button"
-                        aria-pressed={todo.completed}
-                        onClick={handleToggleComplete}
-                        _hover={{
-                          borderColor: tokens.colors.primary[600],
-                          bg: todo.completed
-                            ? tokens.colors.primary[600]
-                            : tokens.colors.primary[50],
-                        }}
-                        {...tapEffectProps}
                       >
-                        {todo.completed && "✓"}
-                      </Box>
-                      <Text fontSize="sm" color={tokens.colors.gray[600]}>
-                        {todo.completed ? "完了済み" : "未完了"}
-                      </Text>
-                    </HStack>
+                        <Checkbox.HiddenInput />
+                        <Checkbox.Control />
+                      </Checkbox.Root>
+                    </Box>
+                    <Text fontSize="sm" color={tokens.colors.gray[600]} minW="5em">
+                      {todo.completed ? "完了済み" : "未完了"}
+                    </Text>
 
-                    <HStack gap={2}>
+                    <HStack gap={3} align="center" ml="auto">
                       {todo.priority && (
-                        <Badge
-                          colorScheme={
-                            todo.priority === "high"
-                              ? "red"
+                        <HStack gap={1} fontSize="xs" color={tokens.colors.gray[600]}>
+                          {todo.priority === "high" && <LuFlame color="#e11d48" size={14} />}
+                          {todo.priority === "medium" && <LuSun color="#ea580c" size={14} />}
+                          {todo.priority === "low" && <LuLeaf color="#16a34a" size={14} />}
+                          <Text as="span">
+                            {todo.priority === "high"
+                              ? "高"
                               : todo.priority === "medium"
-                                ? "orange"
-                                : "gray"
-                          }
-                        >
-                          {todo.priority === "high"
-                            ? "高優先度"
-                            : todo.priority === "medium"
-                              ? "中優先度"
-                              : "低優先度"}
-                        </Badge>
+                                ? "中"
+                                : "低"}
+                          </Text>
+                        </HStack>
                       )}
                     </HStack>
                   </HStack>
