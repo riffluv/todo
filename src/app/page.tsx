@@ -6,7 +6,7 @@
 "use client";
 
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
-import { AddTodoView, HomeView, TodoView } from "@/components/views";
+import { AddTodoView, HomeView, TodoView, TrashView } from "@/components/views";
 import { useAppState } from "@/hooks/useAppState";
 
 export default function Home() {
@@ -31,5 +31,8 @@ export default function Home() {
   }
 
   // 個別Todoビューもしくはエラーケースでホームに戻る
+  if (currentView === "trash") {
+    return <TrashView onBack={handleBackToHome} />;
+  }
   return <TodoView todoId={currentView} onBack={handleBackToHome} />;
 }

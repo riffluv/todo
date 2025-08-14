@@ -30,7 +30,7 @@ export interface TodoViewProps {
 }
 
 export function TodoView({ todoId, onBack }: TodoViewProps) {
-  const { getTodo, modifyTodo, removeTodo } = useTodos();
+  const { getTodo, modifyTodo, moveToTrash, restoreFromTrash } = useTodos();
   const [todo, setTodo] = useState<Todo | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<TodoFormData>({
@@ -86,20 +86,27 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
     }
   };
 
-  // 削除処理
+  // ソフト削除（ゴミ箱へ移動）
   const handleDelete = async () => {
     if (!todo) return;
-
-    if (window.confirm("このタスクを削除しますか？")) {
-      try {
-        const success = removeTodo(todo.id);
-        if (success) {
-          toaster.create({ title: "タスクを削除しました", type: "success" });
-          onBack();
-        }
-      } catch {
-        toaster.create({ title: "削除に失敗しました", type: "error" });
-      }
+    try {
+      moveToTrash(todo.id);
+      const toastId = toaster.create({
+        title: "ゴミ箱に移動しました",
+        description: "元に戻すことができます",
+        type: "info",
+        action: {
+          label: "元に戻す",
+          onClick: () => {
+            restoreFromTrash(todo.id);
+            toaster.update(toastId, { title: "復元しました", type: "success" });
+          },
+        },
+        duration: 5000,
+      });
+      onBack();
+    } catch {
+      toaster.create({ title: "移動に失敗しました", type: "error" });
     }
   };
 

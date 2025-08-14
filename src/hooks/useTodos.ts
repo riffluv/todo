@@ -4,13 +4,18 @@
  * @description TodoのCRUD操作を提供するカスタムフック
  */
 
-import { addTodo, deleteTodo, getAllTodos, getTodoById, updateTodo } from "@/data/todos";
 import {
-  sortTodosByUpdatedDesc,
-  validateTodoForm,
-  normalizeTitle,
-} from "@/utils/todos";
+  addTodo,
+  archiveTodo,
+  deleteTodo,
+  getAllTodos,
+  getTodoById,
+  purgeArchived,
+  restoreTodo,
+  updateTodo,
+} from "@/data/todos";
 import { Todo, TodoFormData } from "@/types/todo";
+import { normalizeTitle, sortTodosByUpdatedDesc, validateTodoForm } from "@/utils/todos";
 import { useCallback, useEffect, useState } from "react";
 
 export function useTodos() {
@@ -67,7 +72,9 @@ export function useTodos() {
   const modifyTodo = useCallback(
     (
       id: string,
-      updates: Partial<Pick<Todo, "title" | "description" | "completed" | "priority">>,
+      updates: Partial<
+        Pick<Todo, "title" | "description" | "completed" | "priority" | "archivedAt">
+      >,
     ) => {
       try {
         const updatedTodo = updateTodo(id, updates);
@@ -94,6 +101,48 @@ export function useTodos() {
       return success;
     } catch (error) {
       console.error("Failed to delete todo:", error);
+      throw error;
+    }
+  }, []);
+
+  // ソフト削除（ゴミ箱へ）
+  const moveToTrash = useCallback((id: string) => {
+    try {
+      const updated = archiveTodo(id);
+      if (updated) {
+        setTodos((prev) => prev.map((t) => (t.id === id ? updated : t)));
+      }
+      return updated;
+    } catch (error) {
+      console.error("Failed to archive todo:", error);
+      throw error;
+    }
+  }, []);
+
+  // 復元
+  const restoreFromTrash = useCallback((id: string) => {
+    try {
+      const updated = restoreTodo(id);
+      if (updated) {
+        setTodos((prev) => prev.map((t) => (t.id === id ? updated : t)));
+      }
+      return updated;
+    } catch (error) {
+      console.error("Failed to restore todo:", error);
+      throw error;
+    }
+  }, []);
+
+  // ゴミ箱を空にする（完全削除）
+  const emptyTrash = useCallback(() => {
+    try {
+      const removed = purgeArchived();
+      if (removed > 0) {
+        setTodos((prev) => prev.filter((t) => !t.archivedAt));
+      }
+      return removed;
+    } catch (error) {
+      console.error("Failed to purge archived todos:", error);
       throw error;
     }
   }, []);
@@ -130,6 +179,9 @@ export function useTodos() {
     createTodo,
     modifyTodo,
     removeTodo,
+    moveToTrash,
+    restoreFromTrash,
+    emptyTrash,
     toggleTodo,
     getTodo,
   };

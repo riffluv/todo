@@ -7,14 +7,15 @@
 import { AnimatedTitle, BearIcon, CharacterHeader } from "@/components/common";
 import { CircleButton, QuickAddBar, TodoItem } from "@/components/ui";
 import type { QuickAddBarHandle } from "@/components/ui/QuickAddBar";
+import { toaster } from "@/components/ui/toaster";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { TodoViewType } from "@/types/todo";
-import { Badge, Box, Container, HStack, List, Text, VStack } from "@chakra-ui/react";
+import { Badge, Box, Button, Container, HStack, List, Text, VStack } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { FaCheck, FaClock, FaListUl, FaPlus } from "react-icons/fa";
+import { FaCheck, FaClock, FaListUl, FaPlus, FaTrash } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
 
@@ -27,7 +28,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
   const containerProps = componentStyles.messageCard.container;
   const tapEffectProps = useTapEffectProps();
   const prefersReducedMotion = useReducedMotion();
-  const { todos, loading, pendingCount, completedCount, toggleTodo, createTodo } = useTodos();
+  const { todos, loading, toggleTodo, createTodo, moveToTrash, restoreFromTrash } = useTodos();
+  const activeTodos = todos.filter((t) => !t.archivedAt);
+  const activePending = activeTodos.filter((t) => !t.completed).length;
+  const activeCompleted = activeTodos.filter((t) => t.completed).length;
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all");
   const quickAddRef = useRef<QuickAddBarHandle | null>(null);
 
@@ -148,7 +152,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                     gap={2}
                   >
                     <FaClock size={12} />
-                    {pendingCount}件 進行中
+                    {activePending}件 進行中
                   </Badge>
                   <Badge
                     colorScheme="green"
@@ -160,8 +164,19 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                     gap={2}
                   >
                     <FaCheck size={12} />
-                    {completedCount}件 完了
+                    {activeCompleted}件 完了
                   </Badge>
+                </HStack>
+                <HStack justify="flex-end">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onNavigate("trash")}
+                    aria-label="ゴミ箱へ"
+                    colorPalette="gray"
+                  >
+                    <FaTrash /> ゴミ箱
+                  </Button>
                 </HStack>
 
                 {/* Encouragement message removed per request */}
@@ -191,7 +206,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
               >
                 <HStack gap={2} align="center">
                   <FaListUl size={12} />
-                  <Text as="span">すべて ({todos.length})</Text>
+                  <Text as="span">すべて ({activeTodos.length})</Text>
                 </HStack>
               </Badge>
               <Badge
@@ -204,7 +219,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
               >
                 <HStack gap={2} align="center">
                   <FaClock size={12} />
-                  <Text as="span">進行中 ({pendingCount})</Text>
+                  <Text as="span">進行中 ({activePending})</Text>
                 </HStack>
               </Badge>
               <Badge
@@ -217,7 +232,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
               >
                 <HStack gap={2} align="center">
                   <FaCheck size={12} />
-                  <Text as="span">完了 ({completedCount})</Text>
+                  <Text as="span">完了 ({activeCompleted})</Text>
                 </HStack>
               </Badge>
             </HStack>
@@ -304,17 +319,42 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                     : filter === "pending"
                       ? todos.filter((t) => !t.completed)
                       : todos.filter((t) => t.completed)
-                  ).map((todo, index) => (
-                    <List.Item as="li" key={todo.id} role="listitem" m={0} p={0}>
-                      <TodoItem
-                        todo={todo}
-                        index={index}
-                        prefersReducedMotion={prefersReducedMotion}
-                        onToggle={toggleTodo}
-                        onOpen={(id) => onNavigate(id)}
-                      />
-                    </List.Item>
-                  ))}
+                  )
+                    // ゴミ箱のタスクは一覧から除外
+                    .filter((t) => !t.archivedAt)
+                    .map((todo, index) => (
+                      <List.Item as="li" key={todo.id} role="listitem" m={0} p={0}>
+                        <TodoItem
+                          todo={todo}
+                          index={index}
+                          prefersReducedMotion={prefersReducedMotion}
+                          onToggle={toggleTodo}
+                          onOpen={(id) => onNavigate(id)}
+                          onArchive={(id) => {
+                            const updated = moveToTrash(id);
+                            if (updated) {
+                              const toastId = toaster.create({
+                                title: "ゴミ箱に移動しました",
+                                description: "元に戻すことができます",
+                                type: "info",
+                                action: {
+                                  label: "元に戻す",
+                                  onClick: () => {
+                                    restoreFromTrash(id);
+                                    toaster.update(toastId, {
+                                      title: "復元しました",
+                                      description: undefined,
+                                      type: "success",
+                                    });
+                                  },
+                                },
+                                duration: 5000,
+                              });
+                            }
+                          }}
+                        />
+                      </List.Item>
+                    ))}
                 </List.Root>
               )}
             </VStack>

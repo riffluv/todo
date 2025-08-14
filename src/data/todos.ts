@@ -33,11 +33,13 @@ export function getTodosFromStorage(): Todo[] {
         title: string;
         description?: string;
         completed: boolean;
+        archivedAt?: string | null;
         createdAt: string;
         updatedAt: string;
         priority?: "low" | "medium" | "high";
       }) => ({
         ...todo,
+        archivedAt: todo.archivedAt ? new Date(todo.archivedAt) : null,
         createdAt: new Date(todo.createdAt),
         updatedAt: new Date(todo.updatedAt),
       }),
@@ -73,6 +75,7 @@ function getDefaultTodos(): Todo[] {
       description:
         "このTodoアプリで日々のタスクを美しく管理しましょう。タスクをクリックして詳細を確認したり編集したりできます。",
       completed: false,
+      archivedAt: null,
       createdAt: now,
       updatedAt: now,
       priority: "medium",
@@ -82,6 +85,7 @@ function getDefaultTodos(): Todo[] {
       title: "サンプルタスク",
       description: "完了したらチェックマークをつけてみてください。",
       completed: false,
+      archivedAt: null,
       createdAt: now,
       updatedAt: now,
       priority: "low",
@@ -106,6 +110,7 @@ export function createTodo(formData: TodoFormData): Todo {
     id: generateId(),
     title: formData.title,
     completed: false,
+    archivedAt: null,
     createdAt: now,
     updatedAt: now,
   };
@@ -128,7 +133,7 @@ export function createTodo(formData: TodoFormData): Todo {
  */
 export function updateTodo(
   id: string,
-  updates: Partial<Pick<Todo, "title" | "description" | "completed" | "priority">>,
+  updates: Partial<Pick<Todo, "title" | "description" | "completed" | "priority" | "archivedAt">>,
 ): Todo | null {
   const todos = getTodosFromStorage();
   const index = todos.findIndex((todo) => todo.id === id);
@@ -142,6 +147,9 @@ export function updateTodo(
     id: existingTodo.id,
     title: updates.title ?? existingTodo.title,
     completed: updates.completed ?? existingTodo.completed,
+    // archivedAt は null を明示的に設定できるように、プロパティの存在チェックを使う
+    archivedAt:
+      "archivedAt" in updates ? (updates.archivedAt ?? null) : (existingTodo.archivedAt ?? null),
     createdAt: existingTodo.createdAt,
     updatedAt: new Date(),
   };
@@ -175,6 +183,31 @@ export function deleteTodo(id: string): boolean {
 
   saveTodosToStorage(filteredTodos);
   return true;
+}
+
+/**
+ * Todoをゴミ箱へ移動（ソフト削除）
+ */
+export function archiveTodo(id: string): Todo | null {
+  return updateTodo(id, { archivedAt: new Date() });
+}
+
+/**
+ * ゴミ箱から復元
+ */
+export function restoreTodo(id: string): Todo | null {
+  return updateTodo(id, { archivedAt: null });
+}
+
+/**
+ * ゴミ箱内の全てを完全削除
+ */
+export function purgeArchived(): number {
+  const todos = getTodosFromStorage();
+  const keep = todos.filter((t) => !t.archivedAt);
+  const removed = todos.length - keep.length;
+  saveTodosToStorage(keep);
+  return removed;
 }
 
 /**

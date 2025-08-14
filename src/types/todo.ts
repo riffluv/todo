@@ -13,6 +13,8 @@ export interface Todo {
   description?: string | undefined;
   /** 完了状態 */
   completed: boolean;
+  /** ゴミ箱行きの日時（null なら通常状態） */
+  archivedAt?: Date | null;
   /** 作成日時 */
   createdAt: Date;
   /** 更新日時 */
@@ -30,7 +32,7 @@ export interface TodoFormData {
   priority?: "low" | "medium" | "high" | undefined;
 }
 
-export type TodoViewType = "home" | "add" | string; // Todo IDまたは特定のビュー
+export type TodoViewType = "home" | "add" | "trash" | string; // Todo IDまたは特定のビュー
 
 export interface TodoListFilter {
   /** 完了状態でフィルタ */
