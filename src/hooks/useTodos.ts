@@ -5,6 +5,11 @@
  */
 
 import { addTodo, deleteTodo, getAllTodos, getTodoById, updateTodo } from "@/data/todos";
+import {
+  sortTodosByUpdatedDesc,
+  validateTodoForm,
+  normalizeTitle,
+} from "@/utils/todos";
 import { Todo, TodoFormData } from "@/types/todo";
 import { useCallback, useEffect, useState } from "react";
 
@@ -17,7 +22,7 @@ export function useTodos() {
     const loadTodos = () => {
       try {
         const allTodos = getAllTodos();
-        setTodos(allTodos);
+        setTodos(sortTodosByUpdatedDesc(allTodos));
       } catch (error) {
         console.error("Failed to load todos:", error);
       } finally {
@@ -32,7 +37,7 @@ export function useTodos() {
   const refreshTodos = useCallback(() => {
     try {
       const allTodos = getAllTodos();
-      setTodos(allTodos);
+      setTodos(sortTodosByUpdatedDesc(allTodos));
     } catch (error) {
       console.error("Failed to refresh todos:", error);
     }
@@ -41,8 +46,16 @@ export function useTodos() {
   // 新しいTodoを追加
   const createTodo = useCallback((formData: TodoFormData) => {
     try {
-      const newTodo = addTodo(formData);
-      setTodos((prev) => [newTodo, ...prev]);
+      const check = validateTodoForm(formData);
+      if (!check.ok) throw new Error(check.message);
+
+      const normalized: TodoFormData = {
+        ...formData,
+        title: normalizeTitle(formData.title),
+      };
+
+      const newTodo = addTodo(normalized);
+      setTodos((prev) => sortTodosByUpdatedDesc([newTodo, ...prev]));
       return newTodo;
     } catch (error) {
       console.error("Failed to create todo:", error);
