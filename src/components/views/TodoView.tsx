@@ -11,17 +11,8 @@ import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hoo
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { Todo, TodoFormData } from "@/types/todo";
-import {
-  Badge,
-  Box,
-  Button,
-  Container,
-  HStack,
-  Input,
-  Text,
-  Textarea,
-  VStack,
-} from "@chakra-ui/react";
+import { Badge, Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import { TodoForm } from "@/components/ui/TodoForm";
 import { toaster } from "@/components/ui/toaster";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -264,63 +255,7 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
 
                   {/* タイトル編集 */}
                   {isEditing ? (
-                    <VStack w="100%" gap={4}>
-                      <Input
-                        value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        placeholder="タスクのタイトル"
-                        size="lg"
-                        borderColor={tokens.colors.primary[300]}
-                        _focus={{
-                          borderColor: tokens.colors.primary[500],
-                          boxShadow: `0 0 0 1px ${tokens.colors.primary[500]}`,
-                        }}
-                      />
-
-                      <Textarea
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        placeholder="詳細説明（オプション）"
-                        rows={4}
-                        borderColor={tokens.colors.primary[300]}
-                        _focus={{
-                          borderColor: tokens.colors.primary[500],
-                          boxShadow: `0 0 0 1px ${tokens.colors.primary[500]}`,
-                        }}
-                      />
-
-                      <Box w="100%">
-                        <Text fontSize="sm" mb={2} color={tokens.colors.gray[600]}>
-                          優先度
-                        </Text>
-                        <HStack gap={2}>
-                          <Button
-                            size="sm"
-                            variant={formData.priority === "low" ? "solid" : "outline"}
-                            colorScheme="gray"
-                            onClick={() => setFormData({ ...formData, priority: "low" })}
-                          >
-                            低
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant={formData.priority === "medium" ? "solid" : "outline"}
-                            colorScheme="orange"
-                            onClick={() => setFormData({ ...formData, priority: "medium" })}
-                          >
-                            中
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant={formData.priority === "high" ? "solid" : "outline"}
-                            colorScheme="red"
-                            onClick={() => setFormData({ ...formData, priority: "high" })}
-                          >
-                            高
-                          </Button>
-                        </HStack>
-                      </Box>
-                    </VStack>
+                    <TodoForm value={formData} onChange={setFormData} />
                   ) : (
                     <VStack gap={4} align="stretch" w="100%">
                       <Text
