@@ -7,17 +7,17 @@
 "use client";
 
 import { BearIcon, CharacterHeader, TypewriterTitle } from "@/components/common";
+import { CircleButton } from "@/components/ui";
+import { TodoForm } from "@/components/ui/TodoForm";
+import { toaster } from "@/components/ui/toaster";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { Todo, TodoFormData } from "@/types/todo";
 import { Badge, Box, Button, Container, HStack, Text, VStack } from "@chakra-ui/react";
-import { TodoForm } from "@/components/ui/TodoForm";
-import { toaster } from "@/components/ui/toaster";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaArrowLeft, FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
-import { CircleButton } from "@/components/ui";
 
 const MotionBox = motion.create(Box);
 
@@ -314,7 +314,13 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
             <HStack gap={4} justify="center" wrap="wrap">
               {isEditing ? (
                 <>
-                  <Button onClick={handleSave} aria-label="変更を保存" display="inline-flex" alignItems="center" gap={2}>
+                  <Button
+                    onClick={handleSave}
+                    aria-label="変更を保存"
+                    display="inline-flex"
+                    alignItems="center"
+                    gap={2}
+                  >
                     <FaSave aria-hidden />
                     保存
                   </Button>
@@ -338,11 +344,23 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
                 </>
               ) : (
                 <>
-                  <Button onClick={() => setIsEditing(true)} aria-label="タスクを編集" display="inline-flex" alignItems="center" gap={2}>
+                  <Button
+                    onClick={() => setIsEditing(true)}
+                    aria-label="タスクを編集"
+                    display="inline-flex"
+                    alignItems="center"
+                    gap={2}
+                  >
                     <FaEdit aria-hidden />
                     編集
                   </Button>
-                  <Button onClick={handleDelete} aria-label="タスクを削除" display="inline-flex" alignItems="center" gap={2}>
+                  <Button
+                    onClick={handleDelete}
+                    aria-label="タスクを削除"
+                    display="inline-flex"
+                    alignItems="center"
+                    gap={2}
+                  >
                     <FaTrash aria-hidden />
                     削除
                   </Button>
@@ -374,25 +392,15 @@ export function TodoView({ todoId, onBack }: TodoViewProps) {
               display: { base: "none", md: "block" },
             }}
           >
-            <CircleButton icon={FaArrowLeft} label="戻る" onClick={onBack} aria-label="リストに戻る" />
+            <CircleButton
+              icon={FaArrowLeft}
+              label="戻る"
+              onClick={onBack}
+              aria-label="リストに戻る"
+            />
           </MotionBox>
 
-          {/* フッター */}
-          <MotionBox
-            {...componentStyles.animations.fadeIn}
-            textAlign="center"
-            mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
-          >
-            <Text
-              fontSize="xs"
-              color={tokens.colors.gray[500]}
-              fontWeight={tokens.typography.fontWeights.medium}
-              letterSpacing="0.2px"
-              style={{ opacity: 0.7 }}
-            >
-              ☕ あなたの成長をサポート
-            </Text>
-          </MotionBox>
+          {/* 共通フッターはルートレイアウトにて固定表示 */}
         </VStack>
       </Container>
     </Box>

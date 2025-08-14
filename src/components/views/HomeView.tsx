@@ -5,15 +5,15 @@
  */
 
 import { AnimatedTitle, BearIcon, CharacterHeader } from "@/components/common";
+import { CircleButton, QuickAddBar, TodoItem } from "@/components/ui";
+import type { QuickAddBarHandle } from "@/components/ui/QuickAddBar";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { TodoViewType } from "@/types/todo";
-import { Badge, Box, Container, HStack, Text, VStack, List } from "@chakra-ui/react";
-import { TodoItem, CircleButton, QuickAddBar } from "@/components/ui";
+import { Badge, Box, Container, HStack, List, Text, VStack } from "@chakra-ui/react";
 import { cubicBezier, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import type { QuickAddBarHandle } from "@/components/ui/QuickAddBar";
 import { FaCheck, FaClock, FaListUl, FaPlus } from "react-icons/fa";
 
 const MotionBox = motion.create(Box);
@@ -41,8 +41,8 @@ export function HomeView({ onNavigate }: HomeViewProps) {
         quickAddRef.current?.focus();
       }
     };
-  window.addEventListener("keydown", onKeyDown, { capture: true });
-  return () => window.removeEventListener("keydown", onKeyDown, true);
+    window.addEventListener("keydown", onKeyDown, { capture: true });
+    return () => window.removeEventListener("keydown", onKeyDown, true);
   }, []);
 
   // ローディング中
@@ -50,14 +50,29 @@ export function HomeView({ onNavigate }: HomeViewProps) {
     return (
       <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
         <Container {...componentStyles.page.content}>
-          <VStack justify="center" align="center" minH="50vh">
+          <VStack justify="center" align="center" minH="40vh" gap={4}>
             <Text color={tokens.colors.gray[500]}>読み込み中...</Text>
           </VStack>
+
+          {/* デスクトップ用 新しいタスク（上部）*/}
+          <HStack justify="center" display={{ base: "none", md: "flex" }}>
+            <CircleButton onClick={() => onNavigate("add")} label="新しいタスク" icon={FaPlus} />
+          </HStack>
+
+          {/* モバイル用 FAB */}
+          <Box
+            position={{ base: "fixed", md: "relative" }}
+            right={{ base: "20px", md: "auto" }}
+            bottom={{ base: "20px", md: "auto" }}
+            zIndex={1000}
+            display={{ base: "block", md: "none" }}
+          >
+            <CircleButton onClick={() => onNavigate("add")} label="新しいタスク" icon={FaPlus} />
+          </Box>
         </Container>
       </Box>
     );
   }
-
 
   return (
     <Box {...componentStyles.page.container} {...themes.home.background} {...tapEffectProps}>
@@ -227,6 +242,24 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             />
           </MotionBox>
 
+          {/* デスクトップ用 新しいタスク（上部配置で常に見える） */}
+          <MotionBox
+            {...componentStyles.animations.fadeInUp}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.6, delay: 0.28, ease: cubicBezier(0.16, 1, 0.3, 1) }
+            }
+            w="100%"
+            maxW={{ base: "100%", sm: "400px", md: "600px", lg: "720px" }}
+            mb={{ base: 2, md: 4 }}
+            display={{ base: "none", md: "block" }}
+          >
+            <HStack justify="center">
+              <CircleButton onClick={() => onNavigate("add")} label="新しいタスク" icon={FaPlus} />
+            </HStack>
+          </MotionBox>
+
           {/* Todoリスト */}
           <MotionBox
             {...componentStyles.animations.fadeInUp}
@@ -265,25 +298,24 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                   </VStack>
                 </MotionBox>
               ) : (
-        <List.Root as="ul" role="list" m={0} p={0} w="100%" unstyled>
+                <List.Root as="ul" role="list" m={0} p={0} w="100%" unstyled>
                   {(filter === "all"
                     ? todos
                     : filter === "pending"
                       ? todos.filter((t) => !t.completed)
                       : todos.filter((t) => t.completed)
                   ).map((todo, index) => (
-          <List.Item as="li" key={todo.id} role="listitem" m={0} p={0}>
+                    <List.Item as="li" key={todo.id} role="listitem" m={0} p={0}>
                       <TodoItem
                         todo={todo}
                         index={index}
                         prefersReducedMotion={prefersReducedMotion}
                         onToggle={toggleTodo}
                         onOpen={(id) => onNavigate(id)}
-                        tapEffectProps={tapEffectProps as unknown as Record<string, unknown>}
                       />
-          </List.Item>
+                    </List.Item>
                   ))}
-        </List.Root>
+                </List.Root>
               )}
             </VStack>
           </MotionBox>
@@ -303,37 +335,12 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             pt={{ base: 0, md: "36px" }}
             pb={{ base: 0, md: "36px" }}
             zIndex={1000}
+            display={{ base: "block", md: "none" }}
           >
-            <CircleButton
-              onClick={() => onNavigate("add")}
-              label="新しいタスク"
-              icon={FaPlus}
-              aria-label="新しいタスクを追加"
-            />
+            <CircleButton onClick={() => onNavigate("add")} label="新しいタスク" icon={FaPlus} />
           </MotionBox>
 
-          {/* 改良されたフッター */}
-          <MotionBox
-            {...componentStyles.animations.fadeInUp}
-            textAlign="center"
-            mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
-            px={tokens.spacing.md}
-            transition={{
-              duration: 0.8,
-              delay: 0.8,
-              ease: cubicBezier(0.16, 1, 0.3, 1),
-            }}
-          >
-            <Text
-              fontSize="xs"
-              color={tokens.colors.gray[500]}
-              fontWeight={tokens.typography.fontWeights.medium}
-              letterSpacing="0.2px"
-              style={{ opacity: 0.7 }}
-            >
-              ☕珈琲やめる
-            </Text>
-          </MotionBox>
+          {/* 共通フッターはルートレイアウトにて固定表示 */}
         </VStack>
       </Container>
     </Box>

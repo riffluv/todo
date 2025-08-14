@@ -6,14 +6,14 @@
 "use client";
 
 import { BearIcon, CharacterHeader, TypewriterTitle } from "@/components/common";
+import { CircleButton } from "@/components/ui";
+import { TodoForm } from "@/components/ui/TodoForm";
+import { toaster } from "@/components/ui/toaster";
 import { useReducedMotion, useScrollEnhancement, useTapEffectProps } from "@/hooks";
 import { useTodos } from "@/hooks/useTodos";
 import { componentStyles, themes, tokens } from "@/styles";
 import { TodoFormData } from "@/types/todo";
 import { Box, Button, Container, HStack, Text, VStack } from "@chakra-ui/react";
-import { TodoForm } from "@/components/ui/TodoForm";
-import { toaster } from "@/components/ui/toaster";
-import { CircleButton } from "@/components/ui";
 import { cubicBezier, motion } from "framer-motion";
 import { useState } from "react";
 import { FaArrowLeft, FaSave, FaTimes } from "react-icons/fa";
@@ -183,7 +183,14 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
                 <FaSave aria-hidden />
                 {isSubmitting ? "保存中..." : "保存"}
               </Button>
-              <Button onClick={handleReset} disabled={isSubmitting} aria-label="フォームをリセット" display="inline-flex" alignItems="center" gap={2}>
+              <Button
+                onClick={handleReset}
+                disabled={isSubmitting}
+                aria-label="フォームをリセット"
+                display="inline-flex"
+                alignItems="center"
+                gap={2}
+              >
                 <FaTimes aria-hidden />
                 リセット
               </Button>
@@ -213,25 +220,16 @@ export function AddTodoView({ onBack }: AddTodoViewProps) {
               display: { base: "none", md: "block" },
             }}
           >
-            <CircleButton icon={FaArrowLeft} label="戻る" onClick={onBack} disabled={isSubmitting} aria-label="リストに戻る" />
+            <CircleButton
+              icon={FaArrowLeft}
+              label="戻る"
+              onClick={onBack}
+              disabled={isSubmitting}
+              aria-label="リストに戻る"
+            />
           </MotionBox>
 
-          {/* フッター */}
-          <MotionBox
-            {...componentStyles.animations.fadeIn}
-            textAlign="center"
-            mt={{ base: tokens.spacing.lg, md: tokens.spacing.xl }}
-          >
-            <Text
-              fontSize="xs"
-              color={tokens.colors.gray[500]}
-              fontWeight={tokens.typography.fontWeights.medium}
-              letterSpacing="0.2px"
-              style={{ opacity: 0.7 }}
-            >
-              ☕ あなたの成長をサポート
-            </Text>
-          </MotionBox>
+          {/* 共通フッターはルートレイアウトにて固定表示 */}
         </VStack>
       </Container>
     </Box>

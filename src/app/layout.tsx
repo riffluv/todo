@@ -1,6 +1,7 @@
+import { Footer } from "@/components/common/Footer";
 import { PawEffectProvider } from "@/components/providers/PawEffectProvider";
-import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui";
+import { Provider } from "@/components/ui/provider";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -45,7 +46,10 @@ export default function RootLayout({
       <body suppressHydrationWarning className={`${inter.variable} antialiased`}>
         <Provider>
           <PawEffectProvider>
-            {children}
+            <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
+              <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>{children}</main>
+              <Footer />
+            </div>
             <Toaster />
           </PawEffectProvider>
         </Provider>

@@ -1,8 +1,8 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { HStack, Input, Button, Box } from "@chakra-ui/react";
 import { tokens } from "@/styles";
+import { Box, Button, HStack, Input } from "@chakra-ui/react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 
 export interface QuickAddBarHandle {
   focus: () => void;
