@@ -17,7 +17,8 @@ export default function Home() {
 
   // ローディング画面
   if (showLoading) {
-    return <LoadingScreen onComplete={handleLoadingComplete} duration={2200} />;
+  // 初回表示を少し短めに（見栄えは保ちつつ長すぎない）
+  return <LoadingScreen onComplete={handleLoadingComplete} duration={4000} />;
   }
 
   // ビューの条件分岐
